@@ -1,11 +1,23 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {useState} from 'react';
+import { StyleSheet, Text, View, TextInput, KeyboardAvoidingView, ScrollView, Button, Image } from 'react-native';
 
 const ChatbotScreen = () => {
+    const [text, onChangeText] = useState("");
+
     return (
-        <View style={styles.container}>
-            <Text>Chatbot Main page</Text>
-        </View>
+        <KeyboardAvoidingView style={styles.container} behavior="height" enabled>
+            <TextInput
+                    style={styles.input}
+                    onChangeText={onChangeText}
+                    value = {text}
+                    placeholder = "Enter your message here"
+            />
+            <Button 
+                onPress={() => {alert("Message Sent")}}
+                color="#f194ff"
+                title="Send"
+            />
+        </KeyboardAvoidingView>
     )
 }
 
@@ -13,8 +25,20 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+      },
+      messageContainer: {
+          marginTop: 10,
+          flexDirection: "row",
+      },
+      img: {
+        width: 15,
+        height: 15,
+      },
+      input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
       },
 })
 
