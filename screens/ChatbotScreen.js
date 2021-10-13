@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-const Screen1 = () => {
+const ChatbotScreen = () => {
     return (
         <View style={styles.container}>
-            <Text>Screen 1 Main page</Text>
+            <Text>Chatbot Main page</Text>
         </View>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -18,4 +18,4 @@ const styles = StyleSheet.create({
       },
 })
 
-export default Screen1;
+export default ChatbotScreen;

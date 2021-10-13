@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import Screen1 from './Screen1';
-import Screen2 from './Screen2';
+import ARScreen from './screens/ARScreen';
+import SocialForumScreen from './screens/SocialForumScreen'
+import ChatbotScreen from './screens/ChatbotScreen';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -13,8 +14,9 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator>
-        <Tab.Screen name="Screen1" component={Screen1} />
-        <Tab.Screen name="Screen2" component={Screen2} />
+        <Tab.Screen name="AR" component={ARScreen} />
+        <Tab.Screen name="Forum" component={SocialForumScreen} />
+        <Tab.Screen name="Chatbot" component={ChatbotScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );

@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-const Screen2 = () => {
+const SocialForumScreen = () => {
     return (
         <View style={styles.container}>
-            <Text>Screen 2 Main page</Text>
+            <Text>Social Forum Main page</Text>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -18,4 +18,4 @@ const styles = StyleSheet.create({
       },
 })
 
-export default Screen2;
+export default SocialForumScreen;
