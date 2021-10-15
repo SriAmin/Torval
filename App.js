@@ -9,7 +9,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import SocialForumNavigation from './screens/SocialForumNavigation';
 
+//This will create the Bottom Tab Navigator using React Navigation
 const Tab = createBottomTabNavigator();
 
 export default function App() {
@@ -31,12 +33,12 @@ export default function App() {
             // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: '#f194ff',
+          tabBarActiveTintColor: '#7b42f5',
           tabBarInactiveTintColor: 'gray',
         })}
       >
         <Tab.Screen name="AR" component={ARScreen} />
-        <Tab.Screen name="Forum" component={SocialForumScreen} />
+        <Tab.Screen name="Forum" component={SocialForumNavigation} />
         <Tab.Screen name="Chatbot" component={ChatbotScreen} />
       </Tab.Navigator>
     </NavigationContainer>

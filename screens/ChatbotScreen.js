@@ -14,7 +14,7 @@ const ChatbotScreen = () => {
             />
             <Button 
                 onPress={() => {alert("Message Sent")}}
-                color="#f194ff"
+                color="#7b42f5"
                 title="Send"
             />
         </KeyboardAvoidingView>

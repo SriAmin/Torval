@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
 
+//JSON file meant to hold the data for each AR tutorial
 const tutorialList = [
     {
         "title" : "Building a Computer",
@@ -52,6 +53,7 @@ const ARScreen = () => {
 const styles = StyleSheet.create({
     container: {
      flex: 1,
+     backgroundColor: '#fff',
     },
     itemContainer: {
         padding: 15,
