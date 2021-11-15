@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import ARScreen from './screens/ARScreen';
+import TutorialListView from './screens/TutorialListView';
 import SocialForumScreen from './screens/SocialForumScreen'
 import ChatbotScreen from './screens/ChatbotScreen';
 
@@ -9,7 +9,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import SocialForumNavigation from './screens/SocialForumNavigation';
+import SocialForumNavigation from './components/SocialForumNavigation';
+import TutoriaNavigator from './components/TutorialNavgiator';
 
 //This will create the Bottom Tab Navigator using React Navigation
 const Tab = createBottomTabNavigator();
@@ -22,7 +23,7 @@ export default function App() {
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
 
-            if (route.name === 'AR') {
+            if (route.name === 'Tutorials') {
               iconName = 'cube-outline'
             } else if (route.name === 'Chatbot') {
               iconName = 'chatbox-ellipses-outline'
@@ -35,9 +36,10 @@ export default function App() {
           },
           tabBarActiveTintColor: '#7b42f5',
           tabBarInactiveTintColor: 'gray',
+          headerShown: false,
         })}
       >
-        <Tab.Screen name="AR" component={ARScreen} />
+        <Tab.Screen name="Tutorials" component={TutoriaNavigator} />
         <Tab.Screen name="Forum" component={SocialForumNavigation} />
         <Tab.Screen name="Chatbot" component={ChatbotScreen} />
       </Tab.Navigator>

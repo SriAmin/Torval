@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
 
-import SocialForumScreen from './SocialForumScreen';
-import SocialForumComments from './SocialForumComments';
+import SocialForumScreen from '../screens/SocialForumScreen';
+import SocialForumComments from '../screens/SocialForumComments';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
