@@ -45,7 +45,7 @@ const forumThreadResults = [
 ]
 
 //Handles the description for the thread to either display the shortened version or the full version
-ShortDescription = (props) => {
+const ShortDescription = (props) => {
     if (props.string.length >= 150) {
         const newString = props.string.substring(0, 150) + " ..."
         return <Text styles={styles.desc}>{newString}</Text>
@@ -55,7 +55,7 @@ ShortDescription = (props) => {
 }
 
 //Returns an image based on if the resolved field is set to true/false
-Resolved = (props) => {
+const Resolved = (props) => {
     if (props.resolve)
         return <Image style={styles.itemImg} source={{uri: 'https://icons-for-free.com/iconfiles/png/512/checkmark-131964752499076639.png',}}/>
     else
