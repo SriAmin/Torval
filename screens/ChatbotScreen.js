@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextInput, View, TouchableHighlight } from 'react-nat
 import axios from 'axios';
 import Voice from 'react-native-voice';
 import Tts from 'react-native-tts';
-const _backendEndpoint = 'https://web-chat.global.assistant.watson.cloud.ibm.com/preview.html?region=us-south&integrationID=fd12d112-4a17-4d8d-a7c8-d7a3251078ce&serviceInstanceID=2e6dde76-92d5-4ef8-824d-cb9a6aaf2d02';
+const _backendEndpoint = 'https://beer-advisor-orchestrator-1.herokuapp.com';
 
 class ChatbotScreen extends Component {
     constructor(props) {
@@ -58,9 +58,9 @@ class ChatbotScreen extends Component {
 
 
     //                                                          GRAB USER INPUT TO SEND TO WATSON
-     onStartButtonPress = e => {
+     onStartButtonPress = userInput => {
          this.sendMessage(this.state.userInput);
-         console.log('DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD', this.state.userInput);
+         console.log(this.state.userInput);
      };
 
 
@@ -92,7 +92,7 @@ class ChatbotScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>Welcome to Beer Advisor!</Text>
+                <Text style={styles.welcome}>Welcome to Computer Companion</Text>
                 <TextInput style={{height: 40}} placeholder="Type here to talk to bot!" 
                 onChangeText={(userInput) => this.setState({userInput})}/>
 
