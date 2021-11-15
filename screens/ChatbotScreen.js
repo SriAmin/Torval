@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextInput, View, TouchableHighlight } from 'react-nat
 import axios from 'axios';
 import Voice from 'react-native-voice';
 import Tts from 'react-native-tts';
-const _backendEndpoint = 'https://beer-advisor-orchestrator-1.herokuapp.com';
+const _backendEndpoint = 'https://computercompanion-chatbot.mybluemix.net';
 
 class ChatbotScreen extends Component {
     constructor(props) {
