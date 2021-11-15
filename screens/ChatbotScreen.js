@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextInput, View, TouchableHighlight } from 'react-nat
 import axios from 'axios';
 import Voice from 'react-native-voice';
 import Tts from 'react-native-tts';
-const _backendEndpoint = 'http://localhost:3000';
+const _backendEndpoint = 'https://web-chat.global.assistant.watson.cloud.ibm.com/preview.html?region=us-south&integrationID=fd12d112-4a17-4d8d-a7c8-d7a3251078ce&serviceInstanceID=2e6dde76-92d5-4ef8-824d-cb9a6aaf2d02';
 
 class ChatbotScreen extends Component {
     constructor(props) {
@@ -14,14 +14,17 @@ class ChatbotScreen extends Component {
             status: '',
             userPayload: '',
             userSession: '',
+            userInput: ''
         };
+
+        this.onStartButtonPress = this.onStartButtonPress.bind(this);
     }
 
     componentWillMount() {
         this.getSession();
     }
 
-    //                                                          GET WATSON SESSION
+    //GET WATSON SESSION
     getSession = async () => {
         const response = await axios.get(
             `${_backendEndpoint}/api/session`,
@@ -30,7 +33,7 @@ class ChatbotScreen extends Component {
         this.init(response.data);
     };
 
-    //                                                          ASSISTANT GREETING
+    //ASSISTANT GREETING
     init = async session => {
         try {
             const initialPayload = {
@@ -56,8 +59,8 @@ class ChatbotScreen extends Component {
 
     //                                                          GRAB USER INPUT TO SEND TO WATSON
      onStartButtonPress = e => {
-         this.sendMessage(state.text);
-         console.log('DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD', this.userInputRef.value);
+         this.sendMessage(this.state.userInput);
+         console.log('DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD', this.state.userInput);
      };
 
 
@@ -90,7 +93,8 @@ class ChatbotScreen extends Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.welcome}>Welcome to Beer Advisor!</Text>
-                <TextInput style={{height: 40}} placeholder="Type here to talk to bot!" onChangeText={text => setText(text)} defaultValue={text}/>
+                <TextInput style={{height: 40}} placeholder="Type here to talk to bot!" 
+                onChangeText={(userInput) => this.setState({userInput})}/>
 
                 <TouchableHighlight
                     style={{
