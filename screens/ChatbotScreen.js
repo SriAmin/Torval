@@ -5,8 +5,14 @@ import Voice from 'react-native-voice';
 import Tts from 'react-native-tts';
 const _backendEndpoint = 'https://computercompanion-chatbot.mybluemix.net';
 
+
+
+
+
+
 class ChatbotScreen extends Component {
-    constructor(props) {
+    constructor(props) 
+    {
         super(props);
 
         this.state = {
@@ -24,6 +30,11 @@ class ChatbotScreen extends Component {
         this.getSession();
     }
 
+
+
+
+
+
     //GET WATSON SESSION
     getSession = async () => {
         const response = await axios.get(
@@ -31,17 +42,25 @@ class ChatbotScreen extends Component {
             this.state.userPayload,
         );
         this.init(response.data);
+        console.log(response)
     };
+
+
+
+
+
 
     //ASSISTANT GREETING
     init = async session => {
-        try {
+        try 
+        {
             const initialPayload = {
                 input: {
                     message_type: 'text',
                     text: '',
                 },
             };
+
             let response = await axios.post(`${_backendEndpoint}/api/message`, {
                 ...initialPayload,
                 ...session,
@@ -50,13 +69,20 @@ class ChatbotScreen extends Component {
             this.setState({ userSession: session });
             this.setState({ text: response.data.output.generic[0].text });
             this.setState({ userPayload: response.data });
-        } catch (err) {
+        } 
+
+        catch (err) 
+        {
             console.log('Failed to retrive data from Watson API', err);
         }
     };
 
 
-    //                                                          GRAB USER INPUT TO SEND TO WATSON
+
+
+
+
+    //GRAB USER INPUT TO SEND TO WATSON
      onStartButtonPress = userInput => {
          this.sendMessage(this.state.userInput);
          console.log(this.state.userInput);
@@ -65,9 +91,14 @@ class ChatbotScreen extends Component {
 
 
 
-    //                                                          SEND USER INPUT TO WATSON
+
+
+
+
+    //SEND USER INPUT TO WATSON
     sendMessage = async payload => {
-        try {
+        try 
+        {
             let { userSession } = this.state;
             let inputPayload = {
                 input: {
@@ -83,10 +114,19 @@ class ChatbotScreen extends Component {
             );
             this.setState({ text: response.data.output.generic[0].text });
             Tts.speak(response.data.output.generic[0].text);
-        } catch (err) {
+        } 
+        
+        catch (err) 
+        {
             console.log('Failed to send data to Watson API', err);
         }
     };
+
+
+
+
+
+
 
     render() {
         return (
