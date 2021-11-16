@@ -46,7 +46,6 @@ class ChatbotScreen extends Component {
                 ...initialPayload,
                 ...session,
             });
-            Tts.speak(response.data.output.generic[0].text);
 
             this.setState({ userSession: session });
             this.setState({ text: response.data.output.generic[0].text });
