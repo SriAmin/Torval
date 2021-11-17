@@ -11,7 +11,7 @@ class ChatbotScreen extends Component {
     //return (Platform.OS === 'web' ? <iframe src='https://computercompanion-chatbot.mybluemix.net' frameborder="0" height="100%" width="100%"/> : <WebView source={{uri: 'https://computercompanion-chatbot.mybluemix.net'}}/>)
 
     return Platform.OS === "web" ? (
-      <iframe src="https://computercompanion-chatbot.mybluemix.net" height={'100%'} width={'100%'} />
+      <iframe frameborder="0" src="https://computercompanion-chatbot.mybluemix.net" height={'100%'} width={'100%'} />
     ) : (
       <View style={{ flex: 1 }}>
         <WebView
