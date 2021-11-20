@@ -1,14 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Dimensions } from 'react-native';
+import ARFrameworkController from '../controllers/ARFrameworkController';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const TutorialView = (props) => {
     return (
-        <View style={styles.container}>
-            <Text>Hello from Tutorial View</Text>
-        </View>
+        <ARFrameworkController />
     );
 }
 
