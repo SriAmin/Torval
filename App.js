@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import TutorialListView from './screens/TutorialListView';
 import SocialForumScreen from './screens/SocialForumScreen'
-import ChatbotScreen from './screens/ChatbotScreen';
+import ChatbotScreen from './screens/Chatbot/ChatbotScreen';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';

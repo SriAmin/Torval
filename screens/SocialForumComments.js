@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, FlatList} from 'react-native';
 
 //This is used to conditional render the list if there are comments for the thread or if none exist at the moment
-CommentList = ({data}) => {
+const CommentList = ({data}) => {
     if (data.length == 0)
         return <Text style={[{marginTop: 50, padding: 10,textAlign: "center", color: 'grey'}]}>Sorry, there are no comments for this thread yet, check back again later.</Text>
     else 
