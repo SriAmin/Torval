@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Dimensions, Touchable } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Dimensions, Platform } from 'react-native';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 
 const windowWidth = Dimensions.get('window').width;
@@ -54,7 +54,11 @@ const TutorialListView = ({navigation}) => {
                                     <Entypo name="dots-three-horizontal" size={24} color="white" />
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.button} onPress={() => {
-                                    navigation.navigate('Tutorial', { tutorial: item })
+                                    if (Platform.OS == "web" || Platform.OS == "android") {
+                                        alert("Sorry, currently this function doesn't work properly on this platform.")
+                                    } else {
+                                        navigation.navigate('Tutorial', { tutorial: item })
+                                    }
                                 }}>
                                     <AntDesign name="caretright" size={24} color="white" />
                                 </TouchableOpacity>
