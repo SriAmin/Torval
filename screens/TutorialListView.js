@@ -54,7 +54,7 @@ const TutorialListView = ({navigation}) => {
                                     <Entypo name="dots-three-horizontal" size={24} color="white" />
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.button} onPress={() => {
-                                    if (Platform.OS == "web" || Platform.OS == "android") {
+                                    if (Platform.OS == "web") {
                                         alert("Sorry, currently this function doesn't work properly on this platform.")
                                     } else {
                                         navigation.navigate('Tutorial', { tutorial: item })

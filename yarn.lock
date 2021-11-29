@@ -11476,11 +11476,6 @@ react-native-voice@^0.3.0:
   resolved "https://registry.yarnpkg.com/react-native-voice/-/react-native-voice-0.3.0.tgz#2ca3ff8f8f6fc6d087e10b6d3ecd50af8e01a166"
   integrity sha512-puSrXCNn1MM03UZkY8q+GW931OqBCEBCiupNK4vD8i49esGqRDDmzv8sRYyEgXj5ScVDKe6lnlKCmJSn5Wo2UA==
 
-react-native-watson@^1.6.2:
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/react-native-watson/-/react-native-watson-1.6.2.tgz#036a23e72e14709d861209ff38c6a9ca34462061"
-  integrity sha1-A2oj5y4UcJ2GEgn/OMapyjRGIGE=
-
 react-native-web@~0.13.12:
   version "0.13.18"
   resolved "https://registry.yarnpkg.com/react-native-web/-/react-native-web-0.13.18.tgz#964f058a16521a3b9a31b091415edfef5b6ef305"
