@@ -17,7 +17,7 @@ const TutorialNavgiator = () => {
           <Stack.Navigator>
             <Stack.Screen name="Tutorial Lists" component={TutorialListView}/>
             <Stack.Screen name="Description" component={TutorialDescriptionView}/>
-            <Stack.Screen name="Tutorial" component={TutorialView} />
+            <Stack.Screen options={{headerShown: false}} name="Tutorial" component={TutorialView} />
           </Stack.Navigator>
         </NavigationContainer>
       );

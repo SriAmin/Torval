@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   ViroARScene,
   Viro3DObject,
@@ -12,7 +12,7 @@ import {
   ViroARSceneNavigator,
 } from '@viro-community/react-viro';
 
-const TutorialSceneAR = () => {
+const TutorialSceneAR = (props) => {
   const [text, setText] = useState('Initializing AR...');
 
   function onInitialized(state, reason) {
@@ -24,19 +24,12 @@ const TutorialSceneAR = () => {
     }
   }
 
-  // Outside of the render function, register the target
-
-  ViroARTrackingTargets.createTargets({
-    "targetOne" : {
-      source : require('../models/teslaLogo.png'),
-      orientation : "Up",
-      physicalWidth : 0.1 // real world width in meters
-    },
-  });
+  function goToNextScene (){
+    props.sceneNavigator.push({scene:TutorialSceneAR2});
+  }
 
   return (
     <ViroARScene onTrackingUpdated={onInitialized}>
-      <ViroARPlane minHeight={.5} minWidth={.5} alignment={"Horizontal"}>
         <Viro3DObject 
             source={require('../models/notebook.obj')}
             resources={[require('../models/Lowpoly_Notebook_2.mtl'),
@@ -47,27 +40,61 @@ const TutorialSceneAR = () => {
             position={[0.0, 0.0, 0.0]}
             scale={[0.1, 0.1, 0.1]}
             type="OBJ"
+            onClick={() => {goToNextScene()}}
           />
-        <ViroAmbientLight color="#FFFFFF" />      
-      </ViroARPlane>
+        <ViroAmbientLight color="#FFFFFF" />   
+    </ViroARScene>
+  );
+};
+
+const TutorialSceneAR2 = () => {
+  const [text, setText] = useState('Initializing AR...');
+
+  function onInitialized(state, reason) {
+    if (state === ViroConstants.TRACKING_NORMAL) {
+      console.log("AR is Ready")
+      setText('Hello, its good to meet you!');
+    } else if (state === ViroConstants.TRACKING_NONE) {
+      // Handle loss of tracking
+    }
+  }
+
+  return (
+    <ViroARScene onTrackingUpdated={onInitialized}>
+        <ViroBox position={[0, .25, 0]} scale={[.5, .5, .5]}  />
     </ViroARScene>
   );
 };
 
 const ARFrameworkController = () => {
   return (
-    <ViroARSceneNavigator
-      autofocus={true}
-      initialScene={{
-        scene: TutorialSceneAR,
-      }}
-      style={styles.f1}
-    />
+      <ViroARSceneNavigator
+        autofocus={true}
+        initialScene={{
+          scene: TutorialSceneAR,
+        }}
+        style={styles.f1}
+      />
   );
 };
 
 var styles = StyleSheet.create({
-  f1: {flex: 2},
+  arView: {
+    flex: 1,
+  },
+  f1: {
+    flex: 1,
+  },
+  uiView : {
+    flex:1,
+    height : 72,
+    width : '100%',
+    position : 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    bottom : 0,
+    backgroundColor: '#000000aa'
+  },
   helloWorldTextStyle: {
     fontFamily: 'Arial',
     fontSize: 30,
