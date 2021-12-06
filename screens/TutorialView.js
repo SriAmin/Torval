@@ -1,30 +1,16 @@
-import React from 'react';
+import React, {useState, useRef} from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Dimensions } from 'react-native';
 import ARFrameworkController from '../controllers/ARFrameworkController';
 import { Ionicons, Entypo } from '@expo/vector-icons';
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+import TutorialSceneAR from '../controllers/TutorialSceneAR';
+import TutorialSceneAR2 from '../controllers/TutorialSceneAR2';
+
 
 const TutorialView = ({ navigation, route }) => {
+    const [curScene, setCurScene] = useState(1)
     return (
-        <View style={styles.arView}>
-            <ARFrameworkController />
-            <TouchableOpacity style={styles.backButton} onPress={navigation.goBack}>
-                <Ionicons name="arrow-back-circle-outline" size={40} color="white" />
-            </TouchableOpacity>
-            <View style={styles.uiView}>
-                <Text style={styles.instruction}>Hello welcome to the first screen of the Tutorial, please look around, test out the AR Functionality, when your're ready tap the next button to see the next AR Scene</Text>
-                <View style={styles.buttonGroup}>
-                    <TouchableOpacity style={styles.button} onPress={() => {}}>
-                        <Entypo name="arrow-bold-left" size={24} color="white" />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => {}}>
-                        <Entypo name="arrow-bold-right" size={24} color="white" />
-                    </TouchableOpacity>
-                </View>
-            </View>
-        </View>
+        <ARFrameworkController goBack={() => {navigation.goBack()}}/>
     );
 }
 

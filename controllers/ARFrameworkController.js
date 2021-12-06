@@ -1,5 +1,4 @@
-import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, { useRef } from 'react';
 import {
   ViroARScene,
   Viro3DObject,
@@ -11,97 +10,84 @@ import {
   ViroARImageMarker,
   ViroARSceneNavigator,
 } from '@viro-community/react-viro';
+import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { Ionicons, Entypo } from '@expo/vector-icons';
 
-const TutorialSceneAR = (props) => {
-  const [text, setText] = useState('Initializing AR...');
+import TutorialSceneAR from './TutorialSceneAR';
+import TutorialSceneAR2 from './TutorialSceneAR2';
 
-  function onInitialized(state, reason) {
-    if (state === ViroConstants.TRACKING_NORMAL) {
-      console.log("AR is Ready")
-      setText('Hello, its good to meet you!');
-    } else if (state === ViroConstants.TRACKING_NONE) {
-      // Handle loss of tracking
-    }
-  }
-
-  function goToNextScene (){
-    props.sceneNavigator.push({scene:TutorialSceneAR2});
-  }
+const ARFrameworkController = (props) => {
+  console.log(props.scene)
+  const arSceneNav = useRef(null);
 
   return (
-    <ViroARScene onTrackingUpdated={onInitialized}>
-        <Viro3DObject 
-            source={require('../models/notebook.obj')}
-            resources={[require('../models/Lowpoly_Notebook_2.mtl'),
-              require('../models/textures/Lowpoly_Laptop_1.jpg'),
-              require('../models/textures/Lowpoly_Laptop_2.jpg'),
-              require('../models/textures/Lowpoly_Laptop_Nor_1.jpg'),
-              require('../models/textures/Lowpoly_Laptop_Nor_2.jpg'),]}
-            position={[0.0, 0.0, 0.0]}
-            scale={[0.1, 0.1, 0.1]}
-            type="OBJ"
-            onClick={() => {goToNextScene()}}
-          />
-        <ViroAmbientLight color="#FFFFFF" />   
-    </ViroARScene>
-  );
-};
-
-const TutorialSceneAR2 = () => {
-  const [text, setText] = useState('Initializing AR...');
-
-  function onInitialized(state, reason) {
-    if (state === ViroConstants.TRACKING_NORMAL) {
-      console.log("AR is Ready")
-      setText('Hello, its good to meet you!');
-    } else if (state === ViroConstants.TRACKING_NONE) {
-      // Handle loss of tracking
-    }
-  }
-
-  return (
-    <ViroARScene onTrackingUpdated={onInitialized}>
-        <ViroBox position={[0, .25, 0]} scale={[.5, .5, .5]}  />
-    </ViroARScene>
-  );
-};
-
-const ARFrameworkController = () => {
-  return (
+    <View style={styles.arView}>
       <ViroARSceneNavigator
         autofocus={true}
         initialScene={{
           scene: TutorialSceneAR,
         }}
+        ref={arSceneNav}
         style={styles.f1}
       />
+      <TouchableOpacity style={styles.backButton} onPress={props.goBack}>
+        <Ionicons name="arrow-back-circle-outline" size={40} color="white" />
+      </TouchableOpacity>
+      <View style={styles.uiView}>
+        <Text style={styles.instruction}>Hello welcome to the first screen of the Tutorial, please look around, test out the AR Functionality, when your're ready tap the next button to see the next AR Scene</Text>
+        <View style={styles.buttonGroup}>
+          <TouchableOpacity style={styles.button} onPress={() => {arSceneNav.current.arSceneNavigator.pop()}}>
+            <Entypo name="arrow-bold-left" size={24} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => {arSceneNav.current.arSceneNavigator.push({scene:  TutorialSceneAR2})}}>
+            <Entypo name="arrow-bold-right" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
   );
 };
 
 var styles = StyleSheet.create({
-  arView: {
-    flex: 1,
-  },
   f1: {
     flex: 1,
   },
-  uiView : {
-    flex:1,
-    height : 72,
-    width : '100%',
-    position : 'absolute',
+  arView: {
+    flex: 1,
+  },
+  backButton: {
+    flex: 1,
+    position: 'absolute',
+    top: 40,
+    left: 15,
+    padding: 5,
+  },
+  uiView: {
+    flex: 1,
+    height: 110,
+    width: '100%',
+    position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
-    bottom : 0,
+    bottom: 0,
     backgroundColor: '#000000aa'
   },
-  helloWorldTextStyle: {
-    fontFamily: 'Arial',
-    fontSize: 30,
-    color: '#ffffff',
-    textAlignVertical: 'center',
-    textAlign: 'center',
+  instruction: {
+    color: "white"
   },
+  buttonGroup: {
+    flex: 1,
+    flexDirection: "row"
+  },
+  button: {
+    flex: 1,
+    backgroundColor: "#7b42f5",
+    margin: 5,
+    padding: 12.5,
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center"
+  }
 });
 
 export default ARFrameworkController;
