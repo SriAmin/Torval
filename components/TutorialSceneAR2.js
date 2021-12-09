@@ -1,14 +1,9 @@
 import React from 'react'
 import {
     ViroARScene,
-    Viro3DObject,
     ViroBox,
-    ViroAmbientLight,
     ViroConstants,
     ViroARPlane,
-    ViroARTrackingTargets,
-    ViroARImageMarker,
-    ViroARSceneNavigator,
   } from '@viro-community/react-viro';
 
 const TutorialSceneAR2 = () => {
@@ -23,7 +18,9 @@ const TutorialSceneAR2 = () => {
   
     return (
       <ViroARScene onTrackingUpdated={onInitialized}>
-          <ViroBox position={[0, .25, -1.0]} scale={[.5, .5, .5]}  />
+        <ViroARPlane minHeight={.5} minWidth={.5} alignment={"Horizontal"}>
+          <ViroBox position={[0.0, 0.0, 0.0]} scale={[.1, .1, .1]}  />
+        </ViroARPlane>
       </ViroARScene>
     );
   };
