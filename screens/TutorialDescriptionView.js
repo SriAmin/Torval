@@ -1,11 +1,45 @@
+/*
+TutorialDescriptionView.js
+
+This is a View component that gives the user more information regarding the selected tutorial,
+information such as the image, title, description, and difficulty. You can also start the tutorial
+from here.
+*/
+
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
+import {
+    ViroBox,
+} from '@viro-community/react-viro';
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+//JSON file contains the tutorial information such as teh instructions and models
+const tutorial = [
+    {
+        "model" : require('../models/notebook.obj'),
+        "instruction" : "Hello welcome to the first screen of the Tutorial, please look around, test out the AR Functionality, when your're ready tap the next button to see the next AR Scene"
+    },
+    {
+        "model" : <ViroBox position={[0.0, 0.0, 0.0]} scale={[.1, .1, .1]}  />,
+        "instruction" : "This is the 2nd set of instructions of the tutorial, this is simply a white cube but please interact if you desire to. Thank you!"
+    }
+]
+
 const DifficultyElement = ({difficulty}) => {
+    /*
+    DifficultyElement is there to compute the logic of the difficulty field and gives a UI component
+    that translate that value
+
+    Parameters:
+    difficulty is the numerical value that is from the tutorial object
+
+    Returns:
+    FlatList component
+    */
     const difficultyList = []
     for (let index = 0; index < difficulty; index++) {
         difficultyList.push(true)
@@ -35,8 +69,18 @@ const DifficultyElement = ({difficulty}) => {
 }
 
 const TutorialDescriptionView = ({ navigation, route }) => {
-    let tutorial = route.params.tutorial;
-    console.log(tutorial)
+    /*
+    TutorialDescriptionView will provide a description of the tutorial using several UI components
+
+    Parameters:
+    navigation object that is given from react navigation to allow the use of react navigation functions
+    route objects contains the parameters given while navigating
+
+    Returns:
+    FlatList component
+    */
+    let tutorialInfo = route.params.tutorial;
+    console.log(tutorialInfo)
     
     return (
         <View style={styles.container}>
@@ -46,9 +90,9 @@ const TutorialDescriptionView = ({ navigation, route }) => {
             }}/>
             <View style={{backgroundColor: "black", width: windowWidth, height: 5, marginBottom: 30}}/>
             <View styles={styles.infoContainer}>
-                <Text style={styles.title}>{tutorial.title}</Text>
-                <Text style={styles.desc}>{tutorial.description}</Text>
-                <DifficultyElement difficulty={tutorial.difficulty}/>
+                <Text style={styles.title}>{tutorialInfo.title}</Text>
+                <Text style={styles.desc}>{tutorialInfo.description}</Text>
+                <DifficultyElement difficulty={tutorialInfo.difficulty}/>
                 <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('Tutorial', { tutorial: tutorial })}}>
                     <Text style={{color: "white", fontSize: 18, marginRight: 10}}>Start</Text>
                     <AntDesign name="caretright" size={30} color="white" />

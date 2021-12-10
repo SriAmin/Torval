@@ -1,3 +1,10 @@
+/*
+TutorialNavigator.js
+
+This is one of the main components of the AR Tutorials, its the Stack Navigator from
+the React Navigation.
+*/
+
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
 
@@ -12,6 +19,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 
 const TutorialNavgiator = () => {
+  /*
+  TutorialNavigator() is used to return the Stack Navigator which contains TutoriaListView,
+  TutorialDescriptionView, TutorialView
+
+  Return:
+  NavigationContainer
+  */
     return (
         <NavigationContainer independent={true}>
           <Stack.Navigator>
