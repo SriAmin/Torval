@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react
 
 import SocialForumScreen from '../screens/SocialForumScreen';
 import SocialForumComments from '../screens/SocialForumComments';
+import SocialForumThread from '../screens/SocialForumThread';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -19,6 +20,7 @@ const SocialForumNavigation = () => {
               component={SocialForumScreen}
             />
             <Stack.Screen name="Comments" component={SocialForumComments} />
+            <Stack.Screen name="Create A Thread" component={SocialForumThread} />
           </Stack.Navigator>
         </NavigationContainer>
       );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, Button} from 'react-native';
 
 //JSON data to hold the thread forum data
 const forumThreadResults = [
@@ -18,7 +18,7 @@ const forumThreadResults = [
             },
             {
                 "author" : "Sri Amin",
-                "text" : "Thank you!! That fixed the issue, my computer has turnt on, now I can play my games"
+                "text" : "Thank you!! That fixed the issue, my computer has turned on, now I can play my games"
             },
             {
                 "author" : "Onell Daniyal",
@@ -94,10 +94,16 @@ const SocialForumScreen = ({navigation}) => {
                                 </View>
                             </View>
                         </TouchableOpacity>
+                        
                     )
                 }}
             />
+            <Button onPress={() => {
+                navigation.navigate('Create A Thread', {})
+            }}
+            title="Create Thread"></Button> 
         </View>
+        
     );
 }
 
