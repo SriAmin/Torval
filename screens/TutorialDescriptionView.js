@@ -84,10 +84,10 @@ const TutorialDescriptionView = ({ navigation, route }) => {
     
     return (
         <View style={styles.container}>
-            <Image style={styles.itemImg} 
-                source={{
-                    uri: 'https://image.shutterstock.com/image-photo/business-woman-working-on-modern-260nw-1364492978.jpg',
-            }}/>
+             <Image style={styles.itemImg} 
+                                    source={{
+                                        uri: tutorialInfo.image,
+                                    }}/>
             <View style={{backgroundColor: "black", width: windowWidth, height: 5, marginBottom: 30}}/>
             <View styles={styles.infoContainer}>
                 <Text style={styles.title}>{tutorialInfo.title}</Text>

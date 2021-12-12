@@ -51,7 +51,7 @@ const TutorialView = ({ navigation, route }) => {
                 <Text style={styles.instruction}>{instruction.instruction}</Text>
                 <View style={styles.buttonGroup}>
                     <TouchableOpacity style={styles.button} onPress={() => { 
-                        setInstructionp[tutorial[0]]
+                        setInstruction[tutorial[0]]
                         arSceneNav.current.arSceneNavigator.pop() 
                     }}>
                         <Entypo name="arrow-bold-left" size={24} color="white" />
