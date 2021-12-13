@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "667253194888",
+    "project_id": "computercompanion-5f2c0",
+    "storage_bucket": "computercompanion-5f2c0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:667253194888:android:a0db4b3a9ad2befca15f3d",
+        "android_client_info": {
+          "package_name": "com.ComputerCompanion.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "667253194888-4mi1u1uqc0nnu2ambtcbveemnkp90kpi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdxzWdgjVBzPGKsJM89ECcc48jeX00Ckk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "667253194888-4mi1u1uqc0nnu2ambtcbveemnkp90kpi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

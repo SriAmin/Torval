@@ -1,5 +1,6 @@
-import React from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, Button} from 'react-native';
+import FirebaseApp from '../FirebaseApp';
 
 //JSON data to hold the thread forum data
 const forumThreadResults = [
@@ -18,7 +19,7 @@ const forumThreadResults = [
             },
             {
                 "author" : "Sri Amin",
-                "text" : "Thank you!! That fixed the issue, my computer has turnt on, now I can play my games"
+                "text" : "Thank you!! That fixed the issue, my computer has turned on, now I can play my games"
             },
             {
                 "author" : "Onell Daniyal",
@@ -64,10 +65,33 @@ const Resolved = (props) => {
 }
 
 const SocialForumScreen = ({navigation}) => {
+    const [tutorialList, setTutorialList] = useState(forumThreadResults)
+
+    const addForumThread = (title, description, author) => {
+        const forumThread = {
+            "title" : title,
+            "description" : description,
+            "resolved" : false,
+            "author" : author,
+            "tag" : [
+                "New",
+            ],
+            "comments" : []
+        }
+
+        setTutorialList([...tutorialList, forumThread]);
+    }
+
     return (
         <View style={styles.container}>
+             <FirebaseApp />
+            <Button onPress={() => {
+                //addForumThread("test", "test", "test");
+                navigation.navigate('Create A Thread', {addThread : addForumThread})
+            }}
+            title="Create Thread" />
             <FlatList
-                data={forumThreadResults}
+                data={tutorialList}
                 keyExtractor={item => item.title}
                 renderItem={({item}) => {
                     return (
@@ -94,10 +118,12 @@ const SocialForumScreen = ({navigation}) => {
                                 </View>
                             </View>
                         </TouchableOpacity>
+                        
                     )
                 }}
             />
         </View>
+        
     );
 }
 
