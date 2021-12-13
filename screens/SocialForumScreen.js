@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, Button} from 'react-native';
 import FirebaseApp from '../FirebaseApp';
 
@@ -65,10 +65,33 @@ const Resolved = (props) => {
 }
 
 const SocialForumScreen = ({navigation}) => {
+    const [tutorialList, setTutorialList] = useState(forumThreadResults)
+
+    const addForumThread = (title, description, author) => {
+        const forumThread = {
+            "title" : title,
+            "description" : description,
+            "resolved" : false,
+            "author" : author,
+            "tag" : [
+                "New",
+            ],
+            "comments" : []
+        }
+
+        setTutorialList([...tutorialList, forumThread]);
+    }
+
     return (
         <View style={styles.container}>
+             <FirebaseApp />
+            <Button onPress={() => {
+                //addForumThread("test", "test", "test");
+                navigation.navigate('Create A Thread', {addThread : addForumThread})
+            }}
+            title="Create Thread" />
             <FlatList
-                data={forumThreadResults}
+                data={tutorialList}
                 keyExtractor={item => item.title}
                 renderItem={({item}) => {
                     return (
@@ -99,11 +122,6 @@ const SocialForumScreen = ({navigation}) => {
                     )
                 }}
             />
-            <FirebaseApp />
-            <Button onPress={() => {
-                navigation.navigate('Create A Thread', {})
-            }}
-            title="Create Thread"></Button> 
         </View>
         
     );

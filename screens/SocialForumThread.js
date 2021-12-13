@@ -1,7 +1,6 @@
-import React from 'react';
+import React, {useState, setState} from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, Button} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { setState, useState} from 'react';
 
 class SocialForumThread extends React.Component{
     
@@ -33,20 +32,39 @@ const onThreadReceived = (threadList) => {
     }));
 }
 
-const SocialForumThreadScreen = ({navigation}) => {
+const SocialForumThreadScreen = ({navigation, route}) => {
+    const [title, setTitle] = useState("")
+    const [description, setDescription] = useState("")
+    const [author, setAuthor] = useState("")
     return (
         <View style={styles.container}>
             <Text style={styles.text} >Title: </Text>
-            <TextInput style={styles.input} id="title" placeholder="Enter the title of your thread" type="text"></TextInput>
+            <TextInput 
+                style={styles.input} 
+                value={title}
+                onChangeText={setTitle}
+                placeholder="Enter the title of your thread" 
+                type="text" />
 
             <Text style={styles.text} >Question: </Text>
-            <TextInput style={styles.input} id='question' placeholder='Enter a new thread question' type="text" ></TextInput>
+            <TextInput 
+                style={styles.input} 
+                value={description}
+                onChangeText={setDescription}
+                placeholder='Enter a new thread question' 
+                type="text" />
 
             <Text style={styles.text} >Username: </Text>
-            <TextInput style={styles.input} id='userName' placeholder='Enter your username (optional)' type="text"></TextInput>
+            <TextInput 
+                style={styles.input} 
+                value={author}
+                onChangeText={setAuthor} 
+                placeholder='Enter your username (optional)' 
+                type="text" />
 
             <Button style={styles.button} title="Submit" onPress={() => {
-                
+                route.params.addThread(title, description, author)
+                navigation.goBack();
             }}></Button>
         </View>
     );

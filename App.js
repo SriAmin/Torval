@@ -12,13 +12,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import SocialForumNavigation from './components/SocialForumNavigation';
 import TutoriaNavigator from './components/TutorialNavgiator';
 
-import firestore from '@react-native-firebase/firestore';
-
 //This will create the Bottom Tab Navigator using React Navigation
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-  console.log(firestore)
   return (
     <NavigationContainer>
       <Tab.Navigator
