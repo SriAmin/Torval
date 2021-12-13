@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, Button} from 'react-native';
+import FirebaseApp from '../FirebaseApp';
 
 //JSON data to hold the thread forum data
 const forumThreadResults = [
@@ -98,6 +99,7 @@ const SocialForumScreen = ({navigation}) => {
                     )
                 }}
             />
+            <FirebaseApp />
             <Button onPress={() => {
                 navigation.navigate('Create A Thread', {})
             }}
