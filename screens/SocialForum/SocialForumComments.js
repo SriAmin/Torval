@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, Text, View, FlatList} from 'react-native';
+import React, {useState} from 'react';
+import { StyleSheet, Text, View, FlatList, Button} from 'react-native';
 
 //This is used to conditional render the list if there are comments for the thread or if none exist at the moment
 const CommentList = ({data}) => {
@@ -23,6 +23,17 @@ const CommentList = ({data}) => {
 
 const SocialForumComments = ({ navigation, route }) => {
     let thread = route.params.thread;
+    const [commentList, setCommentList] = useState(thread.comments)
+
+    const addComment = (commentParam, author) => {
+        const comment = {
+            "author" : author,
+            "text" : commentParam
+        }
+
+        setCommentList([...commentList, comment]);
+    }
+
     return (
         <View style={styles.container}>
             <View style={[{borderBottomWidth: 1, marginBottom: 10, padding: 15}]}>
@@ -30,7 +41,12 @@ const SocialForumComments = ({ navigation, route }) => {
                 <Text style={styles.threadAuthor}>{thread.author}</Text>
                 <Text style={styles.threadTitle}>{thread.description}</Text>
             </View>
-            <CommentList data={thread.comments} />
+            <Button onPress={() => {
+                //addComment("test", "test");
+                navigation.navigate('CreateComment', {insertComment : addComment})
+            }}
+            title="Create Comment" />
+            <CommentList data={commentList} />
         </View>
     );
 }

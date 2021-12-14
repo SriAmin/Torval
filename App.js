@@ -9,8 +9,6 @@ Using React Navigation library, we can do perform that requirement.
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import TutorialListView from './screens/TutorialListView';
-import SocialForumScreen from './screens/SocialForumScreen'
 import ChatbotScreen from './screens/Chatbot/ChatbotScreen';
 
 import { NavigationContainer } from '@react-navigation/native';

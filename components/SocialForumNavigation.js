@@ -1,9 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
 
-import SocialForumScreen from '../screens/SocialForumScreen';
-import SocialForumComments from '../screens/SocialForumComments';
-import SocialForumThread from '../screens/SocialForumThread';
+import SocialForumScreen from '../screens/SocialForum/SocialForumScreen';
+import SocialForumComments from '../screens/SocialForum/SocialForumComments';
+import SocialForumThread from '../screens/SocialForum/SocialForumThread';
+import SocialForumAddComment from '../screens/SocialForum/SocialForumAddComment';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -21,6 +22,7 @@ const SocialForumNavigation = () => {
             />
             <Stack.Screen name="Comments" component={SocialForumComments} />
             <Stack.Screen name="Create A Thread" component={SocialForumThread} />
+            <Stack.Screen name="CreateComment" component={SocialForumAddComment} />
           </Stack.Navigator>
         </NavigationContainer>
       );

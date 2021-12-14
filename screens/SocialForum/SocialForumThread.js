@@ -33,9 +33,9 @@ const onThreadReceived = (threadList) => {
 }
 
 const SocialForumThreadScreen = ({navigation, route}) => {
-    const [title, setTitle] = useState("")
-    const [description, setDescription] = useState("")
-    const [author, setAuthor] = useState("")
+    const [title, setTitle] = useState(null)
+    const [description, setDescription] = useState(null)
+    const [author, setAuthor] = useState(null)
     return (
         <View style={styles.container}>
             <Text style={styles.text} >Title: </Text>

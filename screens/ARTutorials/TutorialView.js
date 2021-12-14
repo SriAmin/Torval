@@ -14,8 +14,8 @@ import {
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { Ionicons, Entypo } from '@expo/vector-icons';
 
-import TutorialSceneAR from '../components/TutorialSceneAR';
-import TutorialSceneAR2 from '../components/TutorialSceneAR2';
+import TutorialSceneAR from '../../components/TutorialSceneAR';
+import TutorialSceneAR2 from '../../components/TutorialSceneAR2';
 
 const TutorialView = ({ navigation, route }) => {
     /*

@@ -8,9 +8,9 @@ the React Navigation.
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
 
-import TutorialListView from '../screens/TutorialListView';
-import TutorialView from '../screens/TutorialView';
-import TutorialDescriptionView from '../screens/TutorialDescriptionView';
+import TutorialListView from '../screens/ARTutorials/TutorialListView';
+import TutorialView from '../screens/ARTutorials/TutorialView';
+import TutorialDescriptionView from '../screens/ARTutorials/TutorialDescriptionView';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
