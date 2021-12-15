@@ -32,6 +32,12 @@ const ChatbotScreen = ({navigation}) => {
   const onMessage = (data) => {
     var htmlString = data;
     var forumWordLocation = htmlString.search("forum");
+
+    if (forumWordLocation == -1) {
+      //hide button
+    } else {
+      //show button
+    }
   }
 
     //Code to inject: Gets inner html of webpage and updates every 5 seconds
@@ -43,6 +49,7 @@ const ChatbotScreen = ({navigation}) => {
 
       <View style={{ flex: 1 }}>
 
+        {/* WebView for chatbot */}
         <WebView
           javaScriptEnabled={true}
           javaScriptEnabledAndroid={true}
@@ -52,6 +59,7 @@ const ChatbotScreen = ({navigation}) => {
           onMessage={event => onMessage(event.nativeEvent.data)}
         />
 
+        {/* forum button */}
         <View>
           <TouchableHighlight style={styles.socialForumButton} underlayColor='#ff7043' onPress={()=>{navigateToSocialForum()}}>
             <Text style={{fontSize: 10, color: 'white'}}>FORUM</Text>
