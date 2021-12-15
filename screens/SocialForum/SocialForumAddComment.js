@@ -2,9 +2,28 @@ import React, {useState, setState} from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, Button} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
+import firestore from '@react-native-firebase/firestore';
+
+
 const SocialForumAddComment = ({navigation, route}) => {
+    const threadId = route.params.threadId;
+    const comments = route.params.commentList
+
     const [comment, setComment] = useState(null)
     const [author, setAuthor] = useState(null)
+
+    const addComment = () => {
+        console.log(threadId)
+        firestore()
+            .collection('Threads')
+            .doc(threadId)
+            .update({
+                comments: [...comments, {"author": author, "text": comment}],
+            })
+            .then(() => {
+                alert('Comment added!');
+            });
+    }
 
     return (
         <View style={styles.container}>
@@ -25,7 +44,7 @@ const SocialForumAddComment = ({navigation, route}) => {
                 type="text" />
 
             <Button style={styles.button} title="Submit" onPress={() => {
-                route.params.insertComment(comment, author)
+                addComment();
                 navigation.goBack();
             }}></Button>
         </View>

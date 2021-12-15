@@ -3,20 +3,16 @@ import {View, Text, Button} from 'react-native'
 
 import firestore from '@react-native-firebase/firestore';
 
-const FirebaseApp = () => {
-    
-    getThread = async () => {
-        const threadDocuments = await firestore().collection("threads").doc("EWLQDPg4nSoW0ZrIJ23n").get()
-        console.log(threadDocuments)
-    }
+export default getThread = async () => {
+    let forumThreads = []
+    await firestore().collection("Threads").get()
+    .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            forumThreads.push(doc.data())
+            //console.log(doc.id, " => ", doc.data());
+        });
+    })
 
-    return (
-        <View>
-            <Button 
-                title="Get Firebase Firestore Data"
-                onPress={getThread} />
-        </View>
-    )
+    return forumThreads
 }
-
-export default FirebaseApp;

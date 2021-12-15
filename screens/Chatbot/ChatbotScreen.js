@@ -1,9 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { WebView } from 'react-native-webview';
 import { StyleSheet, Text, TextInput, View, TouchableHighlight, Platform } from 'react-native';
 
 class ChatbotScreen extends Component {
+  function = function () {
+    console.log("Hello")
+  }
   render() {
+
     // return (
     //     <WebView source={{uri: 'https://computercompanion-chatbot.mybluemix.net'}}/>
     // );
