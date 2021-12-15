@@ -25,6 +25,8 @@ const styles = StyleSheet.create({
 
 const ChatbotScreen = ({navigation}) => {
 
+  const [forumCheck, setForumCheck] = useState(false)
+
   const navigateToSocialForum = () => {
     navigation.navigate('Forum')
   }
@@ -35,8 +37,23 @@ const ChatbotScreen = ({navigation}) => {
 
     if (forumWordLocation == -1) {
       //hide button
+      setForumCheck(false);
     } else {
       //show button
+      setForumCheck(true);
+    }
+  }
+
+  const ForumButton = () => {
+
+    if (forumCheck == false) {
+      return <View></View>;
+    } else {
+      return (<View>
+        <TouchableHighlight style={styles.socialForumButton} underlayColor='#ff7043' onPress={()=>{navigateToSocialForum()}}>
+          <Text style={{fontSize: 10, color: 'white'}}>FORUM</Text>
+        </TouchableHighlight>
+      </View>)
     }
   }
 
@@ -51,20 +68,16 @@ const ChatbotScreen = ({navigation}) => {
 
         {/* WebView for chatbot */}
         <WebView
-          javaScriptEnabled={true}
-          javaScriptEnabledAndroid={true}
-          injectedJavaScript={jsCode}
-          source={{ uri: "https://computercompanion-chatbot.mybluemix.net" }}
-          style={{marginTop: 22, flex: 1}}
-          onMessage={event => onMessage(event.nativeEvent.data)}
-        />
+            javaScriptEnabled={true}
+            javaScriptEnabledAndroid={true}
+            injectedJavaScript={jsCode}
+            source={{ uri: "https://computercompanion-chatbot.mybluemix.net" }}
+            style={{marginTop: 22, flex: 1}}
+            onMessage={event => onMessage(event.nativeEvent.data)}
+          />
 
         {/* forum button */}
-        <View>
-          <TouchableHighlight style={styles.socialForumButton} underlayColor='#ff7043' onPress={()=>{navigateToSocialForum()}}>
-            <Text style={{fontSize: 10, color: 'white'}}>FORUM</Text>
-          </TouchableHighlight>
-        </View>
+        <ForumButton />
 
       </View>
     );
