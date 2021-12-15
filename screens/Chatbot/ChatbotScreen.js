@@ -20,8 +20,29 @@ const styles = StyleSheet.create({
           height: 1,
           width: 0
       }
-  }
+  },
+
+  arButton: {
+    backgroundColor: 'purple',
+    height: 50,
+    width: 50,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    left:80,
+    bottom:10,
+    shadowColor: "#000000",
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    shadowOffset: {
+        height: 1,
+        width: 0
+    }
+}
 });
+
+
 
 const ChatbotScreen = ({navigation}) => {
 
@@ -29,6 +50,10 @@ const ChatbotScreen = ({navigation}) => {
 
   const navigateToSocialForum = () => {
     navigation.navigate('Forum')
+  }
+
+  const navigateToAR = () => {
+    navigation.navigate('Tutorials')
   }
   
   const onMessage = (data) => {
@@ -52,6 +77,10 @@ const ChatbotScreen = ({navigation}) => {
       return (<View>
         <TouchableHighlight style={styles.socialForumButton} underlayColor='#ff7043' onPress={()=>{navigateToSocialForum()}}>
           <Text style={{fontSize: 10, color: 'white'}}>FORUM</Text>
+        </TouchableHighlight>
+
+        <TouchableHighlight style={styles.arButton} underlayColor='#ff7043' onPress={()=>{navigateToAR()}}>
+          <Text style={{fontSize: 10, color: 'white'}}>AR</Text>
         </TouchableHighlight>
       </View>)
     }
