@@ -1,6 +1,3 @@
-import React, {Component, useEffect} from "react"
-import {View, Text, Button} from 'react-native'
-
 import firestore from '@react-native-firebase/firestore';
 
 export default getThread = async () => {

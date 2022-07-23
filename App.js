@@ -7,7 +7,7 @@ Using React Navigation library, we can do perform that requirement.
 */
 
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet} from 'react-native';
 
 import ChatbotScreen from './screens/Chatbot/ChatbotScreen';
 
