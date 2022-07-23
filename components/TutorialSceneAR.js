@@ -99,12 +99,9 @@ const TutorialSceneAR = () => {
           position={[0.0, 0.0, 0.0]}
         >
           <Viro3DObject
-            source={require('../models/notebook.obj')}
-            resources={[require('../models/Lowpoly_Notebook_2.mtl'),
-            require('../models/textures/Lowpoly_Laptop_1.jpg'),
-            require('../models/textures/Lowpoly_Laptop_2.jpg'),
-            require('../models/textures/Lowpoly_Laptop_Nor_1.jpg'),
-            require('../models/textures/Lowpoly_Laptop_Nor_2.jpg'),]}
+            source={require('../models/Case.obj')}
+            resources={[require('../models/Case.mtl'),
+            require('../models/textures1/GPUSlot.jpg')]}
             onPinch={_onPinch}
             onRotate={_onRotate}
             type="OBJ"
