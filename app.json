@@ -18,7 +18,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.ComputerCompanion.app"
+      "bundleIdentifier": "com.ComputerCompanion.appTest"
     },
     "android": {
       "adaptiveIcon": {
