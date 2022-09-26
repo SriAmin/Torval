@@ -25,7 +25,7 @@ const SocialForumNavigation = ({navigation}) => {
             />
             <Stack.Screen name="Comments" component={SocialForumComments} />
             <Stack.Screen name="Create A Thread" component={SocialForumThread} />
-            <Stack.Screen name="CreateComment" component={SocialForumAddComment} />
+            <Stack.Screen name="Create Comment" component={SocialForumAddComment} />
             <Stack.Screen name="Description" component={TutorialDescriptionView}/>
             <Stack.Screen options={{headerShown: false}} name="Tutorial" component={TutorialView} />
           </Stack.Navigator>
