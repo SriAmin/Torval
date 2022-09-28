@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image, TouchableOpacity, Dimensions, Platform } from 'react-native';
+import { StyleSheet, View, Button} from 'react-native';
+import auth from 'react-native-firebase/auth';
 
 const Login = ({navigation}) => {
 
@@ -7,6 +8,10 @@ const Login = ({navigation}) => {
         <View style={styles.container}>
             <Button 
                 title="Login"
+                onPress={() => {navigation.navigate('Torval')}}
+            />
+            <Button
+                title="Sign Up"
                 onPress={() => {navigation.navigate('Torval')}}
             />
         </View>
