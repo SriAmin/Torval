@@ -15,6 +15,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './screens/Login';
 import TorvalNavigator from './components/TorvalNavigator';
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+
 //This will create the Bottom Tab Navigator using React Navigation
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -24,11 +27,30 @@ export default function App() {
   Return:
   NavigationContainer
   */
+
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAY96YFnaor3iGCg_sKiqv30ECacELRcZk",
+    authDomain: "computercompanion-5f2c0.firebaseapp.com",
+    projectId: "computercompanion-5f2c0",
+    storageBucket: "computercompanion-5f2c0.appspot.com",
+    messagingSenderId: "667253194888",
+    appId: "1:667253194888:web:17791f8c310d6260a15f3d",
+    measurementId: "G-3KSC0S29Q3"
+  };
+
+  // Initialize Firebase
+  app = initializeApp(firebaseConfig);
+
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator>
-        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name="Torval" options={{headerShown: false}} component={TorvalNavigator} />
+        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
