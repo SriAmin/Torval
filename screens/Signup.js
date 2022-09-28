@@ -14,19 +14,23 @@ import {
 
 import { auth } from '../config/firebase';
 
-const Login = ({ navigation }) => {
+const SignUp = ({ navigation }) => {
   const [txtEmail, setEmail] = useState('');
   const [txtPassword, setPassword] = useState('');
   const [isLoading, setLoading] = useState(false);
-  const signIn = () => {
+  const createAccount = () => {
     setLoading(true);
     auth
-      .signInWithEmailAndPassword(txtEmail, txtPassword)
+      .createUserWithEmailAndPassword(txtEmail, txtPassword)
       .then(result => {
         if (result) {
-          setLoading(false);
-          navigation.navigate('HomeScreen');
+          alert(
+            'Account has been created. You will be automatically logged in.'
+          );
+          navigation.goBack();
         }
+
+        setLoading(false);
       })
       .catch(({ message }) => {
         alert(message);
@@ -57,10 +61,14 @@ const Login = ({ navigation }) => {
             alignItems: 'center',
             justifyContent: 'center'
           }}
-          onPress={signIn}
+          onPress={createAccount}
           disabled={isLoading}
         >
-          {!isLoading ? <Text>Login</Text> : <Spinner color="#eeeeee" />}
+          {!isLoading ? (
+            <Text>Create Account</Text>
+          ) : (
+            <Spinner color="#eeeeee" />
+          )}
         </Button>
         <Button
           transparent
@@ -69,14 +77,14 @@ const Login = ({ navigation }) => {
             alignItems: 'center',
             justifyContent: 'center'
           }}
-          onPress={() => navigation.navigate('SignupScreen')}
+          onPress={() => navigation.goBack()}
           disabled={isLoading}
         >
-          <Text>Signup</Text>
+          <Text>Back to Login</Text>
         </Button>
       </Content>
     </Container>
   );
 };
 
-export default Login;
+export default SignUp;
