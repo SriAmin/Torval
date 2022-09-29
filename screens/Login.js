@@ -27,7 +27,7 @@ const Login = ({ navigation }) => {
       .then(result => {
         if (result) {
           setLoading(false);
-          navigation.navigate('Home');
+          navigation.navigate('Torval');
         }
       })
       .catch(({ message }) => {

@@ -13,6 +13,7 @@ import {
 } from 'native-base';
 
 import { auth } from '../config/firebase';
+import {SafeAreaView} from "react-navigation";
 
 const SignUp = ({ navigation }) => {
   const [txtEmail, setEmail] = useState('');
@@ -38,9 +39,7 @@ const SignUp = ({ navigation }) => {
       });
   };
   return (
-    <Container>
-      <Header />
-      <Content style={{ padding: 20 }}>
+    <SafeAreaView style={{ padding: 20 }}>
         <Form>
           <Item floatingLabel>
             <Label>Email</Label>
@@ -82,8 +81,7 @@ const SignUp = ({ navigation }) => {
         >
           <Text>Back to Login</Text>
         </Button>
-      </Content>
-    </Container>
+    </SafeAreaView>
   );
 };
 
