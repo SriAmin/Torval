@@ -5,7 +5,7 @@ import { auth } from '../config/firebase';
 
 const Home = ({ navigation }) => {
   const logout = () => {
-    auth.signOut().then(() => navigation.navigate('AuthenticationScreen'));
+    auth.signOut().then(() => navigation.navigate('Authentication'));
   };
   return (
     <Container>

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Button,
   Container,
-  Content,
   Form,
   Header,
   Input,
@@ -11,8 +10,11 @@ import {
   Spinner,
   Text
 } from 'native-base';
+import { getAuth, signInAnonymously } from "firebase/auth";
 
 import { auth } from '../config/firebase';
+import {SafeAreaView} from "react-navigation";
+import SignUp from "./SignUp";
 
 const Login = ({ navigation }) => {
   const [txtEmail, setEmail] = useState('');
@@ -25,7 +27,7 @@ const Login = ({ navigation }) => {
       .then(result => {
         if (result) {
           setLoading(false);
-          navigation.navigate('HomeScreen');
+          navigation.navigate('Home');
         }
       })
       .catch(({ message }) => {
@@ -33,10 +35,23 @@ const Login = ({ navigation }) => {
         setLoading(false);
       });
   };
-  return (
+
+    const signInAnonymous = () => {
+        const auth = getAuth();
+        signInAnonymously(auth)
+            .then(() => {
+                navigation.navigate('Torval')
+            })
+            .catch((error) => {
+// ...
+            });
+    }
+
+
+    return (
     <Container>
-      <Header />
-      <Content style={{ padding: 20 }}>
+
+      <SafeAreaView style={{ padding: 20 }}>
         <Form>
           <Item floatingLabel>
             <Label>Email</Label>
@@ -51,6 +66,9 @@ const Login = ({ navigation }) => {
             />
           </Item>
         </Form>
+
+
+
         <Button
           style={{
             marginTop: 20,
@@ -58,10 +76,21 @@ const Login = ({ navigation }) => {
             justifyContent: 'center'
           }}
           onPress={signIn}
-          disabled={isLoading}
-        >
+          disabled={isLoading}>
           {!isLoading ? <Text>Login</Text> : <Spinner color="#eeeeee" />}
         </Button>
+
+          <Button
+              style={{
+                  marginTop: 20,
+                  alignItems: 'center',
+                  justifyContent: 'center'
+              }}
+              onPress={signInAnonymous}
+              disabled={isLoading}>
+              {!isLoading ? <Text>Login Anonymously</Text> : <Spinner color="#eeeeee" />}
+          </Button>
+
         <Button
           transparent
           style={{
@@ -69,12 +98,12 @@ const Login = ({ navigation }) => {
             alignItems: 'center',
             justifyContent: 'center'
           }}
-          onPress={() => navigation.navigate('SignupScreen')}
-          disabled={isLoading}
-        >
+          onPress={() => navigation.navigate('SignUp')}
+          disabled={isLoading}>
           <Text>Signup</Text>
         </Button>
-      </Content>
+
+      </SafeAreaView>
     </Container>
   );
 };

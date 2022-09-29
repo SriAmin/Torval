@@ -7,9 +7,9 @@ const Authentication = ({ navigation }) => {
   useEffect(() => {
     auth.onAuthStateChanged(currentUser => {
       if (currentUser) {
-        navigation.navigate('HomeScreen');
+        navigation.navigate('Home');
       } else {
-        navigation.navigate('LoginScreen');
+        navigation.navigate('Login');
       }
     });
   }, []);

@@ -1,39 +1,8 @@
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import 'react-native-gesture-handler';
+import { registerRootComponent } from 'expo';
 
-import Authentication from './screens/Authentication';
-import Home from './screens/Home';
-import Login from './screens/Login';
-import Signup from './screens/Signup';
-
-const authenticationStack = createStackNavigator(
-    {
-        LoginScreen: {
-            screen: Login
-        },
-        SignupScreen: {
-            screen: Signup
-        }
-    },
-    {
-        initialRouteName: 'LoginScreen',
-        headerMode: 'none'
-    }
-);
-
-const authenticationSwitch = createSwitchNavigator(
-    {
-        AuthenticationScreen: {
-            screen: Authentication
-        },
-        HomeScreen: {
-            screen: Home
-        },
-        AuthenticationStack: {
-            screen: authenticationStack
-        }
-    },
-    { initialRouteName: 'AuthenticationScreen' }
-);
-
-export default createAppContainer(authenticationSwitch);
+import App from './App';
+// registerRootComponent calls AppRegistry.registerComponent('main', () => App);
+// It also ensures that whether you load the app in Expo Go or in a native build,
+// the environment is set up appropriately
+registerRootComponent(App);
