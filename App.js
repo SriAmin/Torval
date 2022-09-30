@@ -14,7 +14,7 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
           <Stack.Screen name="Torval" options={{headerShown: false}} component={TorvalNavigator} />
-            <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen name="SignUp" component={SignUp} />
         </Stack.Navigator>
       </NavigationContainer>
   );

@@ -20,7 +20,7 @@ const windowHeight = Dimensions.get('window').height;
 //JSON file contains the tutorial information such as teh instructions and models
 const tutorial = [
     {
-        "model" : require('../../models/notebook.obj'),
+        "model" : require('../../models/Case.obj'),
         "instruction" : "Hello welcome to the first screen of the Tutorial, please look around, test out the AR Functionality, when your're ready tap the next button to see the next AR Scene"
     },
     {

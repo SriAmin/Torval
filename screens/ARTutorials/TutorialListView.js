@@ -49,7 +49,7 @@ const tutorialList = [
 //JSON file contains the tutorial information such as teh instructions and models
 const tutorial = [
     {
-        "model" : require('../../models/notebook.obj'),
+        "model" : require('../../models/Case.obj'),
         "instruction" : "Hello welcome to the first screen of the Tutorial, please look around, test out the AR Functionality, when your're ready tap the next button to see the next AR Scene"
     },
     {
@@ -98,7 +98,7 @@ const TutorialListView = ({navigation}) => {
                                     if (Platform.OS == "web") {
                                         alert("Sorry, currently this function doesn't work properly on this platform.")
                                     } else {
-                                        navigation.navigate('Tutorial', { tutorial: tutorial })
+                                        navigation.navigate('Tutorial', {tutorial: tutorial})
                                     }
                                 }}>
                                     <AntDesign name="caretright" size={24} color="white" />

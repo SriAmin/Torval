@@ -23,11 +23,11 @@ const TutorialSceneAR = () => {
   of a laptop and allows gesture control
 
   Returns
-  ViroAR Scene that contains the Viro3DObject, ViroNode and ViroARPlane
+  ViroAR Scene that contains the Viro3DObjxect, ViroNode and ViroARPlane
   */
 
   //State variables required to maintain the scale and angle of 3D object
-  const [scale, setScale] = useState(0.1);
+  const [scale, setScale] = useState(0.3);
   const [angle, setAngle] = useState([0.0, 0.0, 0.0]);
 
   //Reference variable to be able to use the functions of ViroNode
@@ -96,15 +96,19 @@ const TutorialSceneAR = () => {
           ref={arNodeRef}
           scale={[scale, scale, scale]}
           rotation={angle}
-          position={[0.0, 0.0, 0.0]}
+          position={[0.0, -10.0, -20.0]}
         >
           <Viro3DObject
-            source={require('../models/Case.obj')}
-            resources={[require('../models/Case.mtl'),
-            require('../models/textures1/GPUSlot.jpg')]}
+            source={require('../models/Step1.vrx')}
             onPinch={_onPinch}
             onRotate={_onRotate}
-            type="OBJ"
+            type="VRX"
+            animation={{
+              name:'Scene', 
+              run:true,
+              loop: true,
+              delay: 1000
+            }}
           />
         </ViroNode>
         <ViroAmbientLight color="#FFFFFF" />
