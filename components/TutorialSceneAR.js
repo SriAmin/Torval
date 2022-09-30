@@ -16,7 +16,7 @@ import {
   ViroARPlane,
 } from '@viro-community/react-viro';
 
-const TutorialSceneAR = () => {
+const TutorialSceneAR = (props) => {
   /*
   TutorialSceneAR() is the main component that is the AR Scene given
   to the ARSceneNavgiator, its the first. It'll show a custom 3D model
@@ -29,6 +29,25 @@ const TutorialSceneAR = () => {
   //State variables required to maintain the scale and angle of 3D object
   const [scale, setScale] = useState(0.3);
   const [angle, setAngle] = useState([0.0, 0.0, 0.0]);
+  const modelUri = props.modelName;
+  let viroObject;
+
+  console.log("Model Uri = " + modelUri);
+  
+  switch (modelUri) {
+    case "Step1":
+      viroObject = <Viro3DObject source={require('../models/Step1.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step2":
+      viroObject = <Viro3DObject source={require('../models/Step2.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step3":
+      viroObject = <Viro3DObject source={require('../models/Step3.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    default:
+      viroObject = <Viro3DObject source={require('../models/Step1.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+  }
 
   //Reference variable to be able to use the functions of ViroNode
   const arNodeRef = useRef(null);
@@ -91,28 +110,17 @@ const TutorialSceneAR = () => {
 
   return (
     <ViroARScene onTrackingUpdated={onInitialized}>
-      <ViroARPlane minHeight={.5} minWidth={.5} alignment={"Horizontal"}>
+      {/* <ViroARPlane minHeight={.5} minWidth={.5} alignment={"Horizontal"}> */}
         <ViroNode
           ref={arNodeRef}
           scale={[scale, scale, scale]}
           rotation={angle}
           position={[0.0, -10.0, -20.0]}
         >
-          <Viro3DObject
-            source={require('../models/Step1.vrx')}
-            onPinch={_onPinch}
-            onRotate={_onRotate}
-            type="VRX"
-            animation={{
-              name:'Scene', 
-              run:true,
-              loop: true,
-              delay: 1000
-            }}
-          />
+          {viroObject}
         </ViroNode>
         <ViroAmbientLight color="#FFFFFF" />
-      </ViroARPlane>
+      {/* </ViroARPlane> */}
     </ViroARScene>
   );
 };

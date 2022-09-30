@@ -32,7 +32,18 @@ const TutorialView = ({ navigation, route }) => {
    
     const tutorial = route.params.tutorial
     const [instruction, setInstruction] = useState(tutorial[0])
+    const [tutorialStep, setTutorialStep] = useState(1);
     const arSceneNav = useRef(null);
+
+    const nextStep = () => {
+        setTutorialStep(tutorialStep+1);
+        setInstruction(tutorial[1])
+        const tempStep = tutorialStep+1;
+        arSceneNav.current.arSceneNavigator.push({ 
+            scene: TutorialSceneAR, 
+            passProps: { modelName: "Step" + tempStep.toString() } 
+        })
+    }
 
     return (
         <View style={styles.arView}>
@@ -40,6 +51,7 @@ const TutorialView = ({ navigation, route }) => {
                 autofocus={true}
                 initialScene={{
                     scene: TutorialSceneAR,
+                    passProps: { modelName: "Step1" }
                 }}
                 ref={arSceneNav}
                 style={styles.f1}
@@ -57,8 +69,7 @@ const TutorialView = ({ navigation, route }) => {
                         <Entypo name="arrow-bold-left" size={24} color="white" />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={() => {
-                        setInstruction(tutorial[1])
-                        arSceneNav.current.arSceneNavigator.push({ scene: TutorialSceneAR2 })
+                        nextStep()
                     }}>
                         <Entypo name="arrow-bold-right" size={24} color="white" />
                     </TouchableOpacity>
