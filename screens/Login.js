@@ -3,7 +3,6 @@ import {
   Button,
   Container,
   Form,
-  Header,
   Input,
   Item,
   Label,
@@ -43,7 +42,7 @@ const Login = ({ navigation }) => {
                 navigation.navigate('Torval')
             })
             .catch((error) => {
-// ...
+                console.log(error);
             });
     }
 
@@ -57,6 +56,7 @@ const Login = ({ navigation }) => {
             <Label>Email</Label>
             <Input value={txtEmail} onChangeText={setEmail} />
           </Item>
+
           <Item floatingLabel>
             <Label>Password</Label>
             <Input
@@ -70,11 +70,11 @@ const Login = ({ navigation }) => {
 
 
         <Button
-          style={{
-            marginTop: 20,
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
+            style={{
+              marginTop: 20,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
           onPress={signIn}
           disabled={isLoading}>
           {!isLoading ? <Text>Login</Text> : <Spinner color="#eeeeee" />}
@@ -82,9 +82,9 @@ const Login = ({ navigation }) => {
 
           <Button
               style={{
-                  marginTop: 20,
-                  alignItems: 'center',
-                  justifyContent: 'center'
+                marginTop: 20,
+                alignItems: 'center',
+                justifyContent: 'center'
               }}
               onPress={signInAnonymous}
               disabled={isLoading}>

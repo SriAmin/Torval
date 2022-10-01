@@ -1,11 +1,12 @@
 'use strict';
-import { StyleSheet } from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
+import {Button} from 'react-native-paper'
 
-module.exports = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-     },
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
+
+const Styles = StyleSheet.create({
 });
+
+export default Styles;

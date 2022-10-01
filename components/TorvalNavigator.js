@@ -5,7 +5,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import ChatbotScreen from '../screens/Chatbot/ChatbotScreen'
 import SocialForumNavigation from './SocialForumNavigation';
 import TutoriaNavigator from './TutorialNavgiator';
-import SignUp from "../screens/SignUp";
+import ProfileScreen from "../screens/ProfileScreen";
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -17,7 +17,6 @@ const Tab = createBottomTabNavigator();
 const TorvalNavigator = ({navigation}) => {
     //console.log(navigation)
     return (
-        <NavigationContainer independent={true}>
             <Tab.Navigator
                 screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {
@@ -29,6 +28,8 @@ const TorvalNavigator = ({navigation}) => {
                     iconName = 'chatbox-ellipses-outline'
                     } else if (route.name === 'Forum') {
                     iconName = 'people-circle-outline'
+                    } else if (route.name === 'Profile') {
+                        iconName = 'people-circle-outline'
                     }
 
                     // You can return any component that you like here!
@@ -42,8 +43,8 @@ const TorvalNavigator = ({navigation}) => {
                 <Tab.Screen name="Tutorials" component={TutoriaNavigator} />
                 <Tab.Screen name="Forum" component={SocialForumNavigation} />
                 <Tab.Screen name="Chatbot" component={ChatbotScreen} />
+                <Tab.Screen name="Profile" component={ProfileScreen} />
             </Tab.Navigator>
-        </NavigationContainer>
       );
 }
 
