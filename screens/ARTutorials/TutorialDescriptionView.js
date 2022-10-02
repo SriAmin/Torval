@@ -17,18 +17,6 @@ import {
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-//JSON file contains the tutorial information such as teh instructions and models
-const tutorial = [
-    {
-        "model" : require('../../models/Case.obj'),
-        "instruction" : "Hello welcome to the first screen of the Tutorial, please look around, test out the AR Functionality, when your're ready tap the next button to see the next AR Scene"
-    },
-    {
-        "model" : <ViroBox position={[0.0, 0.0, 0.0]} scale={[.1, .1, .1]}  />,
-        "instruction" : "This is the 2nd set of instructions of the tutorial, this is simply a white cube but please interact if you desire to. Thank you!"
-    }
-]
-
 const DifficultyElement = ({difficulty}) => {
     /*
     DifficultyElement is there to compute the logic of the difficulty field and gives a UI component
@@ -93,7 +81,7 @@ const TutorialDescriptionView = ({ navigation, route }) => {
                 <Text style={styles.title}>{tutorialInfo.title}</Text>
                 <Text style={styles.desc}>{tutorialInfo.description}</Text>
                 <DifficultyElement difficulty={tutorialInfo.difficulty}/>
-                <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('Tutorial', { tutorial: tutorial })}}>
+                <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('Tutorial')}}>
                     <Text style={{color: "white", fontSize: 18, marginRight: 10}}>Start</Text>
                     <AntDesign name="caretright" size={30} color="white" />
                 </TouchableOpacity>

@@ -17,6 +17,25 @@ import { Ionicons, Entypo } from '@expo/vector-icons';
 import TutorialSceneAR from '../../components/TutorialSceneAR';
 import TutorialSceneAR2 from '../../components/TutorialSceneAR2';
 
+//JSON file contains the tutorial information such as teh instructions and models
+const tutorialInstructions = [
+    "Hello welcome to the first screen of the Tutorial, please look around, test out the AR Functionality, when your're ready tap the next button to see the next AR Scene",
+    "This is the 2nd set of instructions of the tutorial, this is simply a white cube but please interact if you desire to. Thank you!",
+    "3rd",
+    "4th",
+    "5th",
+    "6th",
+    "7th",
+    "8th",
+    "9th",
+    "10th",
+    "11th",
+    "12th",
+    "13th",
+    "14th",
+    "15th"
+]
+
 const TutorialView = ({ navigation, route }) => {
     /*
     TutorialView will provide the use the AR environment, using Viro and the ViroARSceneNavigator
@@ -30,14 +49,13 @@ const TutorialView = ({ navigation, route }) => {
     View component with ViroARSceneNavigator and 2D UI components
     */
    
-    const tutorial = route.params.tutorial
-    const [instruction, setInstruction] = useState(tutorial[0])
+    const [instruction, setInstruction] = useState(tutorialInstructions[0])
     const [tutorialStep, setTutorialStep] = useState(1);
     const arSceneNav = useRef(null);
 
     const nextStep = () => {
         setTutorialStep(tutorialStep+1);
-        setInstruction(tutorial[1])
+        setInstruction(tutorialInstructions[tutorialStep]);
         const tempStep = tutorialStep+1;
         arSceneNav.current.arSceneNavigator.push({ 
             scene: TutorialSceneAR, 
@@ -60,10 +78,10 @@ const TutorialView = ({ navigation, route }) => {
                 <Ionicons name="arrow-back-circle-outline" size={40} color="white" />
             </TouchableOpacity>
             <View style={styles.uiView}>
-                <Text style={styles.instruction}>{instruction.instruction}</Text>
+                <Text style={styles.instruction}>{instruction}</Text>
                 <View style={styles.buttonGroup}>
                     <TouchableOpacity style={styles.button} onPress={() => { 
-                        setInstruction[tutorial[0]]
+                        setInstruction[tutorialInstructions[tutorialStep-2]]
                         arSceneNav.current.arSceneNavigator.pop() 
                     }}>
                         <Entypo name="arrow-bold-left" size={24} color="white" />

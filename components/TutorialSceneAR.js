@@ -44,6 +44,42 @@ const TutorialSceneAR = (props) => {
     case "Step3":
       viroObject = <Viro3DObject source={require('../models/Step3.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
       break;
+    case "Step4":
+      viroObject = <Viro3DObject source={require('../models/Step4.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step5":
+      viroObject = <Viro3DObject source={require('../models/Step5.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step6":
+      viroObject = <Viro3DObject source={require('../models/Step6.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step7":
+      viroObject = <Viro3DObject source={require('../models/Step7.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step8":
+      viroObject = <Viro3DObject source={require('../models/Step8.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step9":
+      viroObject = <Viro3DObject source={require('../models/Step9.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step10":
+      viroObject = <Viro3DObject source={require('../models/Step10.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step11":
+      viroObject = <Viro3DObject source={require('../models/Step11.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step12":
+      viroObject = <Viro3DObject source={require('../models/Step12.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step13":
+      viroObject = <Viro3DObject source={require('../models/Step13.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step14":
+      viroObject = <Viro3DObject source={require('../models/Step14.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step15":
+      viroObject = <Viro3DObject source={require('../models/Step15.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
     default:
       viroObject = <Viro3DObject source={require('../models/Step1.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
       break;
