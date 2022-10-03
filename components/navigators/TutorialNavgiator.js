@@ -19,6 +19,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 
 const TutorialNavgiator = () => {
+  console.log("Hello 1")
   /*
   TutorialNavigator() is used to return the Stack Navigator which contains TutoriaListView,
   TutorialDescriptionView, TutorialView

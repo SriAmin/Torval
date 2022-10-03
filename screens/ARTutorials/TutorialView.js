@@ -53,14 +53,26 @@ const TutorialView = ({ navigation, route }) => {
     const [tutorialStep, setTutorialStep] = useState(1);
     const arSceneNav = useRef(null);
 
-    const nextStep = () => {
+    const nextStep = async () => {
         setTutorialStep(tutorialStep+1);
         setInstruction(tutorialInstructions[tutorialStep]);
         const tempStep = tutorialStep+1;
-        arSceneNav.current.arSceneNavigator.push({ 
+        await arSceneNav.current.arSceneNavigator.replace({ 
             scene: TutorialSceneAR, 
             passProps: { modelName: "Step" + tempStep.toString() } 
         })
+        console.log("Pushed out Scene");
+    }
+
+    const previousStep = async () => {
+        setTutorialStep(tutorialStep-1);
+        setInstruction(tutorialInstructions[tutorialStep-2]);
+        const tempStep = tutorialStep-1;
+        await arSceneNav.current.arSceneNavigator.replace({ 
+            scene: TutorialSceneAR, 
+            passProps: { modelName: "Step" + tempStep.toString() } 
+        })
+        console.log("Popped out Scene");
     }
 
     return (
@@ -71,6 +83,7 @@ const TutorialView = ({ navigation, route }) => {
                     scene: TutorialSceneAR,
                     passProps: { modelName: "Step1" }
                 }}
+                videoQuality="Low"
                 ref={arSceneNav}
                 style={styles.f1}
             />
@@ -81,8 +94,7 @@ const TutorialView = ({ navigation, route }) => {
                 <Text style={styles.instruction}>{instruction}</Text>
                 <View style={styles.buttonGroup}>
                     <TouchableOpacity style={styles.button} onPress={() => { 
-                        setInstruction[tutorialInstructions[tutorialStep-2]]
-                        arSceneNav.current.arSceneNavigator.pop() 
+                        previousStep()
                     }}>
                         <Entypo name="arrow-bold-left" size={24} color="white" />
                     </TouchableOpacity>
