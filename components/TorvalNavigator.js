@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
+import React, {useEffect} from 'react';
+import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, BackHandler} from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ChatbotScreen from '../screens/Chatbot/ChatbotScreen'
@@ -16,6 +16,12 @@ const Tab = createBottomTabNavigator();
 
 const TorvalNavigator = ({navigation}) => {
     //console.log(navigation)
+
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true)
+        return () => backHandler.remove()
+      }, [])
+
     return (
             <Tab.Navigator
                 screenOptions={({ route }) => ({

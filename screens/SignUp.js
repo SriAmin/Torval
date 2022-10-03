@@ -17,6 +17,8 @@ import {SafeAreaView} from "react-navigation";
 import * as ImagePicker from 'expo-image-picker';
 import {Image} from "react-native";
 import {updateProfile} from "firebase/auth";
+import {doc, setDoc} from "firebase/firestore";
+import { db } from '../config/firebase';
 
 const SignUp = ({ navigation }) => {
   const [txtEmail, setEmail] = useState('');
@@ -48,9 +50,16 @@ const SignUp = ({ navigation }) => {
         if (result) {
             updateProfile(auth.currentUser, {
                 displayName: txtName, photoURL: image.photoURL
-            }).then(() => {
-                // Profile updated!
-                // ...
+            }).then(async () => {
+                console.log(result.user);
+                // Add a new document in collection "cities"
+                await setDoc(doc(db, "Users", result.user.email.toString()), {
+                  email: result.user.email,
+                  isMod: false,
+                  karmaLevel: 0,
+                  username: result.user.displayName,
+                  ModForums: [],
+                })
             }).catch((error) => {
                 // An error occurred
                 // ...
@@ -58,10 +67,9 @@ const SignUp = ({ navigation }) => {
           alert(
             'Account has been created. You will be automatically logged in.'
           );
-          navigation.goBack();
         }
-
         setLoading(false);
+        navigation.goBack();
       })
       .catch(({ message }) => {
         alert(message);
