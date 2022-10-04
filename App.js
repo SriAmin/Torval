@@ -24,7 +24,6 @@ async function componentDidMount() {
 
 export default function App() {
     componentDidMount();
-    console.disableYellowBox = true;
 
   return (
 
