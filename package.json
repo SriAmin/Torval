@@ -7,6 +7,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-firebase/firestore": "^15.7.0",
     "@react-navigation/bottom-tabs": "^6.0.9",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.4",
@@ -14,6 +15,7 @@
     "axios": "^0.24.0",
     "expo": "^44.0.0",
     "expo-cli": "^5.0.1",
+    "expo-font": "~10.0.4",
     "expo-image-picker": "~12.0.1",
     "expo-splash-screen": "~0.14.1",
     "expo-status-bar": "~1.2.0",

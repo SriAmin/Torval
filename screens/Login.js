@@ -46,6 +46,22 @@ const Login = ({ navigation }) => {
             });
     }
 
+    const signInAdmin = () => {
+        setLoading(true);
+        auth
+            .signInWithEmailAndPassword("test1234@gmail.com", "test123")
+            .then(result => {
+                if (result) {
+                    setLoading(false);
+                    navigation.navigate('Torval');
+                }
+            })
+            .catch(({ message }) => {
+                alert(message);
+                setLoading(false);
+            });
+    };
+
 
     return (
     <Container>
@@ -79,6 +95,17 @@ const Login = ({ navigation }) => {
           disabled={isLoading}>
           {!isLoading ? <Text>Login</Text> : <Spinner color="#eeeeee" />}
         </Button>
+
+          <Button
+              style={{
+                  marginTop: 20,
+                  alignItems: 'center',
+                  justifyContent: 'center'
+              }}
+              onPress={signInAdmin}
+              disabled={isLoading}>
+              {!isLoading ? <Text>Login as Admin</Text> : <Spinner color="#eeeeee" />}
+          </Button>
 
           <Button
               style={{

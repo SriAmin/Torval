@@ -1,17 +1,5 @@
 import React, { useState } from 'react';
-import {
-    Button,
-    Container,
-    Content,
-    Form,
-    Header,
-    Input,
-    Item,
-    Label,
-    Spinner,
-    Text, View
-} from 'native-base';
-
+import {Button, Form, Input, Item, Label, Spinner, Text} from 'native-base';
 import { auth } from '../config/firebase';
 import {SafeAreaView} from "react-navigation";
 import * as ImagePicker from 'expo-image-picker';
@@ -33,7 +21,7 @@ const SignUp = ({ navigation }) => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            aspect: [4, 3],
+            aspect: [3, 3],
             quality: 1,
         });
 
@@ -52,7 +40,7 @@ const SignUp = ({ navigation }) => {
                 displayName: txtName, photoURL: image.photoURL
             }).then(async () => {
                 console.log(result.user);
-                // Add a new document in collection "cities"
+                // Add a new document in collection "Users"
                 await setDoc(doc(db, "Users", result.user.email.toString()), {
                   email: result.user.email,
                   isMod: false,
@@ -61,8 +49,7 @@ const SignUp = ({ navigation }) => {
                   ModForums: [],
                 })
             }).catch((error) => {
-                // An error occurred
-                // ...
+                alert(error);
             });
           alert(
             'Account has been created. You will be automatically logged in.'
