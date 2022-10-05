@@ -15,7 +15,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 
 const SocialForumNavigation = ({navigation}) => {
-    console.log("Hello 2")
     return (
         <NavigationContainer independent={true}>
           <Stack.Navigator>
