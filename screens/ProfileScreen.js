@@ -1,12 +1,12 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Container, Text} from 'native-base';
 import Login from "./Login";
 import GlobalStylesheet from "./GlobalStylesheet";
-import {auth as auth} from '../config/firebase';
+import {auth as auth, db} from '../config/firebase';
 import {SafeAreaView} from "react-navigation";
 import {Image, TextInput} from "react-native";
 import {deleteUser} from "firebase/auth";
-import firebase from "firebase/compat/app";
+import {doc, getDoc} from "firebase/firestore";
 
 
 const ProfileScreen = ({navigation}) => {
@@ -36,37 +36,31 @@ const ProfileScreen = ({navigation}) => {
         }
     };
 
-    let isMod;
-    let karmaLevel;
-    let username;
-    let ModForums
-    let currUser;
+    let [user, setUser] = useState({});
+
+    const getUser = async () => {
+        const docRef = doc(db, "Users", auth.currentUser.email.toString());
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            console.log("Document data:" + docSnap.data());
+            setUser(docSnap.data());
+            alert(docSnap.data())
+        } else {
+            // doc.data() will be undefined in this case
+            alert("No such document!");
+        }
+    }
 
     useEffect(() => {
-        firebase.firestore()
-            .collection("Users")
-            .doc(auth.currentUser.email)
-            .get()
-            .then(function (doc) {
-                if (doc.exists) {
-                    currUser = doc.data();
-                    isMod = currUser.isMod;
-                    karmaLevel = currUser.karmaLevel;
-                    username = currUser.username;
-                    ModForums = currUser.ModForums;
-                    return (doc)
-                } else {
-                    return alert("Data does not exist");
-                }
-            });
-    })
+        getUser();
+    }, [])
 
     return (
         <Container>
             <SafeAreaView style={{padding: 20}}>
                 <Text>Welcome {auth.currentUser.displayName}!</Text>
                 <Text>FIRESTORE VALUES</Text>
-                <Text>isMod?: {currUser.isMod.toString()}</Text>
+                <Text>isMod?: undefined</Text>
 
                 <TextInput>
                     UID: {auth.currentUser.uid}
