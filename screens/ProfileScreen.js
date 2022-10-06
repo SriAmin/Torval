@@ -11,12 +11,12 @@ import firebase from "firebase/compat/app";
 
 
 const ProfileScreen = ({navigation}) => {
+    const [user, setUser] = useState({});
 
     //Log out of current user
     const logout = () => {
         auth.signOut().then(() => navigation.navigate('Login'));
     };
-
 
     const deleteAcct = () => {
         const user = auth.currentUser;
@@ -37,28 +37,17 @@ const ProfileScreen = ({navigation}) => {
         }
     };
 
-    let [user, setUser] = useState({});
-
-    setUser({
-        isMod: user.isMod,
-        username: user.username,
-        email: user.email,
-    });
-
     const getUser = async () => {
-        return firebase.firestore()
-            .collection("Users")
-            .doc(auth.currentUser.email)
-            .get()
-            .then(function(doc) {
-                if (doc.exists) {
-                    user = doc.data();
-                    alert(user.isMod)
-                    return user.isMod;
-                } else {
-                    return "";
-                }
-            });
+        const docRef = doc(db, "Users", auth.currentUser.email);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const userData = docSnap.data();
+            setUser(docSnap.data());
+        } else {
+        // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
     }
 
     useEffect(() => {
@@ -70,14 +59,14 @@ const ProfileScreen = ({navigation}) => {
             <SafeAreaView style={{padding: 20}}>
                 <Text>Welcome {auth.currentUser.displayName}!</Text>
                 <Text>FIRESTORE VALUES</Text>
-                <Text>isMod?: {user.isMod}</Text>
+                <Text>isMod?: {user.isMod ? "Yes" : "No"}</Text>
 
                 <TextInput>
                     UID: {auth.currentUser.uid}
                 </TextInput>
 
                 <TextInput>
-                    Username: {auth.currentUser.username}
+                    Username: {user.username}
                 </TextInput>
 
                 <Image width={100} height={100} source={{uri: auth.currentUser.photoURL}}></Image>
