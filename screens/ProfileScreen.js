@@ -7,6 +7,7 @@ import {SafeAreaView} from "react-navigation";
 import {Image, TextInput} from "react-native";
 import {deleteUser} from "firebase/auth";
 import {doc, getDoc} from "firebase/firestore";
+import firebase from "firebase/compat/app";
 
 
 const ProfileScreen = ({navigation}) => {
@@ -38,17 +39,26 @@ const ProfileScreen = ({navigation}) => {
 
     let [user, setUser] = useState({});
 
+    setUser({
+        isMod: user.isMod,
+        username: user.username,
+        email: user.email,
+    });
+
     const getUser = async () => {
-        const docRef = doc(db, "Users", auth.currentUser.email.toString());
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            console.log("Document data:" + docSnap.data());
-            setUser(docSnap.data());
-            alert(docSnap.data())
-        } else {
-            // doc.data() will be undefined in this case
-            alert("No such document!");
-        }
+        return firebase.firestore()
+            .collection("Users")
+            .doc(auth.currentUser.email)
+            .get()
+            .then(function(doc) {
+                if (doc.exists) {
+                    user = doc.data();
+                    alert(user.isMod)
+                    return user.isMod;
+                } else {
+                    return "";
+                }
+            });
     }
 
     useEffect(() => {
@@ -60,7 +70,7 @@ const ProfileScreen = ({navigation}) => {
             <SafeAreaView style={{padding: 20}}>
                 <Text>Welcome {auth.currentUser.displayName}!</Text>
                 <Text>FIRESTORE VALUES</Text>
-                <Text>isMod?: undefined</Text>
+                <Text>isMod?: {user.isMod}</Text>
 
                 <TextInput>
                     UID: {auth.currentUser.uid}
