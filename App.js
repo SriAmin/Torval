@@ -11,6 +11,7 @@ import { LogBox } from 'react-native';
 
 import { MD3DarkTheme as DarkTheme, Provider as PaperProvider } from 'react-native-paper'
 import {Ionicons} from "@expo/vector-icons";
+import ImageRecognitionScreen from "./screens/SocialForum/ImageRecognitionScreen";
 const Stack = createNativeStackNavigator();
 
 async function componentDidMount() {
@@ -29,6 +30,7 @@ export default function App() {
 
           <NavigationContainer>
                   <Stack.Navigator>
+                      <Stack.Screen name="ImageRecognitionScreen" options={{ headerShown: false }} component={ImageRecognitionScreen} />
                       <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
                       <Stack.Screen name="Torval" options={{headerShown: false}} component={TorvalNavigator} />
                       <Stack.Screen name="SignUp" component={SignUp} />
