@@ -6,5 +6,6 @@ const defaultConfig = getDefaultConfig(__dirname);
 defaultConfig.resolver.assetExts.push('obj');
 defaultConfig.resolver.assetExts.push('mtl');
 defaultConfig.resolver.assetExts.push('vrx');
+defaultConfig.resolver.assetExts.push("cjs");
 
 module.exports = defaultConfig;

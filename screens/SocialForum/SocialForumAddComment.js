@@ -2,9 +2,6 @@ import React, {useState, setState} from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, Button} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
-import firestore from '@react-native-firebase/firestore';
-
-
 const SocialForumAddComment = ({navigation, route}) => {
     const threadId = route.params.threadId;
     const comments = route.params.commentList
@@ -14,15 +11,7 @@ const SocialForumAddComment = ({navigation, route}) => {
 
     const addComment = () => {
         console.log(threadId)
-        firestore()
-            .collection('Threads')
-            .doc(threadId)
-            .update({
-                comments: [...comments, {"author": author, "text": comment}],
-            })
-            .then(() => {
-                alert('Comment added!');
-            });
+        //TODO
     }
 
     return (

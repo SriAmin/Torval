@@ -1,9 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, FlatList, Button, ActivityIndicator} from 'react-native';
 
-import firestore from '@react-native-firebase/firestore';
-
-
 //This is used to conditional render the list if there are comments for the thread or if none exist at the moment
 const CommentList = ({data}) => {
     if (data == undefined)
@@ -49,11 +46,11 @@ const SocialForumComments = ({ navigation, route, isFocused}) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        (async () => {
-            const firestoreThread = await firestore().collection('Threads').doc(route.params.threadId).get()
-            setThread(firestoreThread._data);
-            setLoading(false);
-        })();
+        // (async () => {
+        //     const firestoreThread = await firestore().collection('Threads').doc(route.params.threadId).get()
+        //     setThread(firestoreThread._data);
+        //     setLoading(false);
+        // })();
     }, [isFocused]);
 
     if (loading)
