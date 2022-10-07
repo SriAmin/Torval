@@ -337,6 +337,8 @@ PODS:
   - RNScreens (3.10.2):
     - React-Core
     - React-RCTImage
+  - RNVectorIcons (9.2.0):
+    - React-Core
   - TextToSpeech (4.1.0):
     - React
   - ViroKit_static_lib (1.0)
@@ -394,6 +396,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - TextToSpeech (from `../node_modules/react-native-tts`)
   - "ViroKit_static_lib (from `../node_modules/@viro-community/react-viro/ios/dist/ViroRenderer/static_lib`)"
   - "ViroReact (from `../node_modules/@viro-community/react-viro/ios/`)"
@@ -498,6 +501,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNVectorIcons:
+    :path: "../node_modules/react-native-vector-icons"
   TextToSpeech:
     :path: "../node_modules/react-native-tts"
   ViroKit_static_lib:
@@ -556,6 +561,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: e1099204721a17a89c81fcd1cc2e92143dc040fb
   RNReanimated: 0e5ef4a7e4e79f84efbe5b40771c31044c51e7d0
   RNScreens: d6da2b9e29cf523832c2542f47bf1287318b1868
+  RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   TextToSpeech: b3aa777ff5585705f179c0a2436bfd0926d1716e
   ViroKit_static_lib: 757b887d543c671838296e5ad32f75598067dcba
   ViroReact: f4980e6b04918c4340637f9cbaae22a6bb7ea440
@@ -563,4 +569,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 10df2c5a52ebfda9d2196b9be262ad096bd92384
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.11.2

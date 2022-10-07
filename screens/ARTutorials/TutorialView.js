@@ -11,8 +11,8 @@ import React, { useState, useRef } from 'react';
 import {
     ViroARSceneNavigator,
 } from '@viro-community/react-viro';
-import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Dimensions } from 'react-native';
-import { Ionicons, Entypo } from '@expo/vector-icons';
+import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Animated } from 'react-native';
+import { Ionicons, Entypo, Feather } from '@expo/vector-icons';
 
 import TutorialSceneAR from '../../components/TutorialSceneAR';
 import TutorialSceneAR2 from '../../components/TutorialSceneAR2';
@@ -51,7 +51,27 @@ const TutorialView = ({ navigation, route }) => {
    
     const [instruction, setInstruction] = useState(tutorialInstructions[0])
     const [tutorialStep, setTutorialStep] = useState(1);
+    const [stepMenu, setStepMenu] = useState(false);
     const arSceneNav = useRef(null);
+    const slideInAnim = useRef(new Animated.Value(-170.0)).current;
+
+    const slideIn = () => {
+        console.log("Step Menu Active: " + stepMenu);
+        if (stepMenu) {
+            Animated.timing(slideInAnim, {
+                toValue: -170.0,
+                duration: 250,
+                useNativeDriver: false,
+            }).start();
+        } else {
+            Animated.timing(slideInAnim, {
+                toValue: 1,
+                duration: 250,
+                useNativeDriver: false,
+            }).start();
+        }
+        setStepMenu(!stepMenu);
+    }
 
     const nextStep = async () => {
         setTutorialStep(tutorialStep+1);
@@ -92,6 +112,19 @@ const TutorialView = ({ navigation, route }) => {
             <TouchableOpacity style={styles.backButton} onPress={navigation.goBack}>
                 <Ionicons name="arrow-back-circle-outline" size={40} color="white" />
             </TouchableOpacity>
+            <Animated.View style={[styles.stepButton, {right: slideInAnim}]}>
+                <TouchableOpacity onPress={() => {slideIn()}}>
+                    <Feather name="grid" size={40} color="white" />
+                </TouchableOpacity>
+                <View style={styles.stepMenu}>
+                    <FlatList 
+                        data={tutorialInstructions}
+                        renderItem={({index}) => {
+                            return <Text style={styles.stepText}>Step {index + 1}</Text>
+                        }}
+                    />
+                </View>
+            </Animated.View>
             <View style={styles.uiView}>
                 <Text style={styles.instruction}>{instruction}</Text>
                 <View style={styles.buttonGroup}>
@@ -121,6 +154,25 @@ const styles = StyleSheet.create({
         top: 40,
         left: 15,
         padding: 5,
+    },
+    stepButton: {
+        flex: 1,
+        position: 'absolute',
+        top: 40,
+        padding: 5,
+        flexDirection: "row",
+        height: '100%',
+    },
+    stepMenu: {
+        marginLeft: 25,
+        backgroundColor: "white",
+        width: '75%',
+        marginRight: -150,
+    },
+    stepText: {
+        color: "#7b42f5",
+        fontSize: 18,
+        padding: 8
     },
     uiView: {
         flex: 1,
