@@ -1,40 +1,54 @@
 import * as ImagePicker from 'expo-image-picker';
 import React from 'react';
 import { Button, Image, StyleSheet, Text, View } from 'react-native';
-import {Alert} from "react-native-web";
 
 const API_KEY = 'ADD_YOUR_KEY_HERE';
-const API_URL = `https://vision.googleapis.com/v1/images:annotate?key=${API_KEY}`;
-const CLARIFAY_KEY = '151cab954a3945149df6b9659675100f';
+const CLARIFAI_KEY = '151cab954a3945149df6b9659675100f';
 
-async function callGoogleVisionAsync(image) {
+async function predictImage(image) {
 
-    const clarifai = new Clarifai.App({
-        apiKey: CLARIFAY_KEY
-    })
-    process.nextTick = setImmediate // RN polyfill
-    const { data } = image
-    const file = { base64: data }
-    clarifai.models.predict(Clarifai.FOOD_MODEL, file)
-        .then(response => {
-            const { concepts } = response.outputs[0].data
-            if (concepts && concepts.length > 0) {
-                for (const prediction of concepts) {
-                    if (prediction.name === 'pizza'
-                        && prediction.value >= 0.99) {
-                        return this.setState({
-                            loading: false,
-                            result: 'Pizza'
-                        })
+    console.log(image.base64);
+
+    const USER_ID = 'justingg';
+    const PAT = '03e4d15f3e074dd09eb2d7e5dade2814';
+    const APP_ID = 'torval-app';
+    const MODEL_ID = 'torval';
+    const MODEL_VERSION_ID = '9e7a9f72c9474afc90098de79147c899';
+    const IMAGE_BYTES_STRING = image.base64.toString()
+
+    const raw = JSON.stringify({
+        "user_app_id": {
+            "user_id": USER_ID,
+            "app_id": APP_ID
+        },
+        "inputs": [
+            {
+                "data": {
+                    "image": {
+                        "base64": IMAGE_BYTES_STRING
                     }
-                    this.setState({ result: 'Not Pizza' })
                 }
             }
-            this.setState({ loading: false })
-        })
-        .catch(e => {
-            alert(e)
-        })
+        ]
+    });
+
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Key ' + PAT
+        },
+        body: raw
+    };
+
+    // NOTE: MODEL_VERSION_ID is optional, you can also call prediction with the MODEL_ID only
+    // https://api.clarifai.com/v2/models/{YOUR_MODEL_ID}/outputs
+    // this will default to the latest version_id
+
+    fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/" + MODEL_VERSION_ID + "/outputs", requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
 
 }
 
@@ -54,34 +68,20 @@ export default function App() {
         }
     };
 
-    const takePictureAsync = async () => {
-        let result;
-        result = ImagePicker.launchImageLibraryAsync({
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [3, 3],
             quality: 1,
+            base64: true,
         });
 
         if (!result.cancelled) {
-            setImage(result.uri);
-            await callGoogleVisionAsync(result)
+            await predictImage(result);
         }
-
-        if (!cancelled) {
-            setImage(uri);
-            setStatus('Loading...');
-            try {
-                const result = await callGoogleVisionAsync(base64);
-                setStatus(result);
-            } catch (error) {
-                setStatus(`Error: ${error.message}`);
-            }
-        } else {
-            setImage(null);
-            setStatus(null);
-        }
-    };
+    }
 
     return (
         <View style={styles.container}>
@@ -91,7 +91,7 @@ export default function App() {
                 <>
                     {image && <Image style={styles.image} source={{ uri: image }} />}
                     {status && <Text style={styles.text}>{status}</Text>}
-                    <Button onPress={takePictureAsync} title="Take a Picture" />
+                    <Button onPress={pickImage()} title="Take a Picture" />
                 </>
             )}
         </View>
