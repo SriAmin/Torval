@@ -112,7 +112,12 @@ const TutorialView = ({ navigation, route }) => {
     const [stepMenu, setStepMenu] = useState(false);
     const arSceneNav = useRef(null);
     const slideInAnim = useRef(new Animated.Value(-170.0)).current;
-    
+    let opacityCover;
+
+    if (stepMenu) {
+        opacityCover = <View style={styles.opacityCover} />
+    }
+
     const slideIn = () => {
         console.log("Step Menu Active: " + stepMenu);
         if (stepMenu) {
@@ -195,6 +200,7 @@ const TutorialView = ({ navigation, route }) => {
                     </TouchableOpacity>
                 </View>
             </View>
+            {opacityCover}
             <Animated.View style={[styles.stepButton, {right: slideInAnim}]}>
                 <TouchableOpacity onPress={() => {slideIn()}}>
                     <Feather name="grid" size={40} color="white" />
@@ -235,6 +241,13 @@ const styles = StyleSheet.create({
         padding: 5,
         flexDirection: "row",
         height: '100%',
+    },
+    opacityCover: {
+        backgroundColor: 'rgba(52, 52, 52, 0.8)',
+        position: "absolute",
+        width: '100%',
+        height: '100%',
+        flex: 1,
     },
     stepMenu: {
         marginLeft: 25,
