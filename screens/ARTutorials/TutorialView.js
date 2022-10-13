@@ -3,7 +3,7 @@ TutorailView.js
 
 This is the main AR Tutorials component, using Viro, we can display an
 AR environment, setting it up with the tutorial object passed into it,
-we can show the first Tutorial AR Scene, and allow controls through
+we can show the Tutorial AR Scene, and allow controls through
 2D UI.
 */
 
@@ -17,7 +17,7 @@ import { Ionicons, Entypo, Feather } from '@expo/vector-icons';
 import TutorialSceneAR from '../../components/TutorialSceneAR';
 import TutorialSceneAR2 from '../../components/TutorialSceneAR2';
 
-//JSON file contains the tutorial information such as teh instructions and models
+//JSON file contains the tutorial information such as the instructions and models
 const tutorialInstructions = [
     {
         "key" : 1,
@@ -99,7 +99,8 @@ const tutorialInstructions = [
 const TutorialView = ({ navigation, route }) => {
     /*
     TutorialView will provide the use the AR environment, using Viro and the ViroARSceneNavigator
-    we can show a user a ViroARScene. It also has 2D UI controls.
+    we can show a user a ViroARScene by passing a step property to show the correct 3D model. 
+    It also has 2D UI controls.
 
     Parameters:
     navigation object that is given from react navigation to allow the use of react navigation functions
@@ -108,17 +109,28 @@ const TutorialView = ({ navigation, route }) => {
     Return:
     View component with ViroARSceneNavigator and 2D UI components
     */
+
+    //State variables to keep track of the tutorials state
     const [tutorialStep, setTutorialStep] = useState(1);
     const [stepMenu, setStepMenu] = useState(false);
+
+    //Refernce values to be called throughout the code
     const arSceneNav = useRef(null);
     const slideInAnim = useRef(new Animated.Value(-170.0)).current;
     let opacityCover;
 
+    //Based on the stepMenu variable, show the Step Sub Menu
     if (stepMenu) {
         opacityCover = <View style={styles.opacityCover} />
     }
 
     const slideIn = () => {
+        /*
+        slideIn function is called when the submenu button is pressed on,
+        based on the stepMenu boolean, it'll either display or hide
+        the submenu
+        */
+
         console.log("Step Menu Active: " + stepMenu);
         if (stepMenu) {
             Animated.timing(slideInAnim, {
@@ -137,28 +149,59 @@ const TutorialView = ({ navigation, route }) => {
     }
 
     const nextStep = async () => {
-        setTutorialStep(tutorialStep+1);
-        const tempStep = tutorialStep+1;
-        arSceneNav.current.arSceneNavigator.pop()
-        arSceneNav.current.arSceneNavigator.push({ 
-            scene: TutorialSceneAR, 
-            passProps: { modelName: "Step" + tempStep.toString() } 
-        })
+        /*
+        nextStep function is called when the next step button is pressed on,
+        it'll push a new AR scene to the ViroARSceneNavigator, it'll also
+        push the step to make sure the correct model displays. the tutorialStep
+        will increment by 1.
+        */
+
+        //If we are at the last step, go back to TutorialListView
+        if (tutorialStep == 15) {
+            navigation.goBack();
+        } else {
+            setTutorialStep(tutorialStep+1);
+            const tempStep = tutorialStep+1;
+            arSceneNav.current.arSceneNavigator.pop()
+            arSceneNav.current.arSceneNavigator.push({ 
+                scene: TutorialSceneAR, 
+                passProps: { modelName: "Step" + tempStep.toString() } 
+            })
+        }
         console.log("Pushed out Scene");
     }
 
     const previousStep = async () => {
-        setTutorialStep(tutorialStep-1);
-        const tempStep = tutorialStep-1;
-        arSceneNav.current.arSceneNavigator.pop()
-        arSceneNav.current.arSceneNavigator.push({ 
-            scene: TutorialSceneAR, 
-            passProps: { modelName: "Step" + tempStep.toString() } 
-        })
+        /*
+        previousStep function is called when the previous step button is pressed on,
+        it'll push a new AR scene to the ViroARSceneNavigator, it'll also
+        push the step to make sure the correct model displays. The tutorialStep will
+        decrement by 1.
+        */
+
+        //If we are on the first step, go back to TutorialListView
+        if (tutorialStep == 1) {
+            navigation.goBack();
+        } else {
+            setTutorialStep(tutorialStep-1);
+            const tempStep = tutorialStep-1;
+            arSceneNav.current.arSceneNavigator.pop()
+            arSceneNav.current.arSceneNavigator.push({ 
+                scene: TutorialSceneAR, 
+                passProps: { modelName: "Step" + tempStep.toString() } 
+            })
+        }
         console.log("Popped out Scene");
     }
 
     const jumpStep = async (stepIndex) => {
+        /*
+        jumpStep function is called when a step is pressed on within the submenu,
+        it'll push a new AR scene to the ViroARSceneNavigator, it'll also
+        push the step to make sure the correct model displays. The tutorialStep will
+        be equal to the selected step.
+        */
+
         setTutorialStep(stepIndex);
         arSceneNav.current.arSceneNavigator.pop()
         arSceneNav.current.arSceneNavigator.push({ 

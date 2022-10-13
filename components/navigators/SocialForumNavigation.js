@@ -1,3 +1,10 @@
+/*
+SocialForumNavigation.js
+
+This is one of the main components of the Social Forum functional area, its the Stack Navigator from
+the React Navigation.
+*/
+
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
 
@@ -15,6 +22,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 
 const SocialForumNavigation = ({navigation}) => {
+  /*
+  SocialForumNavigation() is used to return the Stack Navigator which contains several
+  screens related to the social forum functional area.
+  
+  Return:
+  NavigationContainer
+  */
+
     return (
         <NavigationContainer independent={true}>
           <Stack.Navigator>

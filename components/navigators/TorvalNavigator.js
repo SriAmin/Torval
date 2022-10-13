@@ -1,3 +1,10 @@
+/*
+TorvalNavigator.js
+
+This is the main application that contains most of the functional areas
+of the application.
+*/
+
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
 
@@ -7,14 +14,19 @@ import SocialForumNavigation from './SocialForumNavigation';
 import TutoriaNavigator from './TutorialNavgiator';
 
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-//This will create a Stack navigator within the Forum thread to handle navigation between the screen and its comments
+//This will create a Tab navigator from React Navigation
 const Tab = createBottomTabNavigator();
 
 const TorvalNavigator = ({navigation}) => {
-    //console.log(navigation)
+    /*
+    TorvalNavigator() is used to return the Tab Navigator which contains TutorialNavigator,
+    ChatbotScreen, and SocialForumNavigator
+
+    Return:
+    NavigationContainer
+    */
     return (
         <NavigationContainer independent={true}>
             <Tab.Navigator

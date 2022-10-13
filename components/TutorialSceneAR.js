@@ -1,8 +1,8 @@
 /*
 TutorialSceneAR.js
 
-This is the first AR scene that the user will see upon loading up
-the tutorial, with a custom 3D model of a Laptop with gesture controls,
+This is the AR scene that the user will see upon loading up
+the tutorial, with a custom 3D model with gesture controls,
 it'll only appear once a plane is scanned and set.
 */
 
@@ -19,8 +19,13 @@ import {
 const TutorialSceneAR = (props) => {
   /*
   TutorialSceneAR() is the main component that is the AR Scene given
-  to the ARSceneNavgiator, its the first. It'll show a custom 3D model
-  of a laptop and allows gesture control
+  to the ARSceneNavgiator. It'll show a custom 3D model
+  of the respective tutorial step and allows gesture control
+
+  Parameters:
+  props contains a JSON object which contains any properties passed
+  into the object, in our case its the tutorial step to determine
+  which 3D model to display
 
   Returns
   ViroAR Scene that contains the Viro3DObjxect, ViroNode and ViroARPlane
@@ -29,11 +34,14 @@ const TutorialSceneAR = (props) => {
   //State variables required to maintain the scale and angle of 3D object
   const [scale, setScale] = useState(0.3);
   const [angle, setAngle] = useState([0.0, 0.0, 0.0]);
+
+  //This is that tutorial step property that is passed into this object
   const modelUri = props.modelName;
   let viroObject;
 
   console.log("Model Uri = " + modelUri);
   
+  //Based on the modelUri, set the Viro3DObject to show the correct model
   switch (modelUri) {
     case "Step1":
       viroObject = <Viro3DObject source={require('../models/Step1.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
@@ -146,7 +154,7 @@ const TutorialSceneAR = (props) => {
 
   return (
     <ViroARScene onTrackingUpdated={onInitialized}>
-      {/* <ViroARPlane minHeight={.5} minWidth={.5} alignment={"Horizontal"}> */}
+      <ViroARPlane minHeight={.5} minWidth={.5} alignment={"Horizontal"}>
         <ViroNode
           ref={arNodeRef}
           scale={[scale, scale, scale]}
@@ -156,7 +164,7 @@ const TutorialSceneAR = (props) => {
           {viroObject}
         </ViroNode>
         <ViroAmbientLight color="#FFFFFF" />
-      {/* </ViroARPlane> */}
+      </ViroARPlane>
     </ViroARScene>
   );
 };

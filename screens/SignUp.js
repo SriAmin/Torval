@@ -19,6 +19,7 @@ const SignUp = ({ navigation }) => {
   const [txtEmail, setEmail] = useState('');
   const [txtPassword, setPassword] = useState('');
   const [isLoading, setLoading] = useState(false);
+  
   const createAccount = () => {
     setLoading(true);
     auth
