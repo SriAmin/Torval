@@ -31,6 +31,8 @@ const TutorialSceneAR2 = () => { /*
   //Reference variable to be able to use the functions of ViroNode
   const arNodeRef = useRef(null);
 
+  console.log("Hello");
+
   function onInitialized(state, reason) {
     /*
     onIntialized function is called when the ViroARScene is intialized and set

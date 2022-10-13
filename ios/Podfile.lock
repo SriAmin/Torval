@@ -306,7 +306,7 @@ PODS:
     - React-perflogger (= 0.64.3)
   - RNGestureHandler (2.1.3):
     - React-Core
-  - RNReanimated (2.3.3):
+  - RNReanimated (2.10.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -314,7 +314,6 @@ PODS:
     - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
-    - React
     - React-callinvoker
     - React-Core
     - React-Core/DevSupport
@@ -337,6 +336,8 @@ PODS:
   - RNScreens (3.10.2):
     - React-Core
     - React-RCTImage
+  - RNVectorIcons (9.2.0):
+    - React-Core
   - TextToSpeech (4.1.0):
     - React
   - ViroKit_static_lib (1.0)
@@ -394,6 +395,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - TextToSpeech (from `../node_modules/react-native-tts`)
   - "ViroKit_static_lib (from `../node_modules/@viro-community/react-viro/ios/dist/ViroRenderer/static_lib`)"
   - "ViroReact (from `../node_modules/@viro-community/react-viro/ios/`)"
@@ -498,6 +500,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNVectorIcons:
+    :path: "../node_modules/react-native-vector-icons"
   TextToSpeech:
     :path: "../node_modules/react-native-tts"
   ViroKit_static_lib:
@@ -554,8 +558,9 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 493d9abb8b23c3f84e19ae221eeba92cadcb70dc
   ReactCommon: 8fea6422328e2fc093e25c9fac67adbcf0f04fb4
   RNGestureHandler: e1099204721a17a89c81fcd1cc2e92143dc040fb
-  RNReanimated: 0e5ef4a7e4e79f84efbe5b40771c31044c51e7d0
+  RNReanimated: cce4727fde9f4da9b800d999fa9975ea7a021dcf
   RNScreens: d6da2b9e29cf523832c2542f47bf1287318b1868
+  RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   TextToSpeech: b3aa777ff5585705f179c0a2436bfd0926d1716e
   ViroKit_static_lib: 757b887d543c671838296e5ad32f75598067dcba
   ViroReact: f4980e6b04918c4340637f9cbaae22a6bb7ea440

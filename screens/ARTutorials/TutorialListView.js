@@ -46,18 +46,6 @@ const tutorialList = [
     },
 ]
 
-//JSON file contains the tutorial information such as teh instructions and models
-const tutorial = [
-    {
-        "model" : require('../../models/Case.obj'),
-        "instruction" : "Hello welcome to the first screen of the Tutorial, please look around, test out the AR Functionality, when your're ready tap the next button to see the next AR Scene"
-    },
-    {
-        "model" : <ViroBox position={[0.0, 0.0, 0.0]} scale={[.1, .1, .1]}  />,
-        "instruction" : "This is the 2nd set of instructions of the tutorial, this is simply a white cube but please interact if you desire to. Thank you!"
-    }
-]
-
 const TutorialListView = ({navigation}) => {
     /*
     TutorialListView displays a FlatList component which contains a list of all the tutorials
@@ -98,7 +86,7 @@ const TutorialListView = ({navigation}) => {
                                     if (Platform.OS == "web") {
                                         alert("Sorry, currently this function doesn't work properly on this platform.")
                                     } else {
-                                        navigation.navigate('Tutorial', {tutorial: tutorial})
+                                        navigation.navigate('Tutorial')
                                     }
                                 }}>
                                     <AntDesign name="caretright" size={24} color="white" />

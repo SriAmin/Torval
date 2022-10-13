@@ -1,8 +1,8 @@
 /*
 TutorialSceneAR.js
 
-This is the first AR scene that the user will see upon loading up
-the tutorial, with a custom 3D model of a Laptop with gesture controls,
+This is the AR scene that the user will see upon loading up
+the tutorial, with a custom 3D model with gesture controls,
 it'll only appear once a plane is scanned and set.
 */
 
@@ -16,11 +16,16 @@ import {
   ViroARPlane,
 } from '@viro-community/react-viro';
 
-const TutorialSceneAR = () => {
+const TutorialSceneAR = (props) => {
   /*
   TutorialSceneAR() is the main component that is the AR Scene given
-  to the ARSceneNavgiator, its the first. It'll show a custom 3D model
-  of a laptop and allows gesture control
+  to the ARSceneNavgiator. It'll show a custom 3D model
+  of the respective tutorial step and allows gesture control
+
+  Parameters:
+  props contains a JSON object which contains any properties passed
+  into the object, in our case its the tutorial step to determine
+  which 3D model to display
 
   Returns
   ViroAR Scene that contains the Viro3DObjxect, ViroNode and ViroARPlane
@@ -29,6 +34,64 @@ const TutorialSceneAR = () => {
   //State variables required to maintain the scale and angle of 3D object
   const [scale, setScale] = useState(0.3);
   const [angle, setAngle] = useState([0.0, 0.0, 0.0]);
+
+  //This is that tutorial step property that is passed into this object
+  const modelUri = props.modelName;
+  let viroObject;
+
+  console.log("Model Uri = " + modelUri);
+  
+  //Based on the modelUri, set the Viro3DObject to show the correct model
+  switch (modelUri) {
+    case "Step1":
+      viroObject = <Viro3DObject source={require('../models/Step1.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step2":
+      viroObject = <Viro3DObject source={require('../models/Step2.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step3":
+      viroObject = <Viro3DObject source={require('../models/Step3.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step4":
+      viroObject = <Viro3DObject source={require('../models/Step4.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step5":
+      viroObject = <Viro3DObject source={require('../models/Step5.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step6":
+      viroObject = <Viro3DObject source={require('../models/Step6.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step7":
+      viroObject = <Viro3DObject source={require('../models/Step7.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step8":
+      viroObject = <Viro3DObject source={require('../models/Step8.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step9":
+      viroObject = <Viro3DObject source={require('../models/Step9.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step10":
+      viroObject = <Viro3DObject source={require('../models/Step10.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step11":
+      viroObject = <Viro3DObject source={require('../models/Step11.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step12":
+      viroObject = <Viro3DObject source={require('../models/Step12.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step13":
+      viroObject = <Viro3DObject source={require('../models/Step13.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step14":
+      viroObject = <Viro3DObject source={require('../models/Step14.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step15":
+      viroObject = <Viro3DObject source={require('../models/Step15.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    default:
+      viroObject = <Viro3DObject source={require('../models/Step1.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+  }
 
   //Reference variable to be able to use the functions of ViroNode
   const arNodeRef = useRef(null);
@@ -98,18 +161,7 @@ const TutorialSceneAR = () => {
           rotation={angle}
           position={[0.0, -10.0, -20.0]}
         >
-          <Viro3DObject
-            source={require('../models/Step1.vrx')}
-            onPinch={_onPinch}
-            onRotate={_onRotate}
-            type="VRX"
-            animation={{
-              name:'Scene', 
-              run:true,
-              loop: true,
-              delay: 1000
-            }}
-          />
+          {viroObject}
         </ViroNode>
         <ViroAmbientLight color="#FFFFFF" />
       </ViroARPlane>
