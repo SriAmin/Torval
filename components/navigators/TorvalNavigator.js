@@ -12,7 +12,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import ChatbotScreen from '../../screens/Chatbot/ChatbotScreen'
 import SocialForumNavigation from './SocialForumNavigation';
 import TutoriaNavigator from './TutorialNavgiator';
-import ProfileScreen from "../screens/ProfileScreen";
+import ProfileScreen from "../../screens/ProfileScreen"
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
