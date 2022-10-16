@@ -15,7 +15,7 @@ import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Animated } f
 import { Ionicons, Entypo, Feather } from '@expo/vector-icons';
 
 import TutorialSceneAR from '../../components/TutorialSceneAR';
-import TutorialSceneAR2 from '../../components/TutorialSceneAR2';
+import InstructionSubMenu, {stepMenu} from './InstructionSubMenu';
 
 //JSON file contains the tutorial information such as the instructions and models
 const tutorialInstructions = [
@@ -112,41 +112,41 @@ const TutorialView = ({ navigation, route }) => {
 
     //State variables to keep track of the tutorials state
     const [tutorialStep, setTutorialStep] = useState(1);
-    const [stepMenu, setStepMenu] = useState(false);
+    // const [stepMenu, setStepMenu] = useState(false);
+    const [opacityCoverActive, setOpacityCover] = useState(false);
 
     //Refernce values to be called throughout the code
     const arSceneNav = useRef(null);
-    const slideInAnim = useRef(new Animated.Value(-170.0)).current;
     let opacityCover;
 
     //Based on the stepMenu variable, show the Step Sub Menu
-    if (stepMenu) {
+    if (opacityCoverActive) {
         opacityCover = <View style={styles.opacityCover} />
     }
 
-    const slideIn = () => {
-        /*
-        slideIn function is called when the submenu button is pressed on,
-        based on the stepMenu boolean, it'll either display or hide
-        the submenu
-        */
+    // const slideIn = () => {
+    //     /*
+    //     slideIn function is called when the submenu button is pressed on,
+    //     based on the stepMenu boolean, it'll either display or hide
+    //     the submenu
+    //     */
 
-        console.log("Step Menu Active: " + stepMenu);
-        if (stepMenu) {
-            Animated.timing(slideInAnim, {
-                toValue: -170.0,
-                duration: 250,
-                useNativeDriver: false,
-            }).start();
-        } else {
-            Animated.timing(slideInAnim, {
-                toValue: 50,
-                duration: 250,
-                useNativeDriver: false,
-            }).start();
-        }
-        setStepMenu(!stepMenu);
-    }
+    //     console.log("Step Menu Active: " + stepMenu);
+    //     if (stepMenu) {
+    //         Animated.timing(slideInAnim, {
+    //             toValue: -170.0,
+    //             duration: 250,
+    //             useNativeDriver: false,
+    //         }).start();
+    //     } else {
+    //         Animated.timing(slideInAnim, {
+    //             toValue: 50,
+    //             duration: 250,
+    //             useNativeDriver: false,
+    //         }).start();
+    //     }
+    //     setStepMenu(!stepMenu);
+    // }
 
     const nextStep = async () => {
         /*
@@ -209,7 +209,6 @@ const TutorialView = ({ navigation, route }) => {
             passProps: { modelName: "Step" + stepIndex.toString() } 
         })
         console.log("Jumped to Scene" + tutorialStep);
-        slideIn();
     }
 
     return (
@@ -244,24 +243,7 @@ const TutorialView = ({ navigation, route }) => {
                 </View>
             </View>
             {opacityCover}
-            <Animated.View style={[styles.stepButton, {right: slideInAnim}]}>
-                <TouchableOpacity onPress={() => {slideIn()}}>
-                    <Feather name="grid" size={40} color="white" />
-                </TouchableOpacity>
-                <View style={styles.stepMenu}>
-                    <FlatList 
-                        data={tutorialInstructions}
-                        renderItem={({item, index}) => {
-                            return (
-                                <TouchableOpacity onPress={() => {jumpStep(index+1)}}>
-                                    <Text style={styles.stepText}>{item.title}</Text>
-                                </TouchableOpacity>
-                            )
-                        }}
-                        keyExtractor={item => item.key}
-                    />
-                </View>
-            </Animated.View>
+            <InstructionSubMenu tutorial={tutorialInstructions} opacityCoverFunction={setOpacityCover} jumpStepFunction={jumpStep}/>
         </View>
     );
 }
