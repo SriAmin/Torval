@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, FlatList, Button, ActivityIndicator} from 'react-native';
+import {db} from "../../config/firebase";
 
 //This is used to conditional render the list if there are comments for the thread or if none exist at the moment
 const CommentList = ({data}) => {
@@ -46,11 +47,11 @@ const SocialForumComments = ({ navigation, route, isFocused}) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // (async () => {
-        //     const firestoreThread = await firestore().collection('Threads').doc(route.params.threadId).get()
-        //     setThread(firestoreThread._data);
-        //     setLoading(false);
-        // })();
+        (async () => {
+            const firestoreThread = await db.collection('Threads').doc(route.params.threadId).get()
+            setThread(firestoreThread.data());
+            setLoading(false);
+        })();
     }, [isFocused]);
 
     if (loading)
@@ -65,7 +66,8 @@ const SocialForumComments = ({ navigation, route, isFocused}) => {
                     <TutorialButton followedTutorial={thread.followedTutorial} navigation={navigation}/>
                 </View>
                 <Button onPress={() => {
-                    navigation.navigate('CreateComment', {threadId : route.params.threadId, commentList: thread.comments})
+                    navigation.navigate('Create Comment', {threadId : route.params.threadId, commentList: thread.comments})
+                    alert(route.params.threadId)
                 }}
                 title="Create Comment" />
                 <CommentList data={thread.comments} />

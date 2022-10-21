@@ -1,6 +1,7 @@
 import React, {useState, setState} from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, Button} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+import {db} from "../../config/firebase";
 
 class SocialForumThread extends React.Component{
     
@@ -12,20 +13,20 @@ const SocialForumThreadScreen = ({navigation, route}) => {
     const [author, setAuthor] = useState(null)
 
     const addThreadDoc = () => {
-        // firestore()
-        // .collection('Threads')
-        // .add({
-        //     author: author,
-        //     description: description,
-        //     title: title,
-        //     tags: ["New"],
-        //     comments: [],
-        //     followedTutorial: true,
-        //     resolved: false,
-        // })
-        // .then(() => {
-        //     alert('Thread added!');
-        // });
+        db
+        .collection('Threads')
+        .add({
+            author: author,
+            description: description,
+            title: title,
+            tags: ["New"],
+            comments: [],
+            followedTutorial: true,
+            resolved: false,
+        })
+        .then(() => {
+            alert('Thread added!');
+        });
     }
 
     return (

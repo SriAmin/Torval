@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, Button, ActivityIndicator} from 'react-native';
+import {db, firestore} from "../../config/firebase";
 
 //Handles the description for the thread to either display the shortened version or the full version
 const ShortDescription = (props) => {
@@ -26,22 +27,22 @@ const SocialForumScreen = ({navigation}) => {
     const [tutorialList, setTutorialList] = useState([])
 
     useEffect(() => {
-        // const subscriber = firestore()
-        // .collection('Threads')
-        // .onSnapshot(querySnapshot => {
-        //   const threads = [];
-        //   querySnapshot.forEach(documentSnapshot => {
-        //     threads.push({
-        //       ...documentSnapshot.data(),
-        //       key: documentSnapshot.id,
-        //     });
-        //   });
+        const subscriber = db
+        .collection('Threads')
+        .onSnapshot(querySnapshot => {
+          const threads = [];
+          querySnapshot.forEach(documentSnapshot => {
+            threads.push({
+              ...documentSnapshot.data(),
+              key: documentSnapshot.id,
+            });
+          });
     
-        //   setTutorialList(threads);
-        //   setLoading(false);
-        // });
+          setTutorialList(threads);
+          setLoading(false);
+        });
 
-        // return () => subscriber;
+        return () => subscriber;
     }, []);
     
     if (loading)
