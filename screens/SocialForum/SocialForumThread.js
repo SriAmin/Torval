@@ -42,14 +42,11 @@ async function predictImage(image) {
         body: raw
     };
 
-    // NOTE: MODEL_VERSION_ID is optional, you can also call prediction with the MODEL_ID only
-    // https://api.clarifai.com/v2/models/{YOUR_MODEL_ID}/outputs
-    // this will default to the latest version_id
-
     fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/" + MODEL_VERSION_ID + "/outputs", requestOptions)
-        .then(response => console.log(response))
+        .then(response => response.text())
         .then(result => console.log(result))
         .catch(error => console.log('error', error));
+
 
 }
 
@@ -67,7 +64,6 @@ const SocialForumThreadScreen = ({navigation, route}) => {
 
         if (permissionResult.granted === false) {
             alert('Permission to access camera roll is required!');
-            return;
         } else {
             setPermissions(true);
         }
