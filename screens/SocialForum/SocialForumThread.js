@@ -36,7 +36,8 @@ async function predictImage(image) {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
-            'Authorization': 'Key ' + PAT
+            'Authorization': 'Key ' + PAT,
+            'Content-Type': 'application/json'
         },
         body: raw
     };
@@ -46,7 +47,7 @@ async function predictImage(image) {
     // this will default to the latest version_id
 
     fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/" + MODEL_VERSION_ID + "/outputs", requestOptions)
-        .then(response => response.text())
+        .then(response => console.log(response))
         .then(result => console.log(result))
         .catch(error => console.log('error', error));
 
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
         width: 50,
     },
     button: {
-        marginTop: 8, 
+        margin: 8,
         padding: 20,
     },
     text: {
