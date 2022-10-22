@@ -99,9 +99,15 @@ const styles = StyleSheet.create({
     },
     itemContainer: {
         padding: 15,
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
-        borderColor: "grey",
+        borderWidth: 1,
+        borderRadius: 25,
+        margin:8,
+        shadowColor: 'rgba(0,0,0, .4)', // IOS
+        shadowOffset: { height: 1, width: 1 }, // IOS
+        shadowOpacity: 1, // IOS
+        shadowRadius: 1, //IOS
+        backgroundColor: '#fff',
+        elevation: 2, // Android
     },
     itemImg: {
         height: 50,
