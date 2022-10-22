@@ -7,54 +7,59 @@ import * as ImagePicker from 'expo-image-picker';
 const API_KEY = 'ADD_YOUR_KEY_HERE';
 const CLARIFAI_KEY = '151cab954a3945149df6b9659675100f';
 
-async function predictImage(image) {
 
-    const USER_ID = 'justingg';
-    const PAT = '03e4d15f3e074dd09eb2d7e5dade2814';
-    const APP_ID = 'torval-app';
-    const MODEL_ID = 'torval';
-    const MODEL_VERSION_ID = '9e7a9f72c9474afc90098de79147c899';
-    const IMAGE_BYTES_STRING = image.base64.toString()
-
-    const raw = JSON.stringify({
-        "user_app_id": {
-            "user_id": USER_ID,
-            "app_id": APP_ID
-        },
-        "inputs": [
-            {
-                "data": {
-                    "image": {
-                        "base64": IMAGE_BYTES_STRING
-                    }
-                }
-            }
-        ]
-    });
-
-    const requestOptions = {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Authorization': 'Key ' + PAT,
-            'Content-Type': 'application/json'
-        },
-        body: raw
-    };
-
-    fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/" + MODEL_VERSION_ID + "/outputs", requestOptions)
-        .then(response => response.text())
-        .then(result => console.log(result))
-        .catch(error => console.log('error', error));
-
-
-}
 
 class SocialForumThread extends React.Component{
     
 }
 
 const SocialForumThreadScreen = ({navigation, route}) => {
+    let [JSONResult, setJSONResult] = React.useState();
+
+    async function predictImage(image) {
+
+        const USER_ID = 'justingg';
+        const PAT = '03e4d15f3e074dd09eb2d7e5dade2814';
+        const APP_ID = 'torval-app';
+        const MODEL_ID = 'torval';
+        const MODEL_VERSION_ID = '9e7a9f72c9474afc90098de79147c899';
+        const IMAGE_BYTES_STRING = image.base64.toString()
+
+        const raw = JSON.stringify({
+            "user_app_id": {
+                "user_id": USER_ID,
+                "app_id": APP_ID
+            },
+            "inputs": [
+                {
+                    "data": {
+                        "image": {
+                            "base64": IMAGE_BYTES_STRING
+                        }
+                    }
+                }
+            ]
+        });
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': 'Key ' + PAT,
+                'Content-Type': 'application/json'
+            },
+            body: raw
+        };
+
+        fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/" + MODEL_VERSION_ID + "/outputs", requestOptions)
+            .then(response => response.text())
+            .then(result => setJSONResult(result))
+            .catch(error => console.log('error', error));
+
+        JSONResult = JSON.parse(JSONResult)
+        console.log(JSONResult.concepts)
+    }
+
     const [image, setImage] = React.useState(null);
     const [status, setStatus] = React.useState(null);
     const [permissions, setPermissions] = React.useState(false);
