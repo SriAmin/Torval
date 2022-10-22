@@ -66,11 +66,7 @@ const SocialForumThreadScreen = ({navigation, route}) => {
 // Get the object having votes as max votes
         var obj = JSONResult.outputs[0].data.concepts.find(game => game.value === maxVotes);
 
-        RecommendSubforumChange(obj)
-    }
-
-    function RecommendSubforumChange(obj) {
-        let predictedComputerComponent = "";
+        let predictedComputerComponent;
 
         switch (obj.name) {
             case "psu":
@@ -92,7 +88,6 @@ const SocialForumThreadScreen = ({navigation, route}) => {
                 predictedComputerComponent = "watercooling image";
         }
         alert("We predict this is a " + predictedComputerComponent + ", would you like to post to that subforum instead?")
-
     }
 
     const [image, setImage] = React.useState(null);
