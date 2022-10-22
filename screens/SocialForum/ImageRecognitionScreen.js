@@ -36,9 +36,10 @@ async function predictImage(image) {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
-            'Authorization': 'Key ' + PAT
+            'Authorization': 'Key ' + PAT,
+            'Content-Type': 'application/json',
         },
-        body: raw
+        body: raw,
     };
 
     // NOTE: MODEL_VERSION_ID is optional, you can also call prediction with the MODEL_ID only
@@ -46,8 +47,8 @@ async function predictImage(image) {
     // this will default to the latest version_id
 
     fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/" + MODEL_VERSION_ID + "/outputs", requestOptions)
-        .then(response => response.text())
-        .then(result => console.log(result))
+        .then(response => console.log(response.text()))
+        .then(result => console.log(result.json))
         .catch(error => console.log('error', error));
 
 }
