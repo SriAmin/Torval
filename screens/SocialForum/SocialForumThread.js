@@ -16,6 +16,7 @@ class SocialForumThread extends React.Component{
 const SocialForumThreadScreen = ({navigation, route}) => {
     let [JSONResult, setJSONResult] = React.useState();
 
+
     async function predictImage(image) {
 
         const USER_ID = 'justingg';
@@ -65,7 +66,33 @@ const SocialForumThreadScreen = ({navigation, route}) => {
 // Get the object having votes as max votes
         var obj = JSONResult.outputs[0].data.concepts.find(game => game.value === maxVotes);
 
-        console.log(obj)
+        RecommendSubforumChange(obj)
+    }
+
+    function RecommendSubforumChange(obj) {
+        let predictedComputerComponent = "";
+
+        switch (obj.name) {
+            case "psu":
+                predictedComputerComponent = "power supply";
+                break;
+            case "gpu":
+                predictedComputerComponent = "graphics card";
+                break;
+            case "case":
+                predictedComputerComponent = "computer case";
+                break;
+            case "mobo":
+                predictedComputerComponent = "motherboard";
+                break;
+            case "cpu":
+                predictedComputerComponent = "CPU";
+                break;
+            case "watercooling":
+                predictedComputerComponent = "watercooling image";
+        }
+        alert("We predict this is a " + predictedComputerComponent + ", would you like to post to that subforum instead?")
+
     }
 
     const [image, setImage] = React.useState(null);
