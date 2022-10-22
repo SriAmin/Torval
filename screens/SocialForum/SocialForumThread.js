@@ -57,7 +57,15 @@ const SocialForumThreadScreen = ({navigation, route}) => {
             .catch(error => console.log('error', error));
 
         JSONResult = JSON.parse(JSONResult)
-        console.log(JSONResult.concepts)
+        //JSONResult = await JSONResult.outputs[0].data.concepts
+
+        // First, get the max vote from the array of objects
+        var maxVotes = Math.max(...JSONResult.outputs[0].data.concepts.map(e => e.value));
+
+// Get the object having votes as max votes
+        var obj = JSONResult.outputs[0].data.concepts.find(game => game.value === maxVotes);
+
+        console.log(obj)
     }
 
     const [image, setImage] = React.useState(null);
