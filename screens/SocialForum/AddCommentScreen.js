@@ -2,7 +2,7 @@ import React, {useState, setState} from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, Button} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
-const SocialForumAddComment = ({navigation, route}) => {
+const AddCommentScreen = ({navigation, route}) => {
     const threadId = route.params.threadId;
     const comments = route.params.commentList
 
@@ -77,4 +77,4 @@ const styles = StyleSheet.create({
   });
 
 
-export default SocialForumAddComment;
+export default AddCommentScreen;

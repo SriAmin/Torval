@@ -24,7 +24,8 @@ if (firebase.apps.length === 0) {
 }
 
 const db = app.firestore();
+const visionKey = 'AIzaSyDzjcsZn0Y7B3pvAdLFCtU7DNejuxuzKU0'
 const auth = firebase.auth();
 const firestore = getFirestore(app);
 
-export { db, auth, firestore };
+export { db, auth, firestore, visionKey };

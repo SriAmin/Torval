@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, Button, ActivityIndicator} from 'react-native';
+import {db, firestore} from "../../config/firebase";
 
 //Handles the description for the thread to either display the shortened version or the full version
 const ShortDescription = (props) => {
@@ -17,32 +18,37 @@ const Resolved = (props) => {
         return <Image style={styles.itemImg} source={{uri: 'https://icons-for-free.com/iconfiles/png/512/checkmark-131964752499076639.png',}}/>
     else
         return <Image style={styles.itemImg} source={{uri: 'https://static.thenounproject.com/png/962182-200.png',}}/>
-
 }
 
-const SocialForumScreen = ({navigation}) => {
-    //  console.log(navigation)
+const ThreadsScreen = ({navigation, route}) => {
     const [loading, setLoading] = useState(true);
     const [tutorialList, setTutorialList] = useState([])
 
     useEffect(() => {
-        // const subscriber = firestore()
-        // .collection('Threads')
-        // .onSnapshot(querySnapshot => {
-        //   const threads = [];
-        //   querySnapshot.forEach(documentSnapshot => {
-        //     threads.push({
-        //       ...documentSnapshot.data(),
-        //       key: documentSnapshot.id,
-        //     });
-        //   });
-    
-        //   setTutorialList(threads);
-        //   setLoading(false);
-        // });
+        const subscriber = db
+        .collection('Threads').where('subforum', 'in', [route.params.subforumThreadId])
+        .onSnapshot(querySnapshot => {
+          const threads = [];
 
-        // return () => subscriber;
+          querySnapshot.forEach(documentSnapshot => {
+              threads.push({
+                  ...documentSnapshot.data(),
+                  key: documentSnapshot.id,
+              });
+          });
+
+          setTutorialList(threads);
+          setLoading(false);
+        });
+
+        return () => subscriber;
     }, []);
+
+
+
+
+
+
     
     if (loading)
         return <ActivityIndicator />
@@ -63,6 +69,8 @@ const SocialForumScreen = ({navigation}) => {
                                 }}>
                                 <View style={[{flex:1,flexDirection:'row'}]}>
                                     <Resolved resolve={item.resolved}/>
+
+
                                     <View style={[{flexShrink: 1}]}>
                                         <Text style={styles.itemTitle}>{item.title}</Text>
                                         <ShortDescription string={item.description}/>
@@ -94,13 +102,18 @@ const SocialForumScreen = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#F0F0F0',
     },
     itemContainer: {
         padding: 15,
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
-        borderColor: "grey",
+        borderRadius: 25,
+        margin:8,
+        shadowColor: 'rgba(0,0,0,0)', // IOS
+        shadowOffset: { height: 1, width: 1 }, // IOS
+        shadowOpacity: 1, // IOS
+        shadowRadius: 2, //IOS
+        backgroundColor: '#fff',
+        elevation: 3, // Android
     },
     itemImg: {
         height: 50,
@@ -135,4 +148,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default SocialForumScreen;
+export default ThreadsScreen;
