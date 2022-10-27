@@ -11,8 +11,7 @@ import { LogBox } from 'react-native';
 
 import { MD3DarkTheme as DarkTheme, Provider as PaperProvider } from 'react-native-paper'
 import {Ionicons} from "@expo/vector-icons";
-import ImageRecognitionScreen from "./screens/SocialForum/ImageRecognitionScreen";
-import SocialForumScreen from "./screens/SocialForum/SocialForumScreen";
+import ThreadsScreen from "./screens/SocialForum/ThreadsScreen";
 const Stack = createNativeStackNavigator();
 
 async function componentDidMount() {

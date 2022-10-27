@@ -1,17 +1,10 @@
-import React, {useState, setState} from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, Button} from 'react-native';
+import React, {useState} from 'react';
+import { StyleSheet, Text, View, Image, Button} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import {db} from "../../config/firebase";
 import * as ImagePicker from 'expo-image-picker';
+import {Picker} from "native-base";
 
-const API_KEY = 'ADD_YOUR_KEY_HERE';
-const CLARIFAI_KEY = '151cab954a3945149df6b9659675100f';
-
-
-
-class SocialForumThread extends React.Component{
-    
-}
 
 const SocialForumThreadScreen = ({navigation, route}) => {
     let [JSONResult, setJSONResult] = React.useState();
@@ -58,13 +51,12 @@ const SocialForumThreadScreen = ({navigation, route}) => {
             .catch(error => console.log('error', error));
 
         JSONResult = JSON.parse(JSONResult)
-        //JSONResult = await JSONResult.outputs[0].data.concepts
 
         // First, get the max vote from the array of objects
-        var maxVotes = Math.max(...JSONResult.outputs[0].data.concepts.map(e => e.value));
+        const maxVotes = Math.max(...JSONResult.outputs[0].data.concepts.map(e => e.value));
 
-// Get the object having votes as max votes
-        var obj = JSONResult.outputs[0].data.concepts.find(game => game.value === maxVotes);
+        // Get the object having votes as max votes
+        const obj = JSONResult.outputs[0].data.concepts.find(concept => concept.value === maxVotes);
 
         let predictedComputerComponent;
 
@@ -90,8 +82,8 @@ const SocialForumThreadScreen = ({navigation, route}) => {
         alert("We predict this is a " + predictedComputerComponent + ", would you like to post to that subforum instead?")
     }
 
-    const [image, setImage] = React.useState(null);
-    const [status, setStatus] = React.useState(null);
+    const [image] = React.useState(null);
+    const [status] = React.useState(null);
     const [permissions, setPermissions] = React.useState(false);
 
     const askPermissionsAsync = async () => {
@@ -122,22 +114,28 @@ const SocialForumThreadScreen = ({navigation, route}) => {
     const [title, setTitle] = useState(null)
     const [description, setDescription] = useState(null)
     const [author, setAuthor] = useState(null)
+    const [subforum, setSubforum] = useState(null)
 
     const addThreadDoc = () => {
-        db
-        .collection('Threads')
-        .add({
-            author: author,
-            description: description,
-            title: title,
-            tags: ["New"],
-            comments: [],
-            followedTutorial: true,
-            resolved: false,
-        })
-        .then(() => {
-            alert('Thread added!');
-        });
+
+        if (author == null || description == null || title == null || subforum == null) {
+            alert("Please fill out the required forms")
+        } else {
+            db
+                .collection('Threads')
+                .add({
+                    author: author,
+                    description: description,
+                    title: title,
+                    comments: [],
+                    resolved: false,
+                    subforum: subforum,
+                    karma: 0
+                })
+                .then(() => {
+                    alert('Thread added!');
+                });
+        }
     }
 
     return (
@@ -166,6 +164,18 @@ const SocialForumThreadScreen = ({navigation, route}) => {
                 onChangeText={setAuthor} 
                 placeholder='Enter your username (optional)' 
                 type="text" />
+
+            <Picker
+                selectedValue={subforum}
+                style={{ height: 50, width: 150 }}
+                onValueChange={(itemValue) => setSubforum(itemValue)}>
+                <Picker.Item label="Please select a subforum" value="null" />
+                <Picker.Item label="GPU" value="gpu" />
+                <Picker.Item label="CPU" value="cpu" />
+                <Picker.Item label="Watercooling" value="watercooling" />
+                <Picker.Item label="Motherboard" value="mobo" />
+                <Picker.Item label="Power Supply" value="psu" />
+            </Picker>
 
             {permissions === false ? (
                 <Button onPress={askPermissionsAsync} title="Ask permissions" />

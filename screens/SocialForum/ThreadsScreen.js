@@ -18,32 +18,37 @@ const Resolved = (props) => {
         return <Image style={styles.itemImg} source={{uri: 'https://icons-for-free.com/iconfiles/png/512/checkmark-131964752499076639.png',}}/>
     else
         return <Image style={styles.itemImg} source={{uri: 'https://static.thenounproject.com/png/962182-200.png',}}/>
-
 }
 
-const SocialForumScreen = ({navigation}) => {
-    //  console.log(navigation)
+const ThreadsScreen = ({navigation, route}) => {
     const [loading, setLoading] = useState(true);
     const [tutorialList, setTutorialList] = useState([])
 
     useEffect(() => {
         const subscriber = db
-        .collection('Threads')
+        .collection('Threads').where('subforum', 'in', [route.params.subforumThreadId])
         .onSnapshot(querySnapshot => {
           const threads = [];
+
           querySnapshot.forEach(documentSnapshot => {
-            threads.push({
-              ...documentSnapshot.data(),
-              key: documentSnapshot.id,
-            });
+              threads.push({
+                  ...documentSnapshot.data(),
+                  key: documentSnapshot.id,
+              });
           });
-    
+
           setTutorialList(threads);
           setLoading(false);
         });
 
         return () => subscriber;
     }, []);
+
+
+
+
+
+
     
     if (loading)
         return <ActivityIndicator />
@@ -95,19 +100,18 @@ const SocialForumScreen = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#F0F0F0',
     },
     itemContainer: {
         padding: 15,
-        borderWidth: 1,
         borderRadius: 25,
         margin:8,
-        shadowColor: 'rgba(0,0,0, .4)', // IOS
+        shadowColor: 'rgba(0,0,0,0)', // IOS
         shadowOffset: { height: 1, width: 1 }, // IOS
         shadowOpacity: 1, // IOS
-        shadowRadius: 1, //IOS
+        shadowRadius: 2, //IOS
         backgroundColor: '#fff',
-        elevation: 2, // Android
+        elevation: 3, // Android
     },
     itemImg: {
         height: 50,
@@ -142,4 +146,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default SocialForumScreen;
+export default ThreadsScreen;

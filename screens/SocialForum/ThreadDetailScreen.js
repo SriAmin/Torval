@@ -42,7 +42,7 @@ const TutorialButton = ({followedTutorial, navigation}) => {
         return <View />
 }
 
-const SocialForumComments = ({ navigation, route, isFocused}) => {
+const ThreadDetailScreen = ({ navigation, route, isFocused}) => {
     const [thread, setThread] = useState(null)
     const [loading, setLoading] = useState(true);
 
@@ -105,4 +105,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default SocialForumComments;
+export default ThreadDetailScreen;

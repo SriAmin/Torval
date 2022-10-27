@@ -1,10 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
 
-import SocialForumScreen from '../screens/SocialForum/SocialForumScreen';
-import SocialForumComments from '../screens/SocialForum/SocialForumComments';
-import SocialForumThread from '../screens/SocialForum/SocialForumThread';
-import SocialForumAddComment from '../screens/SocialForum/SocialForumAddComment';
+import ThreadsScreen from '../screens/SocialForum/ThreadsScreen';
+import ThreadDetailScreen from '../screens/SocialForum/ThreadDetailScreen';
+import SocialForumThread from '../screens/SocialForum/AddThreadScreen';
+import AddCommentScreen from '../screens/SocialForum/AddCommentScreen';
+import SubforumsScreen from '../screens/SocialForum/SubforumsScreen';
 import TutorialDescriptionView from '../screens/ARTutorials/TutorialDescriptionView';
 import TutorialView from '../screens/ARTutorials/TutorialView';
 
@@ -19,13 +20,11 @@ const SocialForumNavigation = ({navigation}) => {
     return (
         <NavigationContainer independent={true}>
           <Stack.Navigator>
-            <Stack.Screen
-              name="Forum Thread"
-              component={SocialForumScreen}
-            />
-            <Stack.Screen name="Comments" component={SocialForumComments} />
+              <Stack.Screen name="Subforums" component={SubforumsScreen} />
+            <Stack.Screen name="ThreadsScreen" component={ThreadsScreen} />
+            <Stack.Screen name="Comments" component={ThreadDetailScreen} />
             <Stack.Screen name="Create A Thread" component={SocialForumThread} />
-            <Stack.Screen name="Create Comment" component={SocialForumAddComment} />
+            <Stack.Screen name="Create Comment" component={AddCommentScreen} />
             <Stack.Screen name="Description" component={TutorialDescriptionView}/>
             <Stack.Screen options={{headerShown: false}} name="Tutorial" component={TutorialView} />
           </Stack.Navigator>
