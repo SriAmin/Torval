@@ -6,6 +6,7 @@ import * as ImagePicker from 'expo-image-picker';
 import {Picker} from "native-base";
 
 
+
 const SocialForumThreadScreen = ({navigation, route}) => {
     let [JSONResult, setJSONResult] = React.useState();
 
@@ -57,8 +58,9 @@ const SocialForumThreadScreen = ({navigation, route}) => {
 
         // Get the object having votes as max votes
         const obj = JSONResult.outputs[0].data.concepts.find(concept => concept.value === maxVotes);
+        console.log(obj)
 
-        let predictedComputerComponent;
+        let predictedComputerComponent = "";
 
         switch (obj.name) {
             case "psu":
@@ -79,42 +81,26 @@ const SocialForumThreadScreen = ({navigation, route}) => {
             case "watercooling":
                 predictedComputerComponent = "watercooling image";
         }
-        alert("We predict this is a " + predictedComputerComponent + ", would you like to post to that subforum instead?")
+        return alert("We predict this is a " + predictedComputerComponent + ", would you like to post to that subforum instead?")
     }
 
     const [image] = React.useState(null);
     const [status] = React.useState(null);
     const [permissions, setPermissions] = React.useState(false);
+    const [title, setTitle] = useState(null)
+    const [description, setDescription] = useState(null)
+    const [author, setAuthor] = useState(null)
+    const [subforum, setSubforum] = useState(null)
 
     const askPermissionsAsync = async () => {
         let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
         if (permissionResult.granted === false) {
-            alert('Permission to access camera roll is required!');
+            alert('Permission to access camera roll is required');
         } else {
             setPermissions(true);
         }
     };
-
-    const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [3, 3],
-            quality: 1,
-            base64: true,
-        });
-
-        if (!result.cancelled) {
-            await predictImage(result);
-        }
-    }
-
-    const [title, setTitle] = useState(null)
-    const [description, setDescription] = useState(null)
-    const [author, setAuthor] = useState(null)
-    const [subforum, setSubforum] = useState(null)
 
     const addThreadDoc = () => {
 
@@ -138,31 +124,32 @@ const SocialForumThreadScreen = ({navigation, route}) => {
         }
     }
 
+
     return (
         <View style={styles.container}>
             <Text style={styles.text} >Title: </Text>
 
-            <TextInput 
-                style={styles.input} 
+            <TextInput
+                style={styles.input}
                 value={title}
                 onChangeText={setTitle}
-                placeholder="Enter the title of your thread" 
+                placeholder="Enter the title of your thread"
                 type="text" />
 
             <Text style={styles.text} >Question: </Text>
-            <TextInput 
-                style={styles.input} 
+            <TextInput
+                style={styles.input}
                 value={description}
                 onChangeText={setDescription}
-                placeholder='Enter a new thread question' 
+                placeholder='Enter a new thread question'
                 type="text" />
 
             <Text style={styles.text} >Username: </Text>
-            <TextInput 
-                style={styles.input} 
+            <TextInput
+                style={styles.input}
                 value={author}
-                onChangeText={setAuthor} 
-                placeholder='Enter your username (optional)' 
+                onChangeText={setAuthor}
+                placeholder='Enter your username (optional)'
                 type="text" />
 
             <Picker
@@ -183,7 +170,22 @@ const SocialForumThreadScreen = ({navigation, route}) => {
                 <>
                     {image && <Image style={styles.image} source={{ uri: image }} />}
                     {status && <Text style={styles.text}>{status}</Text>}
-                    <Button onPress={pickImage()} title="Take a Picture" />
+
+                    {/*Button for image picker, this also displays the prediction of the image*/}
+                    <Button onPress={
+                        async () => {
+                            // No permissions request is necessary for launching the image library
+                            let result = await ImagePicker.launchImageLibraryAsync({
+                                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                                quality: 1,
+                                base64: true,
+                            })
+
+                            if (!result.cancelled) {
+                                await predictImage(result);
+                            }}}
+
+                            title="Take a Picture" />
                 </>
             )}
 

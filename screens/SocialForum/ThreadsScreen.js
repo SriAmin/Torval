@@ -69,6 +69,8 @@ const ThreadsScreen = ({navigation, route}) => {
                                 }}>
                                 <View style={[{flex:1,flexDirection:'row'}]}>
                                     <Resolved resolve={item.resolved}/>
+
+
                                     <View style={[{flexShrink: 1}]}>
                                         <Text style={styles.itemTitle}>{item.title}</Text>
                                         <ShortDescription string={item.description}/>
