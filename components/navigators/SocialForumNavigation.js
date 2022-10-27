@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
 
-import ThreadsScreen from '../screens/SocialForum/ThreadsScreen';
-import ThreadDetailScreen from '../screens/SocialForum/ThreadDetailScreen';
-import SocialForumThread from '../screens/SocialForum/AddThreadScreen';
-import AddCommentScreen from '../screens/SocialForum/AddCommentScreen';
-import SubforumsScreen from '../screens/SocialForum/SubforumsScreen';
-import TutorialDescriptionView from '../screens/ARTutorials/TutorialDescriptionView';
-import TutorialView from '../screens/ARTutorials/TutorialView';
+import ThreadsScreen from '../../screens/SocialForum/ThreadsScreen';
+import ThreadDetailScreen from '../../screens/SocialForum/ThreadDetailScreen';
+import SocialForumThread from '../../screens/SocialForum/AddThreadScreen';
+import AddCommentScreen from '../../screens/SocialForum/AddCommentScreen';
+import SubforumsScreen from '../../screens/SocialForum/SubforumsScreen';
+import TutorialDescriptionView from '../../screens/ARTutorials/TutorialDescriptionView';
+import TutorialView from '../../screens/ARTutorials/TutorialView';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
