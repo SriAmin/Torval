@@ -78,7 +78,7 @@ const ThreadDetailScreen = ({ navigation, route, isFocused}) => {
     else {
         return (
             <View style={styles.container}>
-                <View style={[{borderBottomWidth: 1, marginBottom: 10, padding: 15}]}>
+                <View style={[{marginBottom: 10, padding: 15}]}>
                     <Text style={[{fontSize: 18}]}>{thread.title}</Text>
 
                     {
@@ -105,7 +105,7 @@ const ThreadDetailScreen = ({ navigation, route, isFocused}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#F0F0F0',
     },
     threadAuthor: {
         padding: 5,
@@ -117,9 +117,15 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     itemContainer: {
-        padding: 10,
-        borderBottomWidth: 1,
-        borderColor: "grey",
+        padding: 15,
+        borderRadius: 25,
+        margin:8,
+        shadowColor: 'rgba(0,0,0,0)', // IOS
+        shadowOffset: { height: 1, width: 1 }, // IOS
+        shadowOpacity: 1, // IOS
+        shadowRadius: 2, //IOS
+        backgroundColor: '#fff',
+        elevation: 3, // Android
     },
     itemTitle: {
         fontSize: 15,
