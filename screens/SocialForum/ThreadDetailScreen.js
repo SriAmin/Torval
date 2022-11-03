@@ -3,29 +3,6 @@ import { StyleSheet, Text, View, FlatList, Button, ActivityIndicator} from 'reac
 import {auth, db} from "../../config/firebase";
 import {doc, getDoc} from "firebase/firestore";
 
-//This is used to conditional render the list if there are comments for the thread or if none exist at the moment
-const CommentList = ({data}) => {
-    if (data == undefined)
-        return <View />
-    else {
-        if (data.length == 0)
-            return <Text style={[{marginTop: 50, padding: 10,textAlign: "center", color: 'grey'}]}>Sorry, there are no comments for this thread yet, check back again later.</Text>
-        else 
-            return (
-                <FlatList
-                    data={data}
-                    renderItem={({item}) => {
-                        return (
-                            <View style={styles.itemContainer}>
-                                <Text style={styles.itemTitle}>{item.text}</Text>
-                                <Text style={styles.itemAuthor}>{item.author}</Text>
-                            </View>
-                        )
-                    }}
-                />
-            )
-    }
-}
 
 const TutorialButton = ({followedTutorial, navigation}) => {
     const tutorial = {
@@ -47,14 +24,13 @@ const ThreadDetailScreen = ({ navigation, route, isFocused}) => {
     const [thread, setThread] = useState(null)
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState({});
-    const deleteBtn = <Button style={{marginTop: 20}} title="DeleteBtn"><Text>DeleteBtn</Text></Button>;
 
     const getUser = async () => {
         const docRef = doc(db, "Users", auth.currentUser.email);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-            const userData = docSnap.data();
+            docSnap.data();
             setUser(docSnap.data());
         } else {
             // doc.data() will be undefined in this case
@@ -62,11 +38,52 @@ const ThreadDetailScreen = ({ navigation, route, isFocused}) => {
         }
     }
 
+    async function handleDelete(type) {
+        if (type === "comment") {
+            //DELETE COMMENT
+            alert("Comment deleted")
+            navigation.refresh();
+        } else {
+            await db.collection('Threads').doc(route.params.threadId).get().delete();
+            alert("Thread deleted")
+            navigation.goBack();
+        }
+    }
+
+    //This is used to conditional render the list if there are comments for the thread or if none exist at the moment
+    const CommentList = ({data}) => {
+        if (data === undefined)
+            return <View />
+        else {
+            if (data.length === 0)
+                return <Text style={[{marginTop: 50, padding: 10,textAlign: "center", color: 'grey'}]}>Sorry, there are no comments for this thread yet, check back again later.</Text>
+            else
+                return (
+                    <FlatList
+                        data={data}
+                        renderItem={({item}) => {
+                            return (
+                                <View style={styles.itemContainer}>
+                                    <Text style={styles.itemTitle}>{item.text}</Text>
+                                    <Text style={styles.itemAuthor}>{item.author}</Text>
+
+                                    {
+                                        !user.isMod
+                                            ? <Button style={{marginTop: 20}} title="DeleteBtn" onPress={handleDelete("comment")}><Text>DeleteBtn</Text></Button>
+                                            : <View></View>
+                                    }
+
+                                </View>
+                            )
+                        }}
+                    />
+                )
+        }
+    }
+
     useEffect(() => {
         (async () => {
-            getUser();
-            const isMod = user.isMod;
-
+            await getUser();
             const firestoreThread = await db.collection('Threads').doc(route.params.threadId).get()
             setThread(firestoreThread.data());
             setLoading(false);
@@ -82,8 +99,8 @@ const ThreadDetailScreen = ({ navigation, route, isFocused}) => {
                     <Text style={[{fontSize: 18}]}>{thread.title}</Text>
 
                     {
-                        user.isMod
-                        ? <Button style={{marginTop: 20}} title="DeleteBtn"><Text>DeleteBtn</Text></Button>
+                        !user.isMod
+                        ? <Button style={{marginTop: 20}} title="DeleteBtn" onPress={handleDelete("thread")}><Text>DeleteBtn</Text></Button>
                         : <View></View>
                     }
 
