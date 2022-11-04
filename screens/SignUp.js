@@ -46,7 +46,8 @@ const SignUp = ({ navigation }) => {
                   isMod: false,
                   karmaLevel: 0,
                   username: result.user.displayName,
-                  ModForums: [],
+                    upvotedOn: [],
+                    downvotedOn: [],
                 })
             }).catch((error) => {
                 alert(error);

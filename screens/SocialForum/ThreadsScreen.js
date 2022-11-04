@@ -43,12 +43,6 @@ const ThreadsScreen = ({navigation, route}) => {
 
         return () => subscriber;
     }, []);
-
-
-
-
-
-
     
     if (loading)
         return <ActivityIndicator />
@@ -64,13 +58,12 @@ const ThreadsScreen = ({navigation, route}) => {
                     data={tutorialList}
                     renderItem={({item}) => {
                         return (
+
                             <TouchableOpacity style={styles.itemContainer} onPress={() => {
                                     navigation.navigate('Comments', { threadId: item.key })
                                 }}>
                                 <View style={[{flex:1,flexDirection:'row'}]}>
                                     <Resolved resolve={item.resolved}/>
-
-
                                     <View style={[{flexShrink: 1}]}>
                                         <Text style={styles.itemTitle}>{item.title}</Text>
                                         <ShortDescription string={item.description}/>

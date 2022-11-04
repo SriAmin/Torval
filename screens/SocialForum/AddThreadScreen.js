@@ -116,7 +116,8 @@ const SocialForumThreadScreen = ({navigation, route}) => {
                     comments: [],
                     resolved: false,
                     subforum: subforum,
-                    karma: 0
+                    upvotes: 0,
+                    downvotes: 0.
                 })
                 .then(() => {
                     alert('Thread added!');
