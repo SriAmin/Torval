@@ -22,7 +22,8 @@ const AddCommentScreen = ({navigation, route}) => {
                 value={comment}
                 onChangeText={setComment}
                 placeholder="Enter the comment of your thread" 
-                type="text" 
+                type="text"
+                maxLength={10000} 
             />
             <Text style={styles.text} >Author: </Text>
             <TextInput 
