@@ -1,17 +1,59 @@
-import React, {useState, setState} from 'react';
+import React, {useState, setState, useEffect} from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, Button} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+import {auth, db} from "../../config/firebase";
+import {arrayUnion, doc, getDoc} from "firebase/firestore";
 
 const AddCommentScreen = ({navigation, route}) => {
     const threadId = route.params.threadId;
     const comments = route.params.commentList
+    const [user, setUser] = useState({});
+    const [date, setDate] = useState(null);
 
     const [comment, setComment] = useState(null)
     const [author, setAuthor] = useState(null)
 
+    useEffect(() => {
+        (async () => {
+            await getUser();
+        })();
+    })
+
+    const getUser = async () => {
+        const docRef = doc(db, "Users", auth.currentUser.email);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const userData = docSnap.data();
+            setUser(docSnap.data());
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
+    }
+
     const addComment = () => {
-        console.log(threadId)
-        //TODO
+        if (author == null || comment == null) {
+            alert("Please fill out the required forms")
+        } else {
+            let threadRef = db.collection('Threads').doc(threadId)
+            let today = new Date();
+            let date = +today.getDate()+' '+(today.getMonth()+1)+' '+today.getFullYear();
+            setDate(date);
+
+            threadRef.update({
+                comments: arrayUnion(({
+                    author: user.username,
+                    createdAt: date,
+                    karma: 0,
+                    text: comment,
+                })),
+            })
+                .then(() => {
+                    console.log('Comment Created!');
+                    alert(comment)
+                });
+        }
     }
 
     return (

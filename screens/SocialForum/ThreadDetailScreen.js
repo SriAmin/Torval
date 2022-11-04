@@ -69,7 +69,7 @@ const ThreadDetailScreen = ({ navigation, route, isFocused}) => {
 
                                     {
                                         !user.isMod
-                                            ? <Button style={{marginTop: 20}} title="DeleteBtn" onPress={handleDelete("comment")}><Text>DeleteBtn</Text></Button>
+                                            ? <Button style={{marginTop: 20, width: 10}} title="Delete" onPress={handleDelete("comment")}><Text>Delete</Text></Button>
                                             : <View></View>
                                     }
 
@@ -100,7 +100,7 @@ const ThreadDetailScreen = ({ navigation, route, isFocused}) => {
 
                     {
                         !user.isMod
-                        ? <Button style={{marginTop: 20}} title="DeleteBtn" onPress={handleDelete("thread")}><Text>DeleteBtn</Text></Button>
+                        ? <Button style={{marginTop: 20, width: 10}} title="Delete" onPress={handleDelete("thread")}><Text>Delete</Text></Button>
                         : <View></View>
                     }
 
@@ -110,7 +110,6 @@ const ThreadDetailScreen = ({ navigation, route, isFocused}) => {
                 </View>
                 <Button onPress={() => {
                     navigation.navigate('Create Comment', {threadId : route.params.threadId, commentList: thread.comments})
-                    alert(route.params.threadId)
                 }}
                 title="Create Comment" />
                 <CommentList data={thread.comments} />
