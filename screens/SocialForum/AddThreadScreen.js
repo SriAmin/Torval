@@ -134,7 +134,8 @@ const SocialForumThreadScreen = ({navigation, route}) => {
                 value={title}
                 onChangeText={setTitle}
                 placeholder="Enter the title of your thread"
-                type="text" />
+                type="text"
+                maxLength={21} />
 
             <Text style={styles.text} >Question: </Text>
             <TextInput
@@ -142,7 +143,8 @@ const SocialForumThreadScreen = ({navigation, route}) => {
                 value={description}
                 onChangeText={setDescription}
                 placeholder='Enter a new thread question'
-                type="text" />
+                type="text"
+                maxLength={10000} />
 
             <Text style={styles.text} >Username: </Text>
             <TextInput
