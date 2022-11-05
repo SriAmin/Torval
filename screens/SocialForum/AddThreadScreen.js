@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { StyleSheet, Text, View, Image, Button } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-import { db } from "../../config/firebase";
+import {auth, db} from "../../config/firebase";
 import * as ImagePicker from "expo-image-picker";
 import { Picker } from "native-base";
+import {doc, getDoc} from "firebase/firestore";
 
 const SocialForumThreadScreen = ({ navigation, route }) => {
     let [JSONResult, setJSONResult] = React.useState();
@@ -100,8 +101,27 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
     const [permissions, setPermissions] = React.useState(false);
     const [title, setTitle] = useState(null);
     const [description, setDescription] = useState(null);
-    const [author, setAuthor] = useState(null);
     const [subforum, setSubforum] = useState(null);
+    const [user, setUser] = useState({});
+
+    useEffect(() => {
+        (async () => {
+            await getUser();
+        })();
+    });
+
+    const getUser = async () => {
+        const docRef = doc(db, "Users", auth.currentUser.email);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            docSnap.data();
+            setUser(docSnap.data());
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
+    };
 
     const askPermissionsAsync = async () => {
         let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
@@ -115,7 +135,6 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
 
     const addThreadDoc = () => {
         if (
-            author == null ||
             description == null ||
             title == null ||
             subforum == null
@@ -124,7 +143,7 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
         } else {
             db.collection("Threads")
                 .add({
-                    author: author,
+                    author: user.username,
                     description: description,
                     title: title,
                     comments: [],
@@ -149,7 +168,7 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
                 onChangeText={setTitle}
                 placeholder="Enter the title of your thread"
                 type="text"
-                maxLength={21}
+                maxLength={100}
             />
 
             <Text style={styles.text}>Question: </Text>
@@ -160,15 +179,6 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
                 placeholder="Enter a new thread question"
                 type="text"
                 maxLength={10000}
-            />
-
-            <Text style={styles.text}>Username: </Text>
-            <TextInput
-                style={styles.input}
-                value={author}
-                onChangeText={setAuthor}
-                placeholder="Enter your username (optional)"
-                type="text"
             />
 
             <Picker

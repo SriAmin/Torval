@@ -1,7 +1,8 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-import { getFirestore, setDoc, doc } from 'firebase/firestore';
+import {getFirestore, setDoc, doc, getDoc} from 'firebase/firestore';
 import 'firebase/compat/firestore';
+import {useEffect, useState} from "react";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional

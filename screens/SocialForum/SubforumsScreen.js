@@ -16,6 +16,13 @@ export default function ThreadsScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
+            <Button
+                onPress={() => {
+                    //addForumThread("test", "test", "test");
+                    navigation.navigate("Create A Thread");
+                }}
+                title="Create Thread"
+            />
             <FlatList
                 keyExtractor={(item) => item.id}
                 data={exampleState}
