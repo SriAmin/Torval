@@ -1,37 +1,37 @@
-import React, { useState } from 'react';
-import {Text, View, StyleSheet, Button, TouchableOpacity} from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import React, { useState } from "react";
+import { Text, View, StyleSheet, Button, TouchableOpacity } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 
-export default function ThreadsScreen({navigation}) {
-
+export default function ThreadsScreen({ navigation }) {
     const initialElements = [
-        {id: "gpu", text: "Graphics Card"},
-        {id: "psu", text: "Power Supply"},
-        {id: "mobo", text: "Motherboard"},
-        {id: "watercooling", text: "Watercooling"},
-        {id: "case", text: "Case"},
-        {id: "cpu", text: "CPU"},
-
+        { id: "gpu", text: "Graphics Card" },
+        { id: "psu", text: "Power Supply" },
+        { id: "mobo", text: "Motherboard" },
+        { id: "watercooling", text: "Watercooling" },
+        { id: "case", text: "Case" },
+        { id: "cpu", text: "CPU" },
     ];
 
-    const [exampleState, setExampleState] = useState(initialElements)
-
+    const [exampleState, setExampleState] = useState(initialElements);
 
     return (
         <View style={styles.container}>
             <FlatList
-                keyExtractor = {item => item.id}
+                keyExtractor={(item) => item.id}
                 data={exampleState}
-                renderItem = {item => (
-
-                    <TouchableOpacity style={styles.itemContainer} onPress={() => {
-                        navigation.navigate('ThreadsScreen', { subforumThreadId: item.item.id })}}>
-
+                renderItem={(item) => (
+                    <TouchableOpacity
+                        style={styles.itemContainer}
+                        onPress={() => {
+                            navigation.navigate("ThreadsScreen", {
+                                subforumThreadId: item.item.id,
+                            });
+                        }}
+                    >
                         <Text>{item.item.text}</Text>
-
                     </TouchableOpacity>
-
-                )} />
+                )}
+            />
         </View>
     );
 }
@@ -39,19 +39,19 @@ export default function ThreadsScreen({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F0F0F0',
+        backgroundColor: "#F0F0F0",
     },
     itemContainer: {
         padding: 15,
         borderRadius: 25,
-        margin:8,
-        shadowColor: 'rgba(0,0,0,0)', // IOS
+        margin: 8,
+        shadowColor: "rgba(0,0,0,0)", // IOS
         shadowOffset: { height: 1, width: 1 }, // IOS
         shadowOpacity: 1, // IOS
         shadowRadius: 2, //IOS
-        backgroundColor: '#fff',
+        backgroundColor: "#fff",
         elevation: 3, // Android
-        height: 100
+        height: 100,
     },
     itemImg: {
         height: 50,
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     authorText: {
         paddingTop: 10,
         fontSize: 10,
-        color: 'grey',
+        color: "grey",
     },
     tagList: {
         flexDirection: "row",
@@ -78,10 +78,10 @@ const styles = StyleSheet.create({
         backgroundColor: "#7b42f5",
         margin: 10,
         borderRadius: 10,
-        padding: 5
+        padding: 5,
     },
     tagText: {
         color: "white",
         fontSize: 15,
-    }
+    },
 });

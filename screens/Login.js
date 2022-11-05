@@ -1,59 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
-  Button,
-  Container,
-  Form,
-  Input,
-  Item,
-  Label,
-  Spinner,
-  Text
-} from 'native-base';
+    Button,
+    Container,
+    Form,
+    Input,
+    Item,
+    Label,
+    Spinner,
+    Text,
+} from "native-base";
 import { getAuth, signInAnonymously } from "firebase/auth";
 
-import { auth } from '../config/firebase';
-import {SafeAreaView} from "react-navigation";
+import { auth } from "../config/firebase";
+import { SafeAreaView } from "react-navigation";
 import SignUp from "./SignUp";
 
 const Login = ({ navigation }) => {
-  const [txtEmail, setEmail] = useState('');
-  const [txtPassword, setPassword] = useState('');
-  const [isLoading, setLoading] = useState(false);
-  const signIn = () => {
-    setLoading(true);
-    auth
-      .signInWithEmailAndPassword(txtEmail, txtPassword)
-      .then(result => {
-        if (result) {
-          setLoading(false);
-          navigation.navigate('Torval');
-        }
-      })
-      .catch(({ message }) => {
-        alert(message);
-        setLoading(false);
-      });
-  };
-
-    const signInAnonymous = () => {
-        const auth = getAuth();
-        signInAnonymously(auth)
-            .then(() => {
-                navigation.navigate('Torval')
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }
-
-    const signInAdmin = () => {
+    const [txtEmail, setEmail] = useState("");
+    const [txtPassword, setPassword] = useState("");
+    const [isLoading, setLoading] = useState(false);
+    const signIn = () => {
         setLoading(true);
         auth
-            .signInWithEmailAndPassword("test1234@gmail.com", "test123")
-            .then(result => {
+            .signInWithEmailAndPassword(txtEmail, txtPassword)
+            .then((result) => {
                 if (result) {
                     setLoading(false);
-                    navigation.navigate('Torval');
+                    navigation.navigate("Torval");
                 }
             })
             .catch(({ message }) => {
@@ -62,77 +35,111 @@ const Login = ({ navigation }) => {
             });
     };
 
+    const signInAnonymous = () => {
+        const auth = getAuth();
+        signInAnonymously(auth)
+            .then(() => {
+                navigation.navigate("Torval");
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    const signInAdmin = () => {
+        setLoading(true);
+        auth
+            .signInWithEmailAndPassword("test1234@gmail.com", "test123")
+            .then((result) => {
+                if (result) {
+                    setLoading(false);
+                    navigation.navigate("Torval");
+                }
+            })
+            .catch(({ message }) => {
+                alert(message);
+                setLoading(false);
+            });
+    };
 
     return (
-    <Container>
+        <Container>
+            <SafeAreaView style={{ padding: 20 }}>
+                <Form>
+                    <Item floatingLabel>
+                        <Label>Email</Label>
+                        <Input value={txtEmail} onChangeText={setEmail} />
+                    </Item>
 
-      <SafeAreaView style={{ padding: 20 }}>
-        <Form>
-          <Item floatingLabel>
-            <Label>Email</Label>
-            <Input value={txtEmail} onChangeText={setEmail} />
-          </Item>
+                    <Item floatingLabel>
+                        <Label>Password</Label>
+                        <Input
+                            secureTextEntry
+                            value={txtPassword}
+                            onChangeText={setPassword}
+                        />
+                    </Item>
+                </Form>
 
-          <Item floatingLabel>
-            <Label>Password</Label>
-            <Input
-              secureTextEntry
-              value={txtPassword}
-              onChangeText={setPassword}
-            />
-          </Item>
-        </Form>
+                <Button
+                    style={{
+                        marginTop: 20,
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                    onPress={signIn}
+                    disabled={isLoading}
+                >
+                    {!isLoading ? <Text>Login</Text> : <Spinner color="#eeeeee" />}
+                </Button>
 
+                <Button
+                    style={{
+                        marginTop: 20,
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                    onPress={signInAdmin}
+                    disabled={isLoading}
+                >
+                    {!isLoading ? (
+                        <Text>Login as Admin</Text>
+                    ) : (
+                        <Spinner color="#eeeeee" />
+                    )}
+                </Button>
 
+                <Button
+                    style={{
+                        marginTop: 20,
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                    onPress={signInAnonymous}
+                    disabled={isLoading}
+                >
+                    {!isLoading ? (
+                        <Text>Login Anonymously</Text>
+                    ) : (
+                        <Spinner color="#eeeeee" />
+                    )}
+                </Button>
 
-        <Button
-            style={{
-              marginTop: 20,
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-          onPress={signIn}
-          disabled={isLoading}>
-          {!isLoading ? <Text>Login</Text> : <Spinner color="#eeeeee" />}
-        </Button>
-
-          <Button
-              style={{
-                  marginTop: 20,
-                  alignItems: 'center',
-                  justifyContent: 'center'
-              }}
-              onPress={signInAdmin}
-              disabled={isLoading}>
-              {!isLoading ? <Text>Login as Admin</Text> : <Spinner color="#eeeeee" />}
-          </Button>
-
-          <Button
-              style={{
-                marginTop: 20,
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-              onPress={signInAnonymous}
-              disabled={isLoading}>
-              {!isLoading ? <Text>Login Anonymously</Text> : <Spinner color="#eeeeee" />}
-          </Button>
-
-        <Button
-          transparent
-          style={{
-            marginTop: 20,
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-          onPress={() => navigation.navigate('SignUp')}
-          disabled={isLoading}>
-          <Text>Signup</Text>
-        </Button>
-
-      </SafeAreaView>
-    </Container>
-  );
+                <Button
+                    transparent
+                    style={{
+                        marginTop: 20,
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                    onPress={() => navigation.navigate("SignUp")}
+                    disabled={isLoading}
+                >
+                    <Text>Signup</Text>
+                </Button>
+            </SafeAreaView>
+        </Container>
+    );
 };
 
 export default Login;
