@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {StyleSheet, Text, View, FlatList, Button, ActivityIndicator,} from "react-native";
+import {StyleSheet, Text, View, FlatList, Button, ActivityIndicator, TouchableOpacity,} from "react-native";
 import { auth, db } from "../../config/firebase";
 import { arrayRemove, doc, getDoc } from "firebase/firestore";
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const TutorialButton = ({ followedTutorial, navigation }) => {
     const tutorial = {
@@ -74,13 +75,13 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
                                     <Text style={styles.itemAuthor}>{item.author}</Text>
 
                                     {!user.isMod ? (
-                                        <Button
-                                            style={{ marginTop: 20 }}
+                                        <TouchableOpacity
+                                            style={{ marginTop: 8, left: 1}}
                                             title="Delete Comment"
                                             onPress={() => handleDelete("comment", item)}
                                         >
-                                            <Text>Delete</Text>
-                                        </Button>
+                                            <Ionicons name='trash-outline' size={24} color='red' />
+                                        </TouchableOpacity>
                                     ) : (
                                         <View></View>
                                     )}
@@ -134,13 +135,13 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
 
                     {/* If the user is a moderator, show the delete button */}
                     {!user.isMod ? (
-                        <Button
-                            style={{ marginTop: 20, width: 10 }}
-                            title="Delete Thread"
+                        <TouchableOpacity
+                            style={{ marginTop: 8, left: 1}}
+                            title="Delete thread"
                             onPress={() => handleDelete("thread")}
                         >
-                            <Text>Delete</Text>
-                        </Button>
+                            <Ionicons name='trash-outline' size={24} color='red' />
+                        </TouchableOpacity>
                     ) : (
                         <View></View>
                     )}

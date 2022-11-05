@@ -32,7 +32,7 @@ const AddCommentScreen = ({ navigation, route }) => {
     };
 
     const addComment = () => {
-        if (author == null || comment == null) {
+        if (comment == null) {
             alert("Please fill out the required forms");
         } else {
             let threadRef = db.collection("Threads").doc(threadId);
@@ -72,14 +72,6 @@ const AddCommentScreen = ({ navigation, route }) => {
                 placeholder="Enter the comment of your thread"
                 type="text"
                 maxLength={10000}
-            />
-            <Text style={styles.text}>Author: </Text>
-            <TextInput
-                style={styles.input}
-                value={author}
-                onChangeText={setAuthor}
-                placeholder="Enter your username (optional)"
-                type="text"
             />
 
             <Button
