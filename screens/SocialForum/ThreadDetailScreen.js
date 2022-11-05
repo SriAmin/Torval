@@ -73,11 +73,10 @@ const ThreadDetailScreen = ({ navigation, route, isFocused}) => {
 
         if (type === "comment") {
             let docRef = db.collection('Threads').doc(route.params.threadId)
-            const query = query(docRef, where("comments", "array-contains", comment.id.toString()));
+            //const query = query(docRef, where("comments", "array-contains", comment.id));
 
-            let id = comment.id
             docRef.update({
-                comments: arrayRemove(id),
+                comments: arrayRemove(comment),
             })
                 .then(() => {
                     alert('Comment Deleted!');
