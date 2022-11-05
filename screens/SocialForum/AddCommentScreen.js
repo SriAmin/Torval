@@ -43,6 +43,7 @@ const AddCommentScreen = ({navigation, route}) => {
 
             threadRef.update({
                 comments: arrayUnion(({
+                    id: Date.now(),
                     author: user.username,
                     createdAt: date,
                     karma: 0,

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, FlatList, Button, ActivityIndicator} from 'react-native';
 import {auth, db} from "../../config/firebase";
-import {doc, getDoc} from "firebase/firestore";
+import {arrayUnion, arrayRemove, doc, getDoc, query, where} from "firebase/firestore";
 
 
 const TutorialButton = ({followedTutorial, navigation}) => {
@@ -38,18 +38,6 @@ const ThreadDetailScreen = ({ navigation, route, isFocused}) => {
         }
     }
 
-    async function handleDelete(type) {
-        if (type === "comment") {
-            //DELETE COMMENT
-            alert("Comment deleted")
-            navigation.refresh();
-        } else {
-            await db.collection('Threads').doc(route.params.threadId).get().delete();
-            alert("Thread deleted")
-            navigation.goBack();
-        }
-    }
-
     //This is used to conditional render the list if there are comments for the thread or if none exist at the moment
     const CommentList = ({data}) => {
         if (data === undefined)
@@ -69,7 +57,7 @@ const ThreadDetailScreen = ({ navigation, route, isFocused}) => {
 
                                     {
                                         !user.isMod
-                                            ? <Button style={{marginTop: 20, width: 10}} title="Delete" onPress={handleDelete("comment")}><Text>Delete</Text></Button>
+                                            ? <Button style={{marginTop: 20}} title="Delete Comment" onPress={() => handleDelete("comment", item)}><Text>Delete</Text></Button>
                                             : <View></View>
                                     }
 
@@ -78,6 +66,29 @@ const ThreadDetailScreen = ({ navigation, route, isFocused}) => {
                         }}
                     />
                 )
+        }
+    }
+
+    async function handleDelete(type, comment=null) {
+
+        if (type === "comment") {
+            let docRef = db.collection('Threads').doc(route.params.threadId)
+            const query = query(docRef, where("comments", "array-contains", comment.id.toString()));
+
+            let id = comment.id
+            docRef.update({
+                comments: arrayRemove(id),
+            })
+                .then(() => {
+                    alert('Comment Deleted!');
+                });
+        }
+
+        else {
+            await db.collection('Threads').doc(route.params.threadId).delete();
+            alert("Thread deleted")
+            navigation.goBack();
+            navigation.refresh();
         }
     }
 
@@ -90,17 +101,20 @@ const ThreadDetailScreen = ({ navigation, route, isFocused}) => {
         })();
     }, [isFocused]);
 
+    // Show ActivityIndicator if loading
     if (loading)
         return <ActivityIndicator />
+
     else {
         return (
             <View style={styles.container}>
                 <View style={[{marginBottom: 10, padding: 15}]}>
                     <Text style={[{fontSize: 18}]}>{thread.title}</Text>
 
+                    {/* If the user is a moderator, show the delete button */}
                     {
                         !user.isMod
-                        ? <Button style={{marginTop: 20, width: 10}} title="Delete" onPress={handleDelete("thread")}><Text>Delete</Text></Button>
+                        ? <Button style={{marginTop: 20, width: 10}} title="Delete Thread" onPress={() => handleDelete("thread")}><Text>Delete</Text></Button>
                         : <View></View>
                     }
 
@@ -118,6 +132,19 @@ const ThreadDetailScreen = ({ navigation, route, isFocused}) => {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+// STYLING
 const styles = StyleSheet.create({
     container: {
         flex: 1,
