@@ -64,7 +64,7 @@ const TutorialListView = ({navigation}) => {
             <FlatList
                 data={tutorialList}
                 keyExtractor={item => item.title}
-                renderItem={({item}) => {
+                renderItem={({item, index}) => {
                     return (
                         <View style={styles.itemContainer}>
                             <View style={[{flex:1}]}>
@@ -86,7 +86,7 @@ const TutorialListView = ({navigation}) => {
                                     if (Platform.OS == "web") {
                                         alert("Sorry, currently this function doesn't work properly on this platform.")
                                     } else {
-                                        navigation.navigate('Tutorial')
+                                        navigation.navigate('Tutorial', {tutorialIndex: index})
                                     }
                                 }}>
                                     <AntDesign name="caretright" size={24} color="white" />
