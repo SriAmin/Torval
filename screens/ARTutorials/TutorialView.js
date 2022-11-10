@@ -13,14 +13,15 @@ import {
 } from '@viro-community/react-viro';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Animated } from 'react-native';
 import { Ionicons, Entypo, Feather } from '@expo/vector-icons';
+import { userDocument, updateTutorialStep} from '../../config/firebase';
 
 import TutorialSceneAR from '../../components/TutorialSceneAR';
 import CleanTutorialARScene from '../../components/CleanTutorialARScene';
-import InstructionSubMenu, {stepMenu} from './InstructionSubMenu';
+import InstructionSubMenu, { stepMenu } from './InstructionSubMenu';
 
-import {Tutorials} from '../../components/TutorialInstructions';
+import { Tutorials } from '../../components/TutorialInstructions';
 
-const TutorialView = ({ navigation, route}) => {
+const TutorialView = ({ navigation, route }) => {
     /*
     TutorialView will provide the use the AR environment, using Viro and the ViroARSceneNavigator
     we can show a user a ViroARScene by passing a step property to show the correct 3D model. 
@@ -34,8 +35,40 @@ const TutorialView = ({ navigation, route}) => {
     View component with ViroARSceneNavigator and 2D UI components
     */
 
+    const tutorialIndex = route.params.tutorialIndex;
+    let tempTutorialStep;
+    let ARSceneNavgiator;
+
+    if (tutorialIndex == 1) {
+        tempTutorialStep = userDocument.tutorialLastStep.cleanAComputer;
+        tutorialInstructions = Tutorials[1];
+        ARSceneNavgiator = <ViroARSceneNavigator
+            autofocus={true}
+            initialScene={{
+                scene: CleanTutorialARScene,
+                passProps: { modelName: "Step" + tempTutorialStep.toString() }
+            }}
+            videoQuality="Low"
+            ref={arSceneNav}
+            style={styles.f1}
+        />
+    } else {
+        tempTutorialStep = userDocument.tutorialLastStep.buildAComputer;
+        tutorialInstructions = Tutorials[0];
+        ARSceneNavgiator = <ViroARSceneNavigator
+            autofocus={true}
+            initialScene={{
+                scene: TutorialSceneAR,
+                passProps: { modelName: "Step" + tempTutorialStep.toString() }
+            }}
+            videoQuality="Low"
+            ref={arSceneNav}
+            style={styles.f1}
+        />
+    }
+
     //State variables to keep track of the tutorials state
-    const [tutorialStep, setTutorialStep] = useState(1);
+    const [tutorialStep, setTutorialStep] = useState(tempTutorialStep);
     // const [stepMenu, setStepMenu] = useState(false);
     const [opacityCoverActive, setOpacityCover] = useState(false);
 
@@ -44,35 +77,6 @@ const TutorialView = ({ navigation, route}) => {
     let opacityCover;
 
     let tutorialInstructions;
-
-    const tutorialIndex = route.params.tutorialIndex;
-    let ARSceneNavgiator;
-
-    if (tutorialIndex == 1) {
-        tutorialInstructions = Tutorials[1];
-        ARSceneNavgiator = <ViroARSceneNavigator
-                                    autofocus={true}
-                                    initialScene={{
-                                        scene: CleanTutorialARScene,
-                                        passProps: { modelName: "Step1" }
-                                    }}
-                                    videoQuality="Low"
-                                    ref={arSceneNav}
-                                    style={styles.f1}
-                                />
-    } else {
-        tutorialInstructions = Tutorials[0];
-        ARSceneNavgiator = <ViroARSceneNavigator
-                                    autofocus={true}
-                                    initialScene={{
-                                        scene: TutorialSceneAR,
-                                        passProps: { modelName: "Step1" }
-                                    }}
-                                    videoQuality="Low"
-                                    ref={arSceneNav}
-                                    style={styles.f1}
-                                />
-    }
 
     //Based on the stepMenu variable, show the Step Sub Menu
     if (opacityCoverActive) {
@@ -113,10 +117,11 @@ const TutorialView = ({ navigation, route}) => {
 
         //If we are at the last step, go back to TutorialListView
         if (tutorialStep == 15) {
+            await updateTutorialStep("buildAComputer", 1);
             navigation.goBack();
         } else {
-            setTutorialStep(tutorialStep+1);
-            const tempStep = tutorialStep+1;
+            setTutorialStep(tutorialStep + 1);
+            const tempStep = tutorialStep + 1;
             changeARScene(tempStep);
         }
         console.log("Pushed out Scene");
@@ -134,8 +139,8 @@ const TutorialView = ({ navigation, route}) => {
         if (tutorialStep == 1) {
             navigation.goBack();
         } else {
-            setTutorialStep(tutorialStep-1);
-            const tempStep = tutorialStep-1;
+            setTutorialStep(tutorialStep - 1);
+            const tempStep = tutorialStep - 1;
             changeARScene(tempStep);
         }
         console.log("Popped out Scene");
@@ -157,29 +162,36 @@ const TutorialView = ({ navigation, route}) => {
     const changeARScene = (stepIndex) => {
         arSceneNav.current.arSceneNavigator.pop()
         if (tutorialIndex == 1) {
-            arSceneNav.current.arSceneNavigator.push({ 
-                scene: CleanTutorialARScene, 
-                passProps: { modelName: "Step" + stepIndex.toString() } 
+            arSceneNav.current.arSceneNavigator.push({
+                scene: CleanTutorialARScene,
+                passProps: { modelName: "Step" + stepIndex.toString() }
             })
         } else {
-            arSceneNav.current.arSceneNavigator.push({ 
-                scene: TutorialSceneAR, 
-                passProps: { modelName: "Step" + stepIndex.toString() } 
+            arSceneNav.current.arSceneNavigator.push({
+                scene: TutorialSceneAR,
+                passProps: { modelName: "Step" + stepIndex.toString() }
             })
         }
+    }
+
+    const exitTutorial = async () => {
+        await updateTutorialStep("buildAComputer", tutorialStep);
+        navigation.goBack();
     }
 
     return (
         <View style={styles.arView}>
             {ARSceneNavgiator}
-            <TouchableOpacity style={styles.backButton} onPress={navigation.goBack}>
+            <TouchableOpacity style={styles.backButton} onPress={() => {
+                exitTutorial();
+            }}>
                 <Ionicons name="arrow-back-circle-outline" size={40} color="white" />
             </TouchableOpacity>
             <View style={styles.uiView}>
-                <Text style={styles.instruction}>{tutorialInstructions[tutorialStep-1].title}</Text>
-                <Text style={styles.instruction}>{tutorialInstructions[tutorialStep-1].step}</Text>
+                <Text style={styles.instruction}>{tutorialInstructions[tutorialStep - 1].title}</Text>
+                <Text style={styles.instruction}>{tutorialInstructions[tutorialStep - 1].step}</Text>
                 <View style={styles.buttonGroup}>
-                    <TouchableOpacity style={styles.button} onPress={() => { 
+                    <TouchableOpacity style={styles.button} onPress={() => {
                         previousStep()
                     }}>
                         <Entypo name="arrow-bold-left" size={24} color="white" />
@@ -192,7 +204,7 @@ const TutorialView = ({ navigation, route}) => {
                 </View>
             </View>
             {opacityCover}
-            <InstructionSubMenu tutorial={tutorialInstructions} opacityCoverFunction={setOpacityCover} jumpStepFunction={jumpStep}/>
+            <InstructionSubMenu tutorial={tutorialInstructions} opacityCoverFunction={setOpacityCover} jumpStepFunction={jumpStep} />
         </View>
     );
 }

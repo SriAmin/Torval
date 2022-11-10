@@ -10,7 +10,6 @@ import {
   Text
 } from 'native-base';
 import { getAuth, signInAnonymously } from "firebase/auth";
-
 import { auth, signInAuthAdmin, userDocument} from '../config/firebase';
 import {SafeAreaView} from "react-navigation";
 import SignUp from "./SignUp";

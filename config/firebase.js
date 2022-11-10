@@ -1,6 +1,6 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-import { getFirestore, setDoc, getDoc, doc } from 'firebase/firestore';
+import { getFirestore, setDoc, getDoc, updateDoc, doc} from 'firebase/firestore';
 import 'firebase/compat/firestore';
 
 // Your web app's Firebase configuration
@@ -74,4 +74,22 @@ const getUserDocument = async () => {
     }
 }
 
-export { db, auth, firestore, visionKey, signInAuthAdmin, userDocument};
+const updateTutorialStep = async (tutorial, step) => {
+    const docRef = doc(db, "Users", auth.currentUser.email);
+
+    if (tutorial == "cleanAComputer") {
+        await updateDoc(docRef, {
+            "tutorialLastStep.cleanAComputer": step
+        }).then(() => {
+            getUserDocument();
+        });
+    } else {
+        await updateDoc(docRef, {
+            "tutorialLastStep.buildAComputer": step
+        }).then(() => {
+            getUserDocument();
+        });
+    }
+}
+
+export { db, auth, firestore, visionKey, signInAuthAdmin, userDocument, updateTutorialStep};
