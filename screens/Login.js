@@ -11,7 +11,7 @@ import {
 } from 'native-base';
 import { getAuth, signInAnonymously } from "firebase/auth";
 
-import { auth } from '../config/firebase';
+import { auth, signInAuthAdmin, userDocument} from '../config/firebase';
 import {SafeAreaView} from "react-navigation";
 import SignUp from "./SignUp";
 
@@ -46,20 +46,12 @@ const Login = ({ navigation }) => {
             });
     }
 
-    const signInAdmin = () => {
-        setLoading(true);
-        auth
-            .signInWithEmailAndPassword("test1234@gmail.com", "test123")
-            .then(result => {
-                if (result) {
-                    setLoading(false);
-                    navigation.navigate('Torval');
-                }
-            })
-            .catch(({ message }) => {
-                alert(message);
-                setLoading(false);
-            });
+    const signInAdmin = async () => {
+      setLoading(true);
+      if (await signInAuthAdmin()) {
+        navigation.navigate('Torval');
+      }
+      setLoading(false);
     };
 
 

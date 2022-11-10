@@ -1,6 +1,6 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-import { getFirestore, setDoc, doc } from 'firebase/firestore';
+import { getFirestore, setDoc, getDoc, doc } from 'firebase/firestore';
 import 'firebase/compat/firestore';
 
 // Your web app's Firebase configuration
@@ -28,4 +28,50 @@ const visionKey = 'AIzaSyDzjcsZn0Y7B3pvAdLFCtU7DNejuxuzKU0'
 const auth = firebase.auth();
 const firestore = getFirestore(app);
 
-export { db, auth, firestore, visionKey };
+let userDocument;
+
+const signIn = () => {
+    auth
+        .signInWithEmailAndPassword(txtEmail, txtPassword)
+        .then(result => {
+            if (result) {
+                return 1;
+            }
+        })
+        .catch(({ message }) => {
+            alert(message);
+            return 0;
+        });
+
+    return 0;
+}
+
+const signInAuthAdmin = async () => {
+    let signInResult = false;
+    await auth
+        .signInWithEmailAndPassword("test1234@gmail.com", "test123")
+        .then(async result => {
+            if (result) {
+                signInResult = true;
+                await getUserDocument();
+            }
+        })
+        .catch(({ message }) => {
+            alert(message);;
+        });
+    return signInResult;
+}
+
+const getUserDocument = async () => {
+    const docRef = doc(db, "Users", auth.currentUser.email);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        userDocument = docSnap.data();
+    } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+    }
+}
+
+export { db, auth, firestore, visionKey, signInAuthAdmin, userDocument};
