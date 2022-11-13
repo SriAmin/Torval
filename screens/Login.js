@@ -10,7 +10,7 @@ import {
   Text
 } from 'native-base';
 import { getAuth, signInAnonymously } from "firebase/auth";
-import { auth, signInAuthAdmin, userDocument} from '../config/firebase';
+import { auth, signInAuthAdmin, signInAuthAnonymous} from '../config/firebase';
 import {SafeAreaView} from "react-navigation";
 import SignUp from "./SignUp";
 
@@ -34,15 +34,10 @@ const Login = ({ navigation }) => {
       });
   };
 
-    const signInAnonymous = () => {
-        const auth = getAuth();
-        signInAnonymously(auth)
-            .then(() => {
-                navigation.navigate('Torval')
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+    const signInAnonymous = async () => {
+        if (await signInAuthAnonymous()) {
+          navigation.navigate('Torval');
+        }
     }
 
     const signInAdmin = async () => {

@@ -40,7 +40,8 @@ const TutorialView = ({ navigation, route }) => {
     let ARSceneNavgiator;
 
     if (tutorialIndex == 1) {
-        tempTutorialStep = userDocument.tutorialLastStep.cleanAComputer;
+        const lastStep = userDocument.tutorialLastStep.cleanAComputer;
+        tempTutorialStep = (lastStep == undefined || lastStep == null) ? 1 : lastStep;
         tutorialInstructions = Tutorials[1];
         ARSceneNavgiator = <ViroARSceneNavigator
             autofocus={true}
@@ -53,7 +54,8 @@ const TutorialView = ({ navigation, route }) => {
             style={styles.f1}
         />
     } else {
-        tempTutorialStep = userDocument.tutorialLastStep.buildAComputer;
+        const lastStep = userDocument.tutorialLastStep.buildAComputer;
+        tempTutorialStep = (lastStep == undefined || lastStep == null) ? 1 : lastStep;
         tutorialInstructions = Tutorials[0];
         ARSceneNavgiator = <ViroARSceneNavigator
             autofocus={true}

@@ -47,6 +47,12 @@ const SignUp = ({ navigation }) => {
                   karmaLevel: 0,
                   username: result.user.displayName,
                   ModForums: [],
+                  tutorialLastStep: {
+                    buildAComputer: 1,
+                    cleanAComputer: 1,
+                    gpuInstallation: 1,
+                    waterCooling: 1
+                  },
                 })
             }).catch((error) => {
                 alert(error);

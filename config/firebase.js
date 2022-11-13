@@ -1,6 +1,7 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-import { getFirestore, setDoc, getDoc, updateDoc, doc} from 'firebase/firestore';
+import { getAuth, signInAnonymously } from "firebase/auth";
+import { getFirestore, setDoc, getDoc, updateDoc, doc } from 'firebase/firestore';
 import 'firebase/compat/firestore';
 
 // Your web app's Firebase configuration
@@ -44,6 +45,31 @@ const signIn = () => {
         });
 
     return 0;
+}
+
+const signInAuthAnonymous = async () => {
+    let signInResult = false;
+    await signInAnonymously(auth)
+        .then(() => {
+            userDocument = {
+                email: "JohnDoe@gmail.com",
+                isMod: false,
+                karmaLevel: 0,
+                username: "John Doe",
+                ModForums: [],
+                tutorialLastStep: {
+                    buildAComputer: 1,
+                    cleanAComputer: 1,
+                    gpuInstallation: 1,
+                    waterCooling: 1
+                }
+            }
+            signInResult = true;
+        })
+        .catch((error) => {
+            alert(error);
+        });
+    return signInResult;
 }
 
 const signInAuthAdmin = async () => {
@@ -92,4 +118,4 @@ const updateTutorialStep = async (tutorial, step) => {
     }
 }
 
-export { db, auth, firestore, visionKey, signInAuthAdmin, userDocument, updateTutorialStep};
+export { db, auth, firestore, visionKey, signInAuthAnonymous, signInAuthAdmin, userDocument, updateTutorialStep };

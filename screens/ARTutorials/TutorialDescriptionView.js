@@ -9,6 +9,7 @@ from here.
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { userDocument } from '../../config/firebase';
 
 import {
     ViroBox,
@@ -17,7 +18,7 @@ import {
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const DifficultyElement = ({difficulty}) => {
+const DifficultyElement = ({ difficulty }) => {
     /*
     DifficultyElement is there to compute the logic of the difficulty field and gives a UI component
     that translate that value
@@ -28,19 +29,20 @@ const DifficultyElement = ({difficulty}) => {
     Returns:
     FlatList component
     */
+   
     const difficultyList = []
     for (let index = 0; index < difficulty; index++) {
         difficultyList.push(true)
     }
     for (let index = difficulty; index <= 4; index++) {
-        difficultyList.push(false) 
+        difficultyList.push(false)
     }
 
     return (
         <FlatList
             data={difficultyList}
             horizontal={true}
-            renderItem={({item}) => {
+            renderItem={({ item }) => {
                 if (item) {
                     return (
                         <AntDesign name="star" size={24} color="black" />
@@ -67,23 +69,45 @@ const TutorialDescriptionView = ({ navigation, route }) => {
     Returns:
     FlatList component
     */
+    const index = route.params.tutorialIndex;
     let tutorialInfo = route.params.tutorial;
     console.log(tutorialInfo)
-    
+
+    const lastStep = userDocument.tutorialLastStep;
+    let lastStepArray = [];
+    if (lastStep != undefined || lastStep != null) {
+        lastStepArray = [
+            lastStep.buildAComputer,
+            lastStep.cleanAComputer,
+            lastStep.gpuInstallation,
+            lastStep.waterCooling
+        ];
+    }
+    else {
+        lastStepArray = [1,1,1,1];
+    }
+
     return (
         <View style={styles.container}>
-             <Image style={styles.itemImg} 
-                                    source={{
-                                        uri: tutorialInfo.image,
-                                    }}/>
-            <View style={{backgroundColor: "black", width: windowWidth, height: 5, marginBottom: 30}}/>
+            <Image style={styles.itemImg}
+                source={{
+                    uri: tutorialInfo.image,
+                }} />
+            <View style={{ backgroundColor: "black", width: windowWidth, height: 5, marginBottom: 30 }} />
             <View styles={styles.infoContainer}>
                 <Text style={styles.title}>{tutorialInfo.title}</Text>
                 <Text style={styles.desc}>{tutorialInfo.description}</Text>
-                <DifficultyElement difficulty={tutorialInfo.difficulty}/>
-                <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('Tutorial')}}>
-                    <Text style={{color: "white", fontSize: 18, marginRight: 10}}>Start</Text>
+                <DifficultyElement difficulty={tutorialInfo.difficulty} />
+                <TouchableOpacity style={styles.button} onPress={() => {
+                    if (Platform.OS == "web") {
+                        alert("Sorry, currently this function doesn't work properly on this platform.")
+                    } else {
+                        navigation.navigate('Tutorial', { tutorialIndex: index })
+                    }
+                }}>
+                    <Text style={{ color: "white", fontSize: 18, marginRight: 10 }}>Start</Text>
                     <AntDesign name="caretright" size={30} color="white" />
+                    <Text style={{color: "white", paddingLeft: 5}}> Step {lastStepArray[index]}</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -96,7 +120,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     infoContainer: {
-        
+
     },
     itemImg: {
         width: windowWidth,
@@ -104,11 +128,11 @@ const styles = StyleSheet.create({
         borderBottomWidth: 3
     },
     title: {
-      padding: 10,
-      marginBottom: 15,
-      fontSize: 24,
-      textAlign: "center",
-      color: "#7b42f5"
+        padding: 10,
+        marginBottom: 15,
+        fontSize: 24,
+        textAlign: "center",
+        color: "#7b42f5"
     },
     desc: {
         fontSize: 16,
@@ -130,6 +154,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center"
     }
-  });
+});
 
 export default TutorialDescriptionView;
