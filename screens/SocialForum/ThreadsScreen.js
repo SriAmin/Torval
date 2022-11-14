@@ -1,13 +1,23 @@
 import React, { useState, useEffect } from "react";
-import {StyleSheet, Text, View, FlatList, TouchableOpacity, Image, Button, ActivityIndicator,} from "react-native";
+import {
+    StyleSheet,
+    Text,
+    View,
+    FlatList,
+    TouchableOpacity,
+    Image,
+    Button,
+    ActivityIndicator,
+} from "react-native";
 import { db, firestore } from "../../config/firebase";
+import { FAB } from "react-native-paper";
 
 //Handles the description for the thread to either display the shortened version or the full version
 const ShortDescription = (props) => {
     if (props.string.length >= 150) {
         const newString = props.string.substring(0, 150) + " ...";
-        return <Text styles={styles.desc}>{newString}</Text>;
-    } else return <Text styles={styles.desc}>{props.string}</Text>;
+        return <Text style={styles.desc}>{newString}</Text>;
+    } else return <Text style={styles.desc}>{props.string}</Text>;
 };
 
 //Returns an image based on if the resolved field is set to true/false
@@ -25,7 +35,9 @@ const Resolved = (props) => {
         return (
             <Image
                 style={styles.itemImg}
-                source={{ uri: "https://static.thenounproject.com/png/962182-200.png" }}
+                source={{
+                    uri: "https://tnunitedsc.com/wp-content/uploads/2022/04/Group-712.png",
+                }}
             />
         );
 };
@@ -59,13 +71,6 @@ const ThreadsScreen = ({ navigation, route }) => {
     else {
         return (
             <View style={styles.container}>
-                <Button
-                    onPress={() => {
-                        //addForumThread("test", "test", "test");
-                        navigation.navigate("Create A Thread");
-                    }}
-                    title="Create Thread"
-                />
                 <FlatList
                     data={tutorialList}
                     renderItem={({ item }) => {
@@ -99,6 +104,16 @@ const ThreadsScreen = ({ navigation, route }) => {
                         );
                     }}
                 />
+
+                <FAB
+                    icon="pen"
+                    size="large"
+                    style={styles.fab}
+                    onPress={() => {
+                        navigation.navigate("Create A Thread");
+                    }}
+                    title="Create Thread"
+                />
             </View>
         );
     }
@@ -107,7 +122,7 @@ const ThreadsScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#F0F0F0",
+        backgroundColor: "#002347",
     },
     itemContainer: {
         padding: 15,
@@ -117,26 +132,29 @@ const styles = StyleSheet.create({
         shadowOffset: { height: 1, width: 1 }, // IOS
         shadowOpacity: 1, // IOS
         shadowRadius: 2, //IOS
-        backgroundColor: "#fff",
+        backgroundColor: "#003366",
         elevation: 3, // Android
     },
     itemImg: {
-        height: 50,
-        width: 50,
+        height: 40,
+        width: 40,
     },
     itemTitle: {
         padding: 10,
         fontSize: 18,
         height: 44,
+        color: "white",
     },
     desc: {
-        fontSize: 8,
-        padding: 10,
+        fontSize: 12,
+        paddingLeft: 11,
+        color: "white",
     },
     authorText: {
         paddingTop: 10,
+        paddingLeft: 11,
         fontSize: 10,
-        color: "grey",
+        color: "#FF8E00",
     },
     tagList: {
         flexDirection: "row",
@@ -150,6 +168,13 @@ const styles = StyleSheet.create({
     tagText: {
         color: "white",
         fontSize: 15,
+    },
+    fab: {
+        position: "absolute",
+        margin: 16,
+        right: 0,
+        bottom: 0,
+        backgroundColor: "#FF8E00",
     },
 });
 

@@ -1,43 +1,91 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, Button, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import { FAB, Avatar, Card } from "react-native-paper";
 
 export default function ThreadsScreen({ navigation }) {
     const initialElements = [
-        { id: "gpu", text: "Graphics Card" },
-        { id: "psu", text: "Power Supply" },
-        { id: "mobo", text: "Motherboard" },
-        { id: "watercooling", text: "Watercooling" },
-        { id: "case", text: "Case" },
-        { id: "cpu", text: "CPU" },
+        {
+            id: "gpu",
+            text: "Graphics Card",
+            icon: "expansion-card",
+            subtitle: "Display and 3D graphics performance.",
+        },
+        {
+            id: "psu",
+            text: "Power Supply",
+            icon: "power-plug",
+            subtitle: "Responsible for power transfer to the computer.",
+        },
+        {
+            id: "mobo",
+            text: "Motherboard",
+            icon: "integrated-circuit-chip",
+            subtitle: "Where all of the components are connected.",
+        },
+        {
+            id: "watercooling",
+            text: "Watercooling",
+            icon: "water-circle",
+            subtitle: "Method of cooling the computer.",
+        },
+        {
+            id: "case",
+            text: "Case",
+            icon: "file-table-box",
+            subtitle: "The housing of every component in the computer.",
+        },
+        {
+            id: "cpu",
+            text: "CPU",
+            icon: "memory",
+            subtitle: "The brain of the computer.",
+        },
     ];
 
-    const [exampleState, setExampleState] = useState(initialElements);
+    const [exampleState] = useState(initialElements);
 
     return (
         <View style={styles.container}>
-            <Button
-                onPress={() => {
-                    //addForumThread("test", "test", "test");
-                    navigation.navigate("Create A Thread");
-                }}
-                title="Create Thread"
-            />
             <FlatList
                 keyExtractor={(item) => item.id}
                 data={exampleState}
-                renderItem={(item) => (
-                    <TouchableOpacity
-                        style={styles.itemContainer}
-                        onPress={() => {
-                            navigation.navigate("ThreadsScreen", {
-                                subforumThreadId: item.item.id,
-                            });
-                        }}
-                    >
-                        <Text>{item.item.text}</Text>
-                    </TouchableOpacity>
-                )}
+                renderItem={(item) => {
+                    return (
+                        <TouchableOpacity
+                            style={styles.touchableOpacity}
+                            onPress={() => {
+                                navigation.navigate("ThreadsScreen", {
+                                    subforumThreadId: item.item.id,
+                                });
+                            }}
+                        >
+                            <Card.Title
+                                title={item.item.text}
+                                titleStyle={{ color: "white" }}
+                                subtitle={item.item.subtitle}
+                                subtitleStyle={{ color: "white" }}
+                                left={(props) => (
+                                    <Avatar.Icon
+                                        {...props}
+                                        icon={item.item.icon}
+                                        backgroundColor={"#FF8E00"}
+                                        size={45}
+                                    />
+                                )}
+                            />
+                        </TouchableOpacity>
+                    );
+                }}
+            />
+            <FAB
+                icon="pen"
+                size="large"
+                style={styles.fab}
+                onPress={() => {
+                    navigation.navigate("Create A Thread");
+                }}
+                title="Create Thread"
             />
         </View>
     );
@@ -46,19 +94,18 @@ export default function ThreadsScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#F0F0F0",
+        backgroundColor: "#002347",
     },
-    itemContainer: {
-        padding: 15,
-        borderRadius: 25,
+    touchableOpacity: {
+        borderRadius: 50,
         margin: 8,
         shadowColor: "rgba(0,0,0,0)", // IOS
         shadowOffset: { height: 1, width: 1 }, // IOS
         shadowOpacity: 1, // IOS
         shadowRadius: 2, //IOS
-        backgroundColor: "#fff",
+        backgroundColor: "#003366",
         elevation: 3, // Android
-        height: 100,
+        height: 75,
     },
     itemImg: {
         height: 50,
@@ -90,5 +137,13 @@ const styles = StyleSheet.create({
     tagText: {
         color: "white",
         fontSize: 15,
+    },
+    fab: {
+        position: "absolute",
+        margin: 16,
+        right: 0,
+        bottom: 0,
+        backgroundColor: "#FF8E00",
+        color: "#000",
     },
 });

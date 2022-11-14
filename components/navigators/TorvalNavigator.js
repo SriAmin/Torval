@@ -60,7 +60,7 @@ const TorvalNavigator = ({navigation}) => {
             >
                 <Tab.Screen name="Tutorials" component={TutoriaNavigator} />
                 <Tab.Screen name="Forum" component={SocialForumNavigation} />
-                <Tab.Screen name="Chatbot" component={ChatbotScreen} />
+                <Tab.Screen name="Chatbot" component={ChatbotScreen}  />
                 <Tab.Screen name="Profile" component={ProfileScreen} />
             </Tab.Navigator>
       );

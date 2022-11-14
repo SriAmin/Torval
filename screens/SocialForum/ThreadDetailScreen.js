@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from "react";
-import {StyleSheet, Text, View, FlatList, Button, ActivityIndicator, TouchableOpacity,} from "react-native";
+import {
+    StyleSheet,
+    Text,
+    View,
+    FlatList,
+    ActivityIndicator,
+    TouchableOpacity,
+    Image,
+} from "react-native";
 import { auth, db } from "../../config/firebase";
 import { arrayRemove, doc, getDoc } from "firebase/firestore";
-import Ionicons from '@expo/vector-icons/Ionicons';
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { FAB, Button } from "react-native-paper";
 
 const TutorialButton = ({ followedTutorial, navigation }) => {
     const tutorial = {
@@ -71,20 +80,25 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
                         renderItem={({ item }) => {
                             return (
                                 <View style={styles.itemContainer}>
-                                    <Text style={styles.itemTitle}>{item.text}</Text>
+                                    <View
+                                        style={[
+                                            { flexDirection: "row", justifyContent: "space-between" },
+                                        ]}
+                                    >
+                                        <Text style={styles.itemTitle}>{item.text}</Text>
+                                        {!user.isMod ? (
+                                            <TouchableOpacity
+                                                style={{ left: 1 }}
+                                                title="Delete Comment"
+                                                onPress={() => handleDelete("comment", item)}
+                                            >
+                                                <Ionicons name="trash-outline" size={24} color="red" />
+                                            </TouchableOpacity>
+                                        ) : (
+                                            <View></View>
+                                        )}
+                                    </View>
                                     <Text style={styles.itemAuthor}>{item.author}</Text>
-
-                                    {!user.isMod ? (
-                                        <TouchableOpacity
-                                            style={{ marginTop: 8, left: 1}}
-                                            title="Delete Comment"
-                                            onPress={() => handleDelete("comment", item)}
-                                        >
-                                            <Ionicons name='trash-outline' size={24} color='red' />
-                                        </TouchableOpacity>
-                                    ) : (
-                                        <View></View>
-                                    )}
                                 </View>
                             );
                         }}
@@ -130,39 +144,52 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
     else {
         return (
             <View style={styles.container}>
-                <View style={[{ marginBottom: 10, padding: 15 }]}>
-                    <Text style={[{ fontSize: 18 }]}>{thread.title}</Text>
+                <View
+                    style={[{ flexDirection: "row", justifyContent: "space-between" }]}
+                >
+                    <Button
+                        labelStyle={{ fontSize: 28 }}
+                        icon="arrow-left"
+                        color={"white"}
+                        onPress={() => navigation.goBack()}
+                    ></Button>
 
                     {/* If the user is a moderator, show the delete button */}
                     {!user.isMod ? (
                         <TouchableOpacity
-                            style={{ marginTop: 8, left: 1}}
+                            style={{ marginTop: 16, margin: 16 }}
                             title="Delete thread"
                             onPress={() => handleDelete("thread")}
                         >
-                            <Ionicons name='trash-outline' size={24} color='red' />
+                            <Ionicons name="trash-outline" size={24} color="red" />
                         </TouchableOpacity>
                     ) : (
                         <View></View>
                     )}
-
-                    <Text style={styles.threadAuthor}>{thread.author}</Text>
-                    <Text style={styles.threadTitle}>{thread.description}</Text>
-                    <TutorialButton
-                        followedTutorial={thread.followedTutorial}
-                        navigation={navigation}
-                    />
                 </View>
-                <Button
+
+                <Text style={styles.threadTitle}>{thread.title}</Text>
+                <Text style={styles.threadAuthor}>{thread.author}</Text>
+                <Text style={styles.threadDescription}>{thread.description}</Text>
+                <TutorialButton
+                    followedTutorial={thread.followedTutorial}
+                    navigation={navigation}
+                />
+
+                <CommentList data={thread.comments} />
+
+                <FAB
+                    icon="comment"
+                    size="large"
+                    style={styles.fab}
                     onPress={() => {
                         navigation.navigate("Create Comment", {
                             threadId: route.params.threadId,
                             commentList: thread.comments,
                         });
                     }}
-                    title="Create Comment"
+                    title="Create Thread"
                 />
-                <CommentList data={thread.comments} />
             </View>
         );
     }
@@ -171,17 +198,28 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
 // STYLING
 const styles = StyleSheet.create({
     container: {
+        paddingTop: 40,
         flex: 1,
-        backgroundColor: "#F0F0F0",
+        backgroundColor: "#002347",
     },
     threadAuthor: {
-        padding: 5,
-        paddingBottom: 15,
-        color: "grey",
+        paddingLeft: 16,
+        color: "#FF8E00",
         fontSize: 12,
     },
-    threadTitle: {
+    threadDescription: {
         fontSize: 15,
+        paddingLeft: 16,
+        paddingRight: 16,
+        paddingTop: 8,
+        color: "white",
+    },
+    threadTitle: {
+        fontSize: 28,
+        paddingLeft: 16,
+        paddingRight: 16,
+        paddingBottom: 8,
+        color: "white",
     },
     itemContainer: {
         padding: 15,
@@ -191,16 +229,26 @@ const styles = StyleSheet.create({
         shadowOffset: { height: 1, width: 1 }, // IOS
         shadowOpacity: 1, // IOS
         shadowRadius: 2, //IOS
-        backgroundColor: "#fff",
+        backgroundColor: "#003366",
         elevation: 3, // Android
     },
     itemTitle: {
         fontSize: 15,
+        paddingLeft: 11,
+        color: "white",
     },
     itemAuthor: {
         fontSize: 10,
         padding: 10,
-        color: "grey",
+        color: "#FF8E00",
+    },
+    fab: {
+        position: "absolute",
+        margin: 16,
+        right: 0,
+        bottom: 0,
+        backgroundColor: "#FF8E00",
+        color: "#000",
     },
 });
 
