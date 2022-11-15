@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import { StyleSheet, Text, View, Image, Button } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
+import { StyleSheet, Text, View, Image } from "react-native";
+import { TextInput, Button } from 'react-native-paper';
 import {auth, db} from "../../config/firebase";
 import * as ImagePicker from "expo-image-picker";
 import { Picker } from "native-base";
@@ -160,25 +160,38 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Title: </Text>
-
             <TextInput
-                style={styles.input}
+                style={{ margin: 16, marginBottom: 0, backgroundColor: '#002347', flex: 1, height: 40}}
+                label="Thread title"
+                theme={{
+                    colors: {
+                        placeholder: 'white'
+                    }
+                }}
                 value={title}
+                activeOutlineColor={"#FF8E00"}
                 onChangeText={setTitle}
-                placeholder="Enter the title of your thread"
-                type="text"
                 maxLength={100}
+                mode={"outlined"}
+                outlinecolor={"white"}
+                textColor={"white"}
             />
 
-            <Text style={styles.text}>Question: </Text>
             <TextInput
-                style={styles.input}
+                style={{ margin: 16, marginBottom: 0, backgroundColor: '#002347', flex: 1, height: 40}}
+                label="Thread description"
+                theme={{
+                    colors: {
+                        placeholder: 'white'
+                    }
+                }}
                 value={description}
+                activeOutlineColor={"#FF8E00"}
                 onChangeText={setDescription}
-                placeholder="Enter a new thread question"
-                type="text"
                 maxLength={10000}
+                mode={"outlined"}
+                outlinecolor={"white"}
+                textColor={"white"}
             />
 
             <Picker
@@ -235,7 +248,7 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: "#002347",
     },
     itemContainer: {
         padding: 15,

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {StyleSheet, Text, View, Button} from "react-native";
-import { TextInput } from "react-native-gesture-handler";
+import {StyleSheet, Text, View} from "react-native";
 import { auth, db } from "../../config/firebase";
 import { arrayUnion, doc, getDoc } from "firebase/firestore";
+import { TextInput, Button } from 'react-native-paper';
 
 const AddCommentScreen = ({ navigation, route }) => {
     const threadId = route.params.threadId;
@@ -64,24 +64,36 @@ const AddCommentScreen = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Comment: </Text>
+
             <TextInput
-                style={styles.input}
+                style={{ margin: 16, marginBottom: 0, backgroundColor: '#002347', flex: 1, height: 40}}
+                label="Comment details"
+                theme={{
+                    colors: {
+                        placeholder: 'white'
+                    }
+                }}
                 value={comment}
+                activeOutlineColor={"#FF8E00"}
                 onChangeText={setComment}
-                placeholder="Enter the comment of your thread"
-                type="text"
                 maxLength={10000}
+                mode={"outlined"}
+                outlinecolor={"white"}
+                textColor={"white"}
             />
 
             <Button
-                style={styles.button}
-                title="Submit"
+                style={{ margin: 16 }}
+                icon="comment"
+                mode="contained"
+                color={"#FF8E00"}
                 onPress={() => {
                     addComment();
                     navigation.goBack();
-                }}
-            ></Button>
+                }}>
+
+                Post comment
+            </Button>
         </View>
     );
 };
@@ -89,7 +101,7 @@ const AddCommentScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: "#002347",
     },
     itemContainer: {
         padding: 15,
