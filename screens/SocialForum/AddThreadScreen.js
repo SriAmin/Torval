@@ -1,13 +1,21 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
-import { TextInput, Button } from 'react-native-paper';
-import {auth, db} from "../../config/firebase";
+import { TextInput, Button } from "react-native-paper";
+import { auth, db } from "../../config/firebase";
 import * as ImagePicker from "expo-image-picker";
 import { Picker } from "native-base";
-import {doc, getDoc} from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 const SocialForumThreadScreen = ({ navigation, route }) => {
     let [JSONResult, setJSONResult] = React.useState();
+    const [image, setImage] = React.useState(null);
+    const [status] = React.useState(null);
+    const [permissions, setPermissions] = React.useState(false);
+    const [title, setTitle] = useState(null);
+    const [description, setDescription] = useState(null);
+    const [subforum, setSubforum] = useState(null);
+    const [user, setUser] = useState({});
+
 
     async function predictImage(image) {
         const USER_ID = "justingg";
@@ -53,7 +61,7 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
         )
             .then((response) => response.text())
             .then((result) => setJSONResult(result))
-            .catch((error) => console.log("error", error));
+            .catch((error) => alert(error));
 
         JSONResult = JSON.parse(JSONResult);
 
@@ -66,11 +74,18 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
         const obj = JSONResult.outputs[0].data.concepts.find(
             (concept) => concept.value === maxVotes
         );
-        console.log(obj);
 
+        showPrediction(obj.name)
+    }
+
+
+
+
+
+    function showPrediction(prediction) {
         let predictedComputerComponent = "";
 
-        switch (obj.name) {
+        switch (prediction) {
             case "psu":
                 predictedComputerComponent = "power supply";
                 break;
@@ -89,6 +104,7 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
             case "watercooling":
                 predictedComputerComponent = "watercooling image";
         }
+
         return alert(
             "We predict this is a " +
             predictedComputerComponent +
@@ -96,19 +112,18 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
         );
     }
 
-    const [image] = React.useState(null);
-    const [status] = React.useState(null);
-    const [permissions, setPermissions] = React.useState(false);
-    const [title, setTitle] = useState(null);
-    const [description, setDescription] = useState(null);
-    const [subforum, setSubforum] = useState(null);
-    const [user, setUser] = useState({});
+
+
 
     useEffect(() => {
         (async () => {
             await getUser();
+            await askPermissionCameraRollAsync();
         })();
     });
+
+
+
 
     const getUser = async () => {
         const docRef = doc(db, "Users", auth.currentUser.email);
@@ -123,7 +138,11 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
         }
     };
 
-    const askPermissionsAsync = async () => {
+
+
+
+
+    const askPermissionCameraRollAsync = async () => {
         let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
         if (permissionResult.granted === false) {
@@ -133,12 +152,11 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
         }
     };
 
+
+
+
     const addThreadDoc = () => {
-        if (
-            description == null ||
-            title == null ||
-            subforum == null
-        ) {
+        if (description == null || title == null || subforum == null) {
             alert("Please fill out the required forms");
         } else {
             db.collection("Threads")
@@ -158,15 +176,40 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
         }
     };
 
+
+
+
+    async function chooseImage() {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            quality: 1,
+            base64: true,
+        });
+
+        if (!result.cancelled) {
+            await predictImage(result);
+        }
+    }
+
+
+
+
     return (
         <View style={styles.container}>
             <TextInput
-                style={{ margin: 16, marginBottom: 0, backgroundColor: '#002347', flex: 1, height: 40}}
+                style={{
+                    margin: 16,
+                    marginBottom: 0,
+                    backgroundColor: "#002347",
+                    flex: 1,
+                    height: 40,
+                }}
                 label="Thread title"
                 theme={{
                     colors: {
-                        placeholder: 'white'
-                    }
+                        placeholder: "white",
+                    },
                 }}
                 value={title}
                 activeOutlineColor={"#FF8E00"}
@@ -178,12 +221,18 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
             />
 
             <TextInput
-                style={{ margin: 16, marginBottom: 0, backgroundColor: '#002347', flex: 1, height: 40}}
+                style={{
+                    margin: 16,
+                    marginBottom: 0,
+                    backgroundColor: "#002347",
+                    flex: 1,
+                    height: 40,
+                }}
                 label="Thread description"
                 theme={{
                     colors: {
-                        placeholder: 'white'
-                    }
+                        placeholder: "white",
+                    },
                 }}
                 value={description}
                 activeOutlineColor={"#FF8E00"}
@@ -208,7 +257,12 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
             </Picker>
 
             {permissions === false ? (
-                <Button onPress={askPermissionsAsync} title="Ask permissions" />
+                <Button
+                    onPress={askPermissionCameraRollAsync}
+                    title="Ask permissions"
+                    icon="camera"
+                    mode="contained"
+                />
             ) : (
                 <>
                     {image && <Image style={styles.image} source={{ uri: image }} />}
@@ -216,20 +270,13 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
 
                     {/*Button for image picker, this also displays the prediction of the image*/}
                     <Button
-                        onPress={async () => {
-                            // No permissions request is necessary for launching the image library
-                            let result = await ImagePicker.launchImageLibraryAsync({
-                                mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                                quality: 1,
-                                base64: true,
-                            });
-
-                            if (!result.cancelled) {
-                                await predictImage(result);
-                            }
-                        }}
-                        title="Take a Picture"
-                    />
+                        icon="image"
+                        mode="contained"
+                        color={"#FF8E00"}
+                        onPress={() => chooseImage()}
+                    >
+                        Choose from Gallery
+                    </Button>
                 </>
             )}
 
@@ -244,6 +291,10 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
         </View>
     );
 };
+
+
+
+
 
 const styles = StyleSheet.create({
     container: {
