@@ -8,7 +8,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { StackActions } from "@react-navigation/native";
 
 const SocialForumThreadScreen = ({ navigation, route }) => {
-  let [JSONResult, setJSONResult] = React.useState();
   const [image, setImage] = React.useState(null);
   const [status] = React.useState(null);
   const [permissions, setPermissions] = React.useState(false);
@@ -29,88 +28,97 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
   async function predictImage(image) {
     let IMAGE_BYTES_STRING = image.base64.toString();
 
-    let raw = JSON.stringify({
-      user_app_id: {
-        user_id: USER_ID,
-        app_id: APP_ID
-      },
-      inputs: [
-        {
-          data: {
-            image: {
-              base64: IMAGE_BYTES_STRING
-            }
-          }
+        const raw = JSON.stringify({
+            user_app_id: {
+                user_id: USER_ID,
+                app_id: APP_ID,
+            },
+            inputs: [
+                {
+                    data: {
+                        image: {
+                            base64: IMAGE_BYTES_STRING,
+                        },
+                    },
+                },
+            ],
+        });
+
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                Authorization: "Key " + PAT,
+                "Content-Type": "application/json",
+            },
+            body: raw,
+        };
+
+        let JSONResult;
+
+        await fetch(
+            "https://api.clarifai.com/v2/models/" +
+            MODEL_ID +
+            "/versions/" +
+            MODEL_VERSION_ID +
+            "/outputs",
+            requestOptions
+        ).then((response) => response.text())
+        .then((result) => {
+            JSONResult = JSON.parse(result);
+        })
+        .catch((error) => alert(error));
+
+        if (JSONResult !== undefined) {
+            // First, get the max vote from the array of objects
+            const maxVotes = Math.max(
+                ...JSONResult.outputs[0].data.concepts.map((e) => e.value)
+            );
+
+            // Get the object having votes as max votes
+            const obj = JSONResult.outputs[0].data.concepts.find(
+                (concept) => concept.value === maxVotes
+            );
+
+            showPrediction(obj.name)
+        } else {
+            alert("Error Occured");
         }
-      ]
-    });
-
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        Authorization: "Key " + PAT,
-        "Content-Type": "application/json"
-      },
-      body: raw
-    };
-
-    //fetch url
-    await fetch(
-      "https://api.clarifai.com/v2/models/" +
-        MODEL_ID +
-        "/versions/" +
-        MODEL_VERSION_ID +
-        "/outputs",
-      requestOptions
-    )
-      .then(async response => await response.text())
-      .then(async result => await setJSONResult(result))
-      .catch(error => alert(error));
-
-    JSONResult = JSON.parse(JSONResult);
-
-    // First, get the max vote from the array of objects
-    let maxVotes = Math.max(
-      ...JSONResult.outputs[0].data.concepts.map(e => e.value)
-    );
-
-    // Get the object having votes as max votes
-    let obj = JSONResult.outputs[0].data.concepts.find(
-      concept => concept.value === maxVotes
-    );
-    showPrediction(obj.name);
-  }
-
-  function showPrediction(prediction) {
-    let predictedComputerComponent = "";
-
-    switch (prediction) {
-      case "psu":
-        predictedComputerComponent = "power supply";
-        break;
-      case "gpu":
-        predictedComputerComponent = "graphics card";
-        break;
-      case "case":
-        predictedComputerComponent = "computer case";
-        break;
-      case "mobo":
-        predictedComputerComponent = "motherboard";
-        break;
-      case "cpu":
-        predictedComputerComponent = "CPU";
-        break;
-      case "watercooling":
-        predictedComputerComponent = "watercooling image";
     }
 
-    return alert(
-      "We predict this is a " +
-        predictedComputerComponent +
-        ", would you like to post to that subforum instead?"
-    );
-  }
+    function showPrediction(prediction) {
+        let predictedComputerComponent = "";
+
+        switch (prediction) {
+            case "psu":
+                predictedComputerComponent = "power supply";
+                break;
+            case "gpu":
+                predictedComputerComponent = "graphics card";
+                break;
+            case "case":
+                predictedComputerComponent = "computer case";
+                break;
+            case "mobo":
+                predictedComputerComponent = "motherboard";
+                break;
+            case "cpu":
+                predictedComputerComponent = "CPU";
+                break;
+            case "watercooling":
+                predictedComputerComponent = "watercooling image";
+                break;
+            default:
+                predictedComputerComponent = "ERROR";
+                break;
+        }
+
+        return alert(
+            "We predict this is a " +
+            predictedComputerComponent +
+            ", would you like to post to that subforum instead?"
+        );
+    }
 
   useEffect(() => {
     (async () => {
