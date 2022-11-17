@@ -4,7 +4,10 @@ import {
   View,
   Image,
   ScrollView,
-  AsyncStorage
+  Modal,
+  FlatList,
+  TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import { TextInput, Button, Text, Checkbox } from "react-native-paper";
 import { auth, db } from "../../config/firebase";
@@ -12,6 +15,46 @@ import * as ImagePicker from "expo-image-picker";
 import { Picker, Spinner } from "native-base";
 import { doc, getDoc } from "firebase/firestore";
 import { StackActions } from "@react-navigation/native";
+
+//This is used to determine the full width of the tutorial items in the list
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
+
+//JSON file holds the mock data that the tutorial list will be holding and presenting
+const tutorialList = [
+  {
+    image:
+      "https://thumbs.dreamstime.com/b/amd-ryzen-cpu-technician-fingers-above-motherboard-part-custom-pc-build-los-angeles-ca-usa-december-169345127.jpg",
+    title: "Building a Computer",
+    description:
+      "This tutorial will be an large guide on building your computer and getting it running",
+    difficulty: 3
+  },
+  {
+    image:
+      "https://media.istockphoto.com/photos/woman-hand-cleaning-laptop-screen-picture-id838903752?k=20&m=838903752&s=612x612&w=0&h=159rYlbMkonNYu3Wt2SnvGSEB67d9cLn4auusaPKAkE=",
+    title: "Cleaning your computer",
+    description:
+      "We can understand, the computer tends to get dirty, this guide will show a proper way to clean it",
+    difficulty: 1
+  },
+  {
+    image:
+      "https://thumbs.dreamstime.com/b/gpu-video-card-hand-isolated-white-167007044.jpg",
+    title: "Replacing the Graphics Card",
+    description:
+      "Will demonstrate how to remove and add a new graphcis card to the computer",
+    difficulty: 2
+  },
+  {
+    image:
+      "https://image.shutterstock.com/image-photo/led-light-fancomputer-water-cooling-260nw-664824976.jpg",
+    title: "Watercooling",
+    description:
+      "Watercooling is a difficult process, let us guide your through it",
+    difficulty: 5
+  }
+];
 
 const SocialForumThreadScreen = ({ navigation, route }) => {
   let [JSONResult, setJSONResult] = React.useState();
@@ -25,7 +68,8 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
   const [isLoading, setLoading] = useState(false);
   const [checked, setChecked] = React.useState(false);
   const [followedTutorial, setFollowedTutorial] = React.useState(false);
-
+  const [modalActive, setModalActive] = useState(false);
+  
   const USER_ID = "justingg";
   const PAT = "03e4d15f3e074dd09eb2d7e5dade2814";
   const APP_ID = "torval-app";
@@ -64,10 +108,10 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
     //fetch url
     await fetch(
       "https://api.clarifai.com/v2/models/" +
-        MODEL_ID +
-        "/versions/" +
-        MODEL_VERSION_ID +
-        "/outputs",
+      MODEL_ID +
+      "/versions/" +
+      MODEL_VERSION_ID +
+      "/outputs",
       requestOptions
     )
       .then(async response => await response.text())
@@ -113,8 +157,8 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
 
     return alert(
       "We predict this is a " +
-        predictedComputerComponent +
-        ", would you like to post to that subforum instead?"
+      predictedComputerComponent +
+      ", would you like to post to that subforum instead?"
     );
   }
 
@@ -123,7 +167,7 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
       await getUser();
       await askPermissionCameraRollAsync();
     })();
-  });
+  }, []);
 
   const getUser = async () => {
     const docRef = doc(db, "Users", auth.currentUser.email);
@@ -184,6 +228,37 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      <Modal visible={modalActive} animationType="slide">
+        <View style={styles.container}>
+          <FlatList
+            data={tutorialList}
+            keyExtractor={item => item.title}
+            renderItem={({ item, index }) => {
+              return (
+                <View style={styles.itemContainer}>
+                  <TouchableOpacity
+                    onPress={async () => {
+                      alert("Selected Tutorial Index: " + index)
+                      setModalActive(false);
+                    }}
+                  >
+                    <View style={[{ flex: 1 }]}>
+                      <Image
+                        style={styles.itemImg}
+                        source={{
+                          uri: item.image
+                        }}
+                      />
+                    </View>
+                    <Text style={styles.itemTitle}>{item.title}</Text>
+                    <Text style={styles.itemDesc}>{item.description}</Text>
+                  </TouchableOpacity>
+                </View>
+              );
+            }}
+          />
+        </View>
+      </Modal>
       <ScrollView>
         <TextInput
           style={{
@@ -236,8 +311,7 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
             checked={followedTutorial}
             onPress={async () => {
               setChecked(!checked);
-              const pushAction = StackActions.push("TutorialListViewSelect");
-              navigation.dispatch(pushAction);
+              setModalActive(true);
               setChecked(followedTutorial);
             }}
           />
@@ -377,11 +451,25 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     padding: 15,
-    flex: 1
+    borderTopWidth: 1,
+    borderBottomWidth: 1
   },
   itemImg: {
-    height: 50,
-    width: 50
+    width: windowWidth - 30,
+    height: 150,
+    borderRadius: 15
+  },
+  itemTitle: {
+    padding: 10,
+    marginBottom: 15,
+    fontSize: 18,
+    textAlign: "center",
+    color: "#FD7702"
+  },
+  itemDesc: {
+    fontSize: 15,
+    padding: 10,
+    color: "white"
   },
   button: {
     margin: 8,
@@ -401,10 +489,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     borderWidth: 1
   },
-  desc: {
-    fontSize: 10,
-    padding: 10
-  }
 });
 
 export default SocialForumThreadScreen;

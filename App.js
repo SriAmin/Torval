@@ -26,7 +26,6 @@ async function componentDidMount() {
     Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
     ...Ionicons.font
   });
-  this.setState({ isReady: true });
 }
 
 export default function App() {
