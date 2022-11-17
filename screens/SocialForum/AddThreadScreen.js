@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
-import { TextInput, Button } from "react-native-paper";
+import { StyleSheet, View, Image } from "react-native";
+import { TextInput, Button, Text } from "react-native-paper";
 import { auth, db } from "../../config/firebase";
 import * as ImagePicker from "expo-image-picker";
-import { Picker } from "native-base";
+import { Picker, Spinner } from "native-base";
 import { doc, getDoc } from "firebase/firestore";
 
 const SocialForumThreadScreen = ({ navigation, route }) => {
@@ -15,16 +15,18 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
   const [description, setDescription] = useState(null);
   const [subforum, setSubforum] = useState(null);
   const [user, setUser] = useState({});
+  const [isLoading, setLoading] = useState(false);
+
+  const USER_ID = "justingg";
+  const PAT = "03e4d15f3e074dd09eb2d7e5dade2814";
+  const APP_ID = "torval-app";
+  const MODEL_ID = "torval";
+  const MODEL_VERSION_ID = "9e7a9f72c9474afc90098de79147c899";
 
   async function predictImage(image) {
-    const USER_ID = "justingg";
-    const PAT = "03e4d15f3e074dd09eb2d7e5dade2814";
-    const APP_ID = "torval-app";
-    const MODEL_ID = "torval";
-    const MODEL_VERSION_ID = "9e7a9f72c9474afc90098de79147c899";
-    const IMAGE_BYTES_STRING = image.base64.toString();
+    let IMAGE_BYTES_STRING = image.base64.toString();
 
-    const raw = JSON.stringify({
+    let raw = JSON.stringify({
       user_app_id: {
         user_id: USER_ID,
         app_id: APP_ID
@@ -50,7 +52,8 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
       body: raw
     };
 
-    fetch(
+    //fetch url
+    await fetch(
       "https://api.clarifai.com/v2/models/" +
         MODEL_ID +
         "/versions/" +
@@ -65,15 +68,14 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
     JSONResult = JSON.parse(JSONResult);
 
     // First, get the max vote from the array of objects
-    const maxVotes = Math.max(
+    let maxVotes = Math.max(
       ...JSONResult.outputs[0].data.concepts.map(e => e.value)
     );
 
     // Get the object having votes as max votes
-    const obj = JSONResult.outputs[0].data.concepts.find(
+    let obj = JSONResult.outputs[0].data.concepts.find(
       concept => concept.value === maxVotes
     );
-
     showPrediction(obj.name);
   }
 
@@ -173,18 +175,31 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      <View>
+        <Text>Please select subforum</Text>
+        <Picker
+          selectedValue={subforum}
+          onValueChange={itemValue => setSubforum(itemValue)}
+        >
+          <Picker.Item label="Please select a subforum" value="null" />
+          <Picker.Item label="GPU" value="gpu" />
+          <Picker.Item label="CPU" value="cpu" />
+          <Picker.Item label="Watercooling" value="watercooling" />
+          <Picker.Item label="Motherboard" value="mobo" />
+          <Picker.Item label="Power Supply" value="psu" />
+        </Picker>
+      </View>
+
       <TextInput
         style={{
           margin: 16,
           marginBottom: 0,
-          backgroundColor: "#002347",
-          flex: 1,
-          height: 40
+          backgroundColor: "#002347"
         }}
         label="Thread title"
         theme={{
           colors: {
-            placeholder: "white"
+            placeholder: "gray"
           }
         }}
         value={title}
@@ -207,7 +222,7 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
         label="Thread description"
         theme={{
           colors: {
-            placeholder: "white"
+            placeholder: "gray"
           }
         }}
         value={description}
@@ -218,19 +233,6 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
         outlinecolor={"white"}
         textColor={"white"}
       />
-
-      <Picker
-        selectedValue={subforum}
-        style={{ height: 50, width: 150 }}
-        onValueChange={itemValue => setSubforum(itemValue)}
-      >
-        <Picker.Item label="Please select a subforum" value="null" />
-        <Picker.Item label="GPU" value="gpu" />
-        <Picker.Item label="CPU" value="cpu" />
-        <Picker.Item label="Watercooling" value="watercooling" />
-        <Picker.Item label="Motherboard" value="mobo" />
-        <Picker.Item label="Power Supply" value="psu" />
-      </Picker>
 
       {permissions === false ? (
         <Button
@@ -245,25 +247,69 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
           {status && <Text style={styles.text}>{status}</Text>}
 
           {/*Button for image picker, this also displays the prediction of the image*/}
+          <View
+            style={[
+              {
+                flexDirection: "row",
+                justifyContent: "space-between"
+              }
+            ]}
+          >
+            <Button
+              icon="image"
+              style={[
+                {
+                  margin: 8
+                }
+              ]}
+              mode="contained"
+              color={"#FF8E00"}
+              disabled={isLoading}
+              onPress={() => chooseImage()}
+            >
+              {!isLoading ? <Text>Gallery</Text> : <Spinner color="#eeeeee" />}
+            </Button>
+
+            <Button
+              icon="camera"
+              style={[
+                {
+                  margin: 8
+                }
+              ]}
+              mode="contained"
+              color={"#FF8E00"}
+              disabled={isLoading}
+              onPress={() => chooseImage()}
+            >
+              {!isLoading ? <Text>Camera</Text> : <Spinner color="#eeeeee" />}
+            </Button>
+          </View>
+
           <Button
-            icon="image"
+            icon="camera"
+            style={[
+              {
+                margin: 8,
+                marginTop: 0
+              }
+            ]}
             mode="contained"
             color={"#FF8E00"}
-            onPress={() => chooseImage()}
+            disabled={isLoading}
+            onPress={() => {
+              addThreadDoc();
+              navigation.goBack();
+            }}
           >
-            Choose from Gallery
+            {!isLoading ? (
+              <Text>Submit Post</Text>
+            ) : (
+              <Spinner color="#eeeeee" />
+            )}
           </Button>
         </>
       )}
-
-      <Button
-        style={styles.button}
-        title="Submit"
-        onPress={() => {
-          addThreadDoc();
-          navigation.goBack();
-        }}
-      />
     </View>
   );
 };
