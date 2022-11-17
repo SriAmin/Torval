@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Image,
+  ScrollView,
+  AsyncStorage
+} from "react-native";
 import { TextInput, Button, Text, Checkbox } from "react-native-paper";
 import { auth, db } from "../../config/firebase";
 import * as ImagePicker from "expo-image-picker";
@@ -178,124 +184,152 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <View>
-        <Picker
-          selectedValue={subforum}
-          style={{ color: "white", margin: 11, marginBottom: 0 }}
-          onValueChange={itemValue => setSubforum(itemValue)}
-        >
-          <Picker.Item label="Please select a subforum" value="null" />
-          <Picker.Item label="GPU" value="gpu" />
-          <Picker.Item label="CPU" value="cpu" />
-          <Picker.Item label="Watercooling" value="watercooling" />
-          <Picker.Item label="Motherboard" value="mobo" />
-          <Picker.Item label="Power Supply" value="psu" />
-        </Picker>
-      </View>
-
-      <TextInput
-        style={{
-          margin: 16,
-          marginBottom: 0,
-          backgroundColor: "#002347"
-        }}
-        label="Thread title"
-        theme={{
-          colors: {
-            placeholder: "gray"
-          }
-        }}
-        value={title}
-        activeOutlineColor={"#FF8E00"}
-        onChangeText={setTitle}
-        maxLength={100}
-        mode={"outlined"}
-        outlinecolor={"white"}
-        textColor={"white"}
-      />
-
-      <TextInput
-        style={{
-          margin: 16,
-          marginBottom: 0,
-          backgroundColor: "#002347",
-          flex: 1,
-          height: 40
-        }}
-        label="Thread description"
-        theme={{
-          colors: {
-            placeholder: "gray"
-          }
-        }}
-        value={description}
-        activeOutlineColor={"#FF8E00"}
-        onChangeText={setDescription}
-        maxLength={10000}
-        mode={"outlined"}
-        outlinecolor={"white"}
-        textColor={"white"}
-      />
-
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          margin: 8,
-          marginBottom: 0
-        }}
-      >
-        <Checkbox
-          status={checked ? "checked" : "unchecked"}
-          color={"#FD7702"}
-          uncheckedColor={"#FD7702"}
-          onPress={() => {
-            setChecked(!checked);
-            const pushAction = StackActions.push("TutorialListViewSelect");
-            navigation.dispatch(pushAction);
+      <ScrollView>
+        <TextInput
+          style={{
+            margin: 16,
+            marginBottom: 0,
+            backgroundColor: "#002347"
           }}
+          label="Thread title"
+          theme={{
+            colors: {
+              placeholder: "gray"
+            }
+          }}
+          value={title}
+          activeOutlineColor={"#FF8E00"}
+          onChangeText={setTitle}
+          maxLength={100}
+          mode={"outlined"}
+          outlinecolor={"white"}
+          textColor={"white"}
         />
-        <Text style={{ color: "#FD7702" }}>Followed AR Tutorial</Text>
-      </View>
 
-      {permissions === false ? (
-        <Button
-          onPress={askPermissionCameraRollAsync}
-          title="Ask permissions"
-          icon="camera"
-          mode="contained"
-        />
-      ) : (
-        <>
-          {image && <Image style={styles.image} source={{ uri: image }} />}
-          {status && <Text style={styles.text}>{status}</Text>}
-
-          {/*Button for image picker, this also displays the prediction of the image*/}
-          <View
-            style={[
-              {
-                flexDirection: "row",
-                justifyContent: "space-between"
-              }
-            ]}
+        <View>
+          <Picker
+            selectedValue={subforum}
+            style={{ color: "white", margin: 11, marginBottom: 0 }}
+            onValueChange={itemValue => setSubforum(itemValue)}
           >
-            <Button
-              icon="image"
+            <Picker.Item label="Please select a subforum" value="null" />
+            <Picker.Item label="GPU" value="gpu" />
+            <Picker.Item label="CPU" value="cpu" />
+            <Picker.Item label="Watercooling" value="watercooling" />
+            <Picker.Item label="Motherboard" value="mobo" />
+            <Picker.Item label="Power Supply" value="psu" />
+          </Picker>
+        </View>
+
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            margin: 8,
+            marginBottom: 0
+          }}
+        >
+          <Checkbox
+            status={checked ? "checked" : "unchecked"}
+            color={"#FD7702"}
+            uncheckedColor={"#FD7702"}
+            checked={followedTutorial}
+            onPress={async () => {
+              setChecked(!checked);
+              const pushAction = StackActions.push("TutorialListViewSelect");
+              navigation.dispatch(pushAction);
+              setChecked(followedTutorial);
+            }}
+          />
+          <Text style={{ color: "white" }}>Followed AR Tutorial</Text>
+        </View>
+
+        <View style={styles.threadDescriptionContainer}>
+          <TextInput
+            multiline
+            label="Thread description"
+            theme={{
+              colors: {
+                placeholder: "gray",
+                paddingTop: 0
+              }
+            }}
+            style={{
+              backgroundColor: "#002347",
+              height: 200,
+              textAlignVertical: "top"
+            }}
+            value={description}
+            activeOutlineColor={"#FF8E00"}
+            onChangeText={setDescription}
+            maxLength={10000}
+            mode={"outlined"}
+            outlinecolor={"white"}
+            textColor={"white"}
+          />
+        </View>
+
+        {permissions === false ? (
+          <Button
+            onPress={askPermissionCameraRollAsync}
+            title="Ask permissions"
+            icon="camera"
+            mode="contained"
+          />
+        ) : (
+          <>
+            {image && <Image style={styles.image} source={{ uri: image }} />}
+            {status && <Text style={styles.text}>{status}</Text>}
+
+            {/*Button for image picker, this also displays the prediction of the image*/}
+            <View
               style={[
                 {
-                  margin: 16,
-                  height: 50,
-                  justifyContent: "center",
-                  borderRadius: 25
+                  flexDirection: "row",
+                  justifyContent: "space-between"
                 }
               ]}
-              mode="contained"
-              color={"#FD7702"}
-              disabled={isLoading}
-              onPress={() => chooseImage()}
             >
-              {!isLoading ? <Text>Gallery</Text> : <Spinner color="#eeeeee" />}
-            </Button>
+              <Button
+                icon="image"
+                style={[
+                  {
+                    margin: 16,
+                    height: 50,
+                    justifyContent: "center",
+                    borderRadius: 25
+                  }
+                ]}
+                mode="contained"
+                color={"#FD7702"}
+                disabled={isLoading}
+                onPress={() => chooseImage()}
+              >
+                {!isLoading ? (
+                  <Text>Gallery</Text>
+                ) : (
+                  <Spinner color="#eeeeee" />
+                )}
+              </Button>
+
+              <Button
+                icon="camera"
+                style={[
+                  {
+                    margin: 16,
+                    height: 50,
+                    justifyContent: "center",
+                    borderRadius: 25
+                  }
+                ]}
+                mode="contained"
+                color={"#FD7702"}
+                disabled={isLoading}
+                onPress={() => chooseImage()}
+              >
+                {!isLoading ? <Text>Camera</Text> : <Spinner color="#eeeeee" />}
+              </Button>
+            </View>
 
             <Button
               icon="camera"
@@ -303,57 +337,47 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
                 {
                   margin: 16,
                   height: 50,
-                  justifyContent: "center",
-                  borderRadius: 25
+                  marginTop: 0,
+                  borderRadius: 25,
+                  justifyContent: "center"
                 }
               ]}
               mode="contained"
-              color={"#FD7702"}
+              color={"#FF8E00"}
               disabled={isLoading}
-              onPress={() => chooseImage()}
+              onPress={() => {
+                addThreadDoc();
+                navigation.goBack();
+              }}
             >
-              {!isLoading ? <Text>Camera</Text> : <Spinner color="#eeeeee" />}
+              {!isLoading ? (
+                <Text>Submit Post</Text>
+              ) : (
+                <Spinner color="#eeeeee" />
+              )}
             </Button>
-          </View>
-
-          <Button
-            icon="camera"
-            style={[
-              {
-                margin: 16,
-                height: 50,
-                marginTop: 0,
-                borderRadius: 25,
-                justifyContent: "center"
-              }
-            ]}
-            mode="contained"
-            color={"#FF8E00"}
-            disabled={isLoading}
-            onPress={() => {
-              addThreadDoc();
-              navigation.goBack();
-            }}
-          >
-            {!isLoading ? (
-              <Text>Submit Post</Text>
-            ) : (
-              <Spinner color="#eeeeee" />
-            )}
-          </Button>
-        </>
-      )}
+          </>
+        )}
+      </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "#002347",
+    flex: 1
+  },
+  threadDescriptionContainer: {
     flex: 1,
-    backgroundColor: "#002347"
+    justifyContent: "center",
+    backgroundColor: "transparent",
+    color: "transparent",
+    margin: 16
   },
   itemContainer: {
-    padding: 15
+    padding: 15,
+    flex: 1
   },
   itemImg: {
     height: 50,

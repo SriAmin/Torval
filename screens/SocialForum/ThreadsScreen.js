@@ -110,6 +110,9 @@ const ThreadsScreen = ({ navigation, route }) => {
           icon="pen"
           size="large"
           style={styles.fab}
+          style={{
+            height: 100
+          }}
           onPress={() => {
             navigation.navigate("Create A Thread");
           }}
