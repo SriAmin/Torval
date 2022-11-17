@@ -7,14 +7,13 @@ import {
   Modal,
   FlatList,
   TouchableOpacity,
-  Dimensions,
+  Dimensions
 } from "react-native";
 import { TextInput, Button, Text, Checkbox } from "react-native-paper";
 import { auth, db } from "../../config/firebase";
 import * as ImagePicker from "expo-image-picker";
 import { Picker, Spinner } from "native-base";
 import { doc, getDoc } from "firebase/firestore";
-import { StackActions } from "@react-navigation/native";
 
 //This is used to determine the full width of the tutorial items in the list
 const windowWidth = Dimensions.get("window").width;
@@ -69,7 +68,7 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
   const [checked, setChecked] = React.useState(false);
   const [followedTutorial, setFollowedTutorial] = React.useState(false);
   const [modalActive, setModalActive] = useState(false);
-  
+
   const USER_ID = "justingg";
   const PAT = "03e4d15f3e074dd09eb2d7e5dade2814";
   const APP_ID = "torval-app";
@@ -79,7 +78,7 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
   async function predictImage(image) {
     let IMAGE_BYTES_STRING = image.base64.toString();
 
-    let raw = JSON.stringify({
+    const raw = JSON.stringify({
       user_app_id: {
         user_id: USER_ID,
         app_id: APP_ID
@@ -105,31 +104,37 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
       body: raw
     };
 
-    //fetch url
+    let JSONResult;
+
     await fetch(
       "https://api.clarifai.com/v2/models/" +
-      MODEL_ID +
-      "/versions/" +
-      MODEL_VERSION_ID +
-      "/outputs",
+        MODEL_ID +
+        "/versions/" +
+        MODEL_VERSION_ID +
+        "/outputs",
       requestOptions
     )
-      .then(async response => await response.text())
-      .then(async result => await setJSONResult(result))
+      .then(response => response.text())
+      .then(result => {
+        JSONResult = JSON.parse(result);
+      })
       .catch(error => alert(error));
 
-    JSONResult = JSON.parse(JSONResult);
+    if (JSONResult !== undefined) {
+      // First, get the max vote from the array of objects
+      const maxVotes = Math.max(
+        ...JSONResult.outputs[0].data.concepts.map(e => e.value)
+      );
 
-    // First, get the max vote from the array of objects
-    let maxVotes = Math.max(
-      ...JSONResult.outputs[0].data.concepts.map(e => e.value)
-    );
+      // Get the object having votes as max votes
+      const obj = JSONResult.outputs[0].data.concepts.find(
+        concept => concept.value === maxVotes
+      );
 
-    // Get the object having votes as max votes
-    let obj = JSONResult.outputs[0].data.concepts.find(
-      concept => concept.value === maxVotes
-    );
-    showPrediction(obj.name);
+      showPrediction(obj.name);
+    } else {
+      alert("Error Occured");
+    }
   }
 
   function showPrediction(prediction) {
@@ -153,12 +158,16 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
         break;
       case "watercooling":
         predictedComputerComponent = "watercooling image";
+        break;
+      default:
+        predictedComputerComponent = "ERROR";
+        break;
     }
 
     return alert(
       "We predict this is a " +
-      predictedComputerComponent +
-      ", would you like to post to that subforum instead?"
+        predictedComputerComponent +
+        ", would you like to post to that subforum instead?"
     );
   }
 
@@ -238,7 +247,7 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
                 <View style={styles.itemContainer}>
                   <TouchableOpacity
                     onPress={async () => {
-                      alert("Selected Tutorial Index: " + index)
+                      alert("Selected Tutorial Index: " + index);
                       setModalActive(false);
                     }}
                   >
@@ -488,7 +497,7 @@ const styles = StyleSheet.create({
     height: 44,
     textAlign: "center",
     borderWidth: 1
-  },
+  }
 });
 
 export default SocialForumThreadScreen;
