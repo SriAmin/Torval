@@ -9,7 +9,13 @@ import {
   TouchableOpacity,
   Dimensions
 } from "react-native";
-import { TextInput, Button, Text, Checkbox } from "react-native-paper";
+import {
+  TextInput,
+  Button,
+  Text,
+  Checkbox,
+  Snackbar
+} from "react-native-paper";
 import { auth, db } from "../../config/firebase";
 import * as ImagePicker from "expo-image-picker";
 import { Picker, Spinner } from "native-base";
@@ -64,8 +70,13 @@ const SocialForumThreadScreen = ({ navigation }) => {
   const [user, setUser] = useState({});
   const [isLoading] = useState(false);
   const [checked, setChecked] = React.useState(false);
+  const [snackbarVisible, setSnackbarVisible] = React.useState(false);
+  const [predictedComponent, setPredictedComponent] = React.useState(false);
   const [followedTutorial] = React.useState(false);
   const [modalActive, setModalActive] = useState(false);
+  const [visible, setVisible] = React.useState(false);
+  const onToggleSnackBar = () => setVisible(!visible);
+  const onDismissSnackBar = () => setVisible(false);
 
   const USER_ID = "justingg";
   const PAT = "03e4d15f3e074dd09eb2d7e5dade2814";
@@ -162,11 +173,8 @@ const SocialForumThreadScreen = ({ navigation }) => {
         break;
     }
 
-    return alert(
-      "We predict this is a " +
-        predictedComputerComponent +
-        ", would you like to post to that subforum instead?"
-    );
+    setPredictedComponent(predictedComputerComponent);
+    onToggleSnackBar();
   }
 
   useEffect(() => {
@@ -213,6 +221,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
           subforum: subforum,
           upvotes: 0,
           downvotes: 0
+          //TODO: Add followedTutorial
         })
         .then(() => {
           alert("Thread added!");
@@ -439,6 +448,42 @@ const SocialForumThreadScreen = ({ navigation }) => {
             </Button>
           </>
         )}
+        <Snackbar
+          visible={visible}
+          onDismiss={onDismissSnackBar}
+          duration={6000}
+          action={{
+            label: "Yes",
+            onPress: () => {
+              switch (predictedComponent) {
+                case "power supply":
+                  setSubforum("psu");
+                  break;
+                case "graphics card":
+                  setSubforum("gpu");
+                  break;
+                case "computer case":
+                  setSubforum("case");
+                  break;
+                case "motherboard":
+                  setSubforum("mobo");
+                  break;
+                case "CPU":
+                  setSubforum("cpu");
+                  break;
+                case "watercooling image":
+                  setSubforum("watercooling");
+                  break;
+                default:
+                  alert("Error");
+                  break;
+              }
+            }
+          }}
+        >
+          We predicted that this image is a {predictedComponent}, would you like
+          to change the subforum?
+        </Snackbar>
       </ScrollView>
     </View>
   );
