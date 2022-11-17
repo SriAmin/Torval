@@ -8,6 +8,7 @@ import SignUp from "./screens/SignUp";
 import GlobalStyleSheet from "./screens/GlobalStylesheet";
 import * as Font from "expo-font";
 import { LogBox } from "react-native";
+import { StatusBar } from "react-native";
 
 import {
   MD3DarkTheme as DarkTheme,
@@ -19,6 +20,7 @@ import ThreadsScreen from "./screens/SocialForum/ThreadsScreen";
 const Stack = createNativeStackNavigator();
 
 async function componentDidMount() {
+  StatusBar.setBarStyle("light-content", true);
   await Font.loadAsync({
     Roboto: require("native-base/Fonts/Roboto.ttf"),
     Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),

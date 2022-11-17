@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Image } from "react-native";
-import { TextInput, Button, Text } from "react-native-paper";
+import { TextInput, Button, Text, Checkbox } from "react-native-paper";
 import { auth, db } from "../../config/firebase";
 import * as ImagePicker from "expo-image-picker";
 import { Picker, Spinner } from "native-base";
 import { doc, getDoc } from "firebase/firestore";
+import { StackActions } from "@react-navigation/native";
 
 const SocialForumThreadScreen = ({ navigation, route }) => {
   let [JSONResult, setJSONResult] = React.useState();
@@ -16,6 +17,8 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
   const [subforum, setSubforum] = useState(null);
   const [user, setUser] = useState({});
   const [isLoading, setLoading] = useState(false);
+  const [checked, setChecked] = React.useState(false);
+  const [followedTutorial, setFollowedTutorial] = React.useState(false);
 
   const USER_ID = "justingg";
   const PAT = "03e4d15f3e074dd09eb2d7e5dade2814";
@@ -233,6 +236,27 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
         outlinecolor={"white"}
         textColor={"white"}
       />
+
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          margin: 8,
+          marginBottom: 0
+        }}
+      >
+        <Checkbox
+          status={checked ? "checked" : "unchecked"}
+          color={"#FD7702"}
+          uncheckedColor={"#FD7702"}
+          onPress={() => {
+            setChecked(!checked);
+            const pushAction = StackActions.push("TutorialListViewSelect");
+            navigation.dispatch(pushAction);
+          }}
+        />
+        <Text style={{ color: "#FD7702" }}>Followed AR Tutorial</Text>
+      </View>
 
       {permissions === false ? (
         <Button

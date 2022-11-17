@@ -30,12 +30,12 @@ const Tab = createBottomTabNavigator();
 
 const TorvalNavigator = ({ navigation }) => {
   /*
-    TorvalNavigator() is used to return the Tab Navigator which contains TutorialNavigator,
-    ChatbotScreen, and SocialForumNavigator
-
-    Return:
-    NavigationContainer
-    */
+                                      TorvalNavigator() is used to return the Tab Navigator which contains TutorialNavigator,
+                                      ChatbotScreen, and SocialForumNavigator
+    
+                                      Return:
+                                      NavigationContainer
+                                      */
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -64,9 +64,13 @@ const TorvalNavigator = ({ navigation }) => {
           // You can return any component that you like here!
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: "#7b42f5",
-        tabBarInactiveTintColor: "gray",
-        headerShown: false
+        tabBarActiveTintColor: "#FF8E00",
+        tabBarInactiveTintColor: "white",
+        headerShown: false,
+
+        tabBarStyle: {
+          backgroundColor: "#003366"
+        }
       })}
     >
       <Tab.Screen name="Tutorials" component={TutoriaNavigator} />
@@ -80,7 +84,7 @@ const TorvalNavigator = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#003366",
     alignItems: "center",
     justifyContent: "center"
   }
