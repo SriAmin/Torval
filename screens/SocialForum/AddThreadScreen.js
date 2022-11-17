@@ -61,8 +61,8 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
         "/outputs",
       requestOptions
     )
-      .then(response => response.text())
-      .then(result => setJSONResult(result))
+      .then(async response => await response.text())
+      .then(async result => await setJSONResult(result))
       .catch(error => alert(error));
 
     JSONResult = JSON.parse(JSONResult);
@@ -176,9 +176,9 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <View>
-        <Text>Please select subforum</Text>
         <Picker
           selectedValue={subforum}
+          style={{ color: "white", margin: 11, marginBottom: 0 }}
           onValueChange={itemValue => setSubforum(itemValue)}
         >
           <Picker.Item label="Please select a subforum" value="null" />
@@ -259,11 +259,14 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
               icon="image"
               style={[
                 {
-                  margin: 8
+                  margin: 16,
+                  height: 50,
+                  justifyContent: "center",
+                  borderRadius: 25
                 }
               ]}
               mode="contained"
-              color={"#FF8E00"}
+              color={"#FD7702"}
               disabled={isLoading}
               onPress={() => chooseImage()}
             >
@@ -274,11 +277,14 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
               icon="camera"
               style={[
                 {
-                  margin: 8
+                  margin: 16,
+                  height: 50,
+                  justifyContent: "center",
+                  borderRadius: 25
                 }
               ]}
               mode="contained"
-              color={"#FF8E00"}
+              color={"#FD7702"}
               disabled={isLoading}
               onPress={() => chooseImage()}
             >
@@ -290,8 +296,11 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
             icon="camera"
             style={[
               {
-                margin: 8,
-                marginTop: 0
+                margin: 16,
+                height: 50,
+                marginTop: 0,
+                borderRadius: 25,
+                justifyContent: "center"
               }
             ]}
             mode="contained"
