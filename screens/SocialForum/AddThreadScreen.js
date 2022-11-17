@@ -17,7 +17,6 @@ import { doc, getDoc } from "firebase/firestore";
 
 //This is used to determine the full width of the tutorial items in the list
 const windowWidth = Dimensions.get("window").width;
-const windowHeight = Dimensions.get("window").height;
 
 //JSON file holds the mock data that the tutorial list will be holding and presenting
 const tutorialList = [
@@ -42,7 +41,7 @@ const tutorialList = [
       "https://thumbs.dreamstime.com/b/gpu-video-card-hand-isolated-white-167007044.jpg",
     title: "Replacing the Graphics Card",
     description:
-      "Will demonstrate how to remove and add a new graphcis card to the computer",
+      "Will demonstrate how to remove and add a new graphics card to the computer",
     difficulty: 2
   },
   {
@@ -55,18 +54,17 @@ const tutorialList = [
   }
 ];
 
-const SocialForumThreadScreen = ({ navigation, route }) => {
-  let [JSONResult, setJSONResult] = React.useState();
-  const [image, setImage] = React.useState(null);
+const SocialForumThreadScreen = ({ navigation }) => {
+  const [image] = React.useState(null);
   const [status] = React.useState(null);
   const [permissions, setPermissions] = React.useState(false);
   const [title, setTitle] = useState(null);
   const [description, setDescription] = useState(null);
   const [subforum, setSubforum] = useState(null);
   const [user, setUser] = useState({});
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading] = useState(false);
   const [checked, setChecked] = React.useState(false);
-  const [followedTutorial, setFollowedTutorial] = React.useState(false);
+  const [followedTutorial] = React.useState(false);
   const [modalActive, setModalActive] = useState(false);
 
   const USER_ID = "justingg";
@@ -133,12 +131,12 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
 
       showPrediction(obj.name);
     } else {
-      alert("Error Occured");
+      alert("Error Occurred");
     }
   }
 
   function showPrediction(prediction) {
-    let predictedComputerComponent = "";
+    let predictedComputerComponent;
 
     switch (prediction) {
       case "psu":
