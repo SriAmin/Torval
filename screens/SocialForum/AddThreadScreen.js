@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Image,
+  ScrollView,
+  Modal,
+  FlatList,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import { TextInput, Button, Text, Checkbox } from "react-native-paper";
 import { auth, db } from "../../config/firebase";
 import * as ImagePicker from "expo-image-picker";
@@ -7,7 +16,48 @@ import { Picker, Spinner } from "native-base";
 import { doc, getDoc } from "firebase/firestore";
 import { StackActions } from "@react-navigation/native";
 
+//This is used to determine the full width of the tutorial items in the list
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
+
+//JSON file holds the mock data that the tutorial list will be holding and presenting
+const tutorialList = [
+  {
+    image:
+      "https://thumbs.dreamstime.com/b/amd-ryzen-cpu-technician-fingers-above-motherboard-part-custom-pc-build-los-angeles-ca-usa-december-169345127.jpg",
+    title: "Building a Computer",
+    description:
+      "This tutorial will be an large guide on building your computer and getting it running",
+    difficulty: 3
+  },
+  {
+    image:
+      "https://media.istockphoto.com/photos/woman-hand-cleaning-laptop-screen-picture-id838903752?k=20&m=838903752&s=612x612&w=0&h=159rYlbMkonNYu3Wt2SnvGSEB67d9cLn4auusaPKAkE=",
+    title: "Cleaning your computer",
+    description:
+      "We can understand, the computer tends to get dirty, this guide will show a proper way to clean it",
+    difficulty: 1
+  },
+  {
+    image:
+      "https://thumbs.dreamstime.com/b/gpu-video-card-hand-isolated-white-167007044.jpg",
+    title: "Replacing the Graphics Card",
+    description:
+      "Will demonstrate how to remove and add a new graphcis card to the computer",
+    difficulty: 2
+  },
+  {
+    image:
+      "https://image.shutterstock.com/image-photo/led-light-fancomputer-water-cooling-260nw-664824976.jpg",
+    title: "Watercooling",
+    description:
+      "Watercooling is a difficult process, let us guide your through it",
+    difficulty: 5
+  }
+];
+
 const SocialForumThreadScreen = ({ navigation, route }) => {
+  let [JSONResult, setJSONResult] = React.useState();
   const [image, setImage] = React.useState(null);
   const [status] = React.useState(null);
   const [permissions, setPermissions] = React.useState(false);
@@ -18,7 +68,8 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
   const [isLoading, setLoading] = useState(false);
   const [checked, setChecked] = React.useState(false);
   const [followedTutorial, setFollowedTutorial] = React.useState(false);
-
+  const [modalActive, setModalActive] = useState(false);
+  
   const USER_ID = "justingg";
   const PAT = "03e4d15f3e074dd09eb2d7e5dade2814";
   const APP_ID = "torval-app";
@@ -28,104 +79,95 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
   async function predictImage(image) {
     let IMAGE_BYTES_STRING = image.base64.toString();
 
-        const raw = JSON.stringify({
-            user_app_id: {
-                user_id: USER_ID,
-                app_id: APP_ID,
-            },
-            inputs: [
-                {
-                    data: {
-                        image: {
-                            base64: IMAGE_BYTES_STRING,
-                        },
-                    },
-                },
-            ],
-        });
-
-        const requestOptions = {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                Authorization: "Key " + PAT,
-                "Content-Type": "application/json",
-            },
-            body: raw,
-        };
-
-        let JSONResult;
-
-        await fetch(
-            "https://api.clarifai.com/v2/models/" +
-            MODEL_ID +
-            "/versions/" +
-            MODEL_VERSION_ID +
-            "/outputs",
-            requestOptions
-        ).then((response) => response.text())
-        .then((result) => {
-            JSONResult = JSON.parse(result);
-        })
-        .catch((error) => alert(error));
-
-        if (JSONResult !== undefined) {
-            // First, get the max vote from the array of objects
-            const maxVotes = Math.max(
-                ...JSONResult.outputs[0].data.concepts.map((e) => e.value)
-            );
-
-            // Get the object having votes as max votes
-            const obj = JSONResult.outputs[0].data.concepts.find(
-                (concept) => concept.value === maxVotes
-            );
-
-            showPrediction(obj.name)
-        } else {
-            alert("Error Occured");
+    let raw = JSON.stringify({
+      user_app_id: {
+        user_id: USER_ID,
+        app_id: APP_ID
+      },
+      inputs: [
+        {
+          data: {
+            image: {
+              base64: IMAGE_BYTES_STRING
+            }
+          }
         }
+      ]
+    });
+
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: "Key " + PAT,
+        "Content-Type": "application/json"
+      },
+      body: raw
+    };
+
+    //fetch url
+    await fetch(
+      "https://api.clarifai.com/v2/models/" +
+      MODEL_ID +
+      "/versions/" +
+      MODEL_VERSION_ID +
+      "/outputs",
+      requestOptions
+    )
+      .then(async response => await response.text())
+      .then(async result => await setJSONResult(result))
+      .catch(error => alert(error));
+
+    JSONResult = JSON.parse(JSONResult);
+
+    // First, get the max vote from the array of objects
+    let maxVotes = Math.max(
+      ...JSONResult.outputs[0].data.concepts.map(e => e.value)
+    );
+
+    // Get the object having votes as max votes
+    let obj = JSONResult.outputs[0].data.concepts.find(
+      concept => concept.value === maxVotes
+    );
+    showPrediction(obj.name);
+  }
+
+  function showPrediction(prediction) {
+    let predictedComputerComponent = "";
+
+    switch (prediction) {
+      case "psu":
+        predictedComputerComponent = "power supply";
+        break;
+      case "gpu":
+        predictedComputerComponent = "graphics card";
+        break;
+      case "case":
+        predictedComputerComponent = "computer case";
+        break;
+      case "mobo":
+        predictedComputerComponent = "motherboard";
+        break;
+      case "cpu":
+        predictedComputerComponent = "CPU";
+        break;
+      case "watercooling":
+        predictedComputerComponent = "watercooling image";
     }
 
-    function showPrediction(prediction) {
-        let predictedComputerComponent = "";
-
-        switch (prediction) {
-            case "psu":
-                predictedComputerComponent = "power supply";
-                break;
-            case "gpu":
-                predictedComputerComponent = "graphics card";
-                break;
-            case "case":
-                predictedComputerComponent = "computer case";
-                break;
-            case "mobo":
-                predictedComputerComponent = "motherboard";
-                break;
-            case "cpu":
-                predictedComputerComponent = "CPU";
-                break;
-            case "watercooling":
-                predictedComputerComponent = "watercooling image";
-                break;
-            default:
-                predictedComputerComponent = "ERROR";
-                break;
-        }
-
-        return alert(
-            "We predict this is a " +
-            predictedComputerComponent +
-            ", would you like to post to that subforum instead?"
-        );
-    }
+    return alert(
+      "We predict this is a " +
+      predictedComputerComponent +
+      ", would you like to post to that subforum instead?"
+    );
+  }
 
   useEffect(() => {
     (async () => {
       await getUser();
       await askPermissionCameraRollAsync();
     })();
-  });
+  }, []);
 
   const getUser = async () => {
     const docRef = doc(db, "Users", auth.currentUser.email);
@@ -186,124 +228,182 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <View>
-        <Picker
-          selectedValue={subforum}
-          style={{ color: "white", margin: 11, marginBottom: 0 }}
-          onValueChange={itemValue => setSubforum(itemValue)}
-        >
-          <Picker.Item label="Please select a subforum" value="null" />
-          <Picker.Item label="GPU" value="gpu" />
-          <Picker.Item label="CPU" value="cpu" />
-          <Picker.Item label="Watercooling" value="watercooling" />
-          <Picker.Item label="Motherboard" value="mobo" />
-          <Picker.Item label="Power Supply" value="psu" />
-        </Picker>
-      </View>
-
-      <TextInput
-        style={{
-          margin: 16,
-          marginBottom: 0,
-          backgroundColor: "#002347"
-        }}
-        label="Thread title"
-        theme={{
-          colors: {
-            placeholder: "gray"
-          }
-        }}
-        value={title}
-        activeOutlineColor={"#FF8E00"}
-        onChangeText={setTitle}
-        maxLength={100}
-        mode={"outlined"}
-        outlinecolor={"white"}
-        textColor={"white"}
-      />
-
-      <TextInput
-        style={{
-          margin: 16,
-          marginBottom: 0,
-          backgroundColor: "#002347",
-          flex: 1,
-          height: 40
-        }}
-        label="Thread description"
-        theme={{
-          colors: {
-            placeholder: "gray"
-          }
-        }}
-        value={description}
-        activeOutlineColor={"#FF8E00"}
-        onChangeText={setDescription}
-        maxLength={10000}
-        mode={"outlined"}
-        outlinecolor={"white"}
-        textColor={"white"}
-      />
-
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          margin: 8,
-          marginBottom: 0
-        }}
-      >
-        <Checkbox
-          status={checked ? "checked" : "unchecked"}
-          color={"#FD7702"}
-          uncheckedColor={"#FD7702"}
-          onPress={() => {
-            setChecked(!checked);
-            const pushAction = StackActions.push("TutorialListViewSelect");
-            navigation.dispatch(pushAction);
+      <Modal visible={modalActive} animationType="slide">
+        <View style={styles.container}>
+          <FlatList
+            data={tutorialList}
+            keyExtractor={item => item.title}
+            renderItem={({ item, index }) => {
+              return (
+                <View style={styles.itemContainer}>
+                  <TouchableOpacity
+                    onPress={async () => {
+                      alert("Selected Tutorial Index: " + index)
+                      setModalActive(false);
+                    }}
+                  >
+                    <View style={[{ flex: 1 }]}>
+                      <Image
+                        style={styles.itemImg}
+                        source={{
+                          uri: item.image
+                        }}
+                      />
+                    </View>
+                    <Text style={styles.itemTitle}>{item.title}</Text>
+                    <Text style={styles.itemDesc}>{item.description}</Text>
+                  </TouchableOpacity>
+                </View>
+              );
+            }}
+          />
+        </View>
+      </Modal>
+      <ScrollView>
+        <TextInput
+          style={{
+            margin: 16,
+            marginBottom: 0,
+            backgroundColor: "#002347"
           }}
+          label="Thread title"
+          theme={{
+            colors: {
+              placeholder: "gray"
+            }
+          }}
+          value={title}
+          activeOutlineColor={"#FF8E00"}
+          onChangeText={setTitle}
+          maxLength={100}
+          mode={"outlined"}
+          outlinecolor={"white"}
+          textColor={"white"}
         />
-        <Text style={{ color: "#FD7702" }}>Followed AR Tutorial</Text>
-      </View>
 
-      {permissions === false ? (
-        <Button
-          onPress={askPermissionCameraRollAsync}
-          title="Ask permissions"
-          icon="camera"
-          mode="contained"
-        />
-      ) : (
-        <>
-          {image && <Image style={styles.image} source={{ uri: image }} />}
-          {status && <Text style={styles.text}>{status}</Text>}
-
-          {/*Button for image picker, this also displays the prediction of the image*/}
-          <View
-            style={[
-              {
-                flexDirection: "row",
-                justifyContent: "space-between"
-              }
-            ]}
+        <View>
+          <Picker
+            selectedValue={subforum}
+            style={{ color: "white", margin: 11, marginBottom: 0 }}
+            onValueChange={itemValue => setSubforum(itemValue)}
           >
-            <Button
-              icon="image"
+            <Picker.Item label="Please select a subforum" value="null" />
+            <Picker.Item label="GPU" value="gpu" />
+            <Picker.Item label="CPU" value="cpu" />
+            <Picker.Item label="Watercooling" value="watercooling" />
+            <Picker.Item label="Motherboard" value="mobo" />
+            <Picker.Item label="Power Supply" value="psu" />
+          </Picker>
+        </View>
+
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            margin: 8,
+            marginBottom: 0
+          }}
+        >
+          <Checkbox
+            status={checked ? "checked" : "unchecked"}
+            color={"#FD7702"}
+            uncheckedColor={"#FD7702"}
+            checked={followedTutorial}
+            onPress={async () => {
+              setChecked(!checked);
+              setModalActive(true);
+              setChecked(followedTutorial);
+            }}
+          />
+          <Text style={{ color: "white" }}>Followed AR Tutorial</Text>
+        </View>
+
+        <View style={styles.threadDescriptionContainer}>
+          <TextInput
+            multiline
+            label="Thread description"
+            theme={{
+              colors: {
+                placeholder: "gray",
+                paddingTop: 0
+              }
+            }}
+            style={{
+              backgroundColor: "#002347",
+              height: 200,
+              textAlignVertical: "top"
+            }}
+            value={description}
+            activeOutlineColor={"#FF8E00"}
+            onChangeText={setDescription}
+            maxLength={10000}
+            mode={"outlined"}
+            outlinecolor={"white"}
+            textColor={"white"}
+          />
+        </View>
+
+        {permissions === false ? (
+          <Button
+            onPress={askPermissionCameraRollAsync}
+            title="Ask permissions"
+            icon="camera"
+            mode="contained"
+          />
+        ) : (
+          <>
+            {image && <Image style={styles.image} source={{ uri: image }} />}
+            {status && <Text style={styles.text}>{status}</Text>}
+
+            {/*Button for image picker, this also displays the prediction of the image*/}
+            <View
               style={[
                 {
-                  margin: 16,
-                  height: 50,
-                  justifyContent: "center",
-                  borderRadius: 25
+                  flexDirection: "row",
+                  justifyContent: "space-between"
                 }
               ]}
-              mode="contained"
-              color={"#FD7702"}
-              disabled={isLoading}
-              onPress={() => chooseImage()}
             >
-              {!isLoading ? <Text>Gallery</Text> : <Spinner color="#eeeeee" />}
-            </Button>
+              <Button
+                icon="image"
+                style={[
+                  {
+                    margin: 16,
+                    height: 50,
+                    justifyContent: "center",
+                    borderRadius: 25
+                  }
+                ]}
+                mode="contained"
+                color={"#FD7702"}
+                disabled={isLoading}
+                onPress={() => chooseImage()}
+              >
+                {!isLoading ? (
+                  <Text>Gallery</Text>
+                ) : (
+                  <Spinner color="#eeeeee" />
+                )}
+              </Button>
+
+              <Button
+                icon="camera"
+                style={[
+                  {
+                    margin: 16,
+                    height: 50,
+                    justifyContent: "center",
+                    borderRadius: 25
+                  }
+                ]}
+                mode="contained"
+                color={"#FD7702"}
+                disabled={isLoading}
+                onPress={() => chooseImage()}
+              >
+                {!isLoading ? <Text>Camera</Text> : <Spinner color="#eeeeee" />}
+              </Button>
+            </View>
 
             <Button
               icon="camera"
@@ -311,61 +411,65 @@ const SocialForumThreadScreen = ({ navigation, route }) => {
                 {
                   margin: 16,
                   height: 50,
-                  justifyContent: "center",
-                  borderRadius: 25
+                  marginTop: 0,
+                  borderRadius: 25,
+                  justifyContent: "center"
                 }
               ]}
               mode="contained"
-              color={"#FD7702"}
+              color={"#FF8E00"}
               disabled={isLoading}
-              onPress={() => chooseImage()}
+              onPress={() => {
+                addThreadDoc();
+                navigation.goBack();
+              }}
             >
-              {!isLoading ? <Text>Camera</Text> : <Spinner color="#eeeeee" />}
+              {!isLoading ? (
+                <Text>Submit Post</Text>
+              ) : (
+                <Spinner color="#eeeeee" />
+              )}
             </Button>
-          </View>
-
-          <Button
-            icon="camera"
-            style={[
-              {
-                margin: 16,
-                height: 50,
-                marginTop: 0,
-                borderRadius: 25,
-                justifyContent: "center"
-              }
-            ]}
-            mode="contained"
-            color={"#FF8E00"}
-            disabled={isLoading}
-            onPress={() => {
-              addThreadDoc();
-              navigation.goBack();
-            }}
-          >
-            {!isLoading ? (
-              <Text>Submit Post</Text>
-            ) : (
-              <Spinner color="#eeeeee" />
-            )}
-          </Button>
-        </>
-      )}
+          </>
+        )}
+      </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "#002347",
+    flex: 1
+  },
+  threadDescriptionContainer: {
     flex: 1,
-    backgroundColor: "#002347"
+    justifyContent: "center",
+    backgroundColor: "transparent",
+    color: "transparent",
+    margin: 16
   },
   itemContainer: {
-    padding: 15
+    padding: 15,
+    borderTopWidth: 1,
+    borderBottomWidth: 1
   },
   itemImg: {
-    height: 50,
-    width: 50
+    width: windowWidth - 30,
+    height: 150,
+    borderRadius: 15
+  },
+  itemTitle: {
+    padding: 10,
+    marginBottom: 15,
+    fontSize: 18,
+    textAlign: "center",
+    color: "#FD7702"
+  },
+  itemDesc: {
+    fontSize: 15,
+    padding: 10,
+    color: "white"
   },
   button: {
     margin: 8,
@@ -385,10 +489,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     borderWidth: 1
   },
-  desc: {
-    fontSize: 10,
-    padding: 10
-  }
 });
 
 export default SocialForumThreadScreen;

@@ -15,7 +15,8 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-  Platform
+  Platform,
+  AsyncStorage
 } from "react-native";
 import { AntDesign, Entypo } from "@expo/vector-icons";
 
@@ -64,17 +65,18 @@ const tutorialList = [
 
 const TutorialListView = ({ navigation }) => {
   /*
-                      TutorialListView displays a FlatList component which contains a list of all the tutorials
-                      It contains an image, a title, description and two buttons that navigate to the
-                      TutorialDescriptionView and TutorialView
-                  
-                      Parameters:
-                      navigation object that is given from react navigation to allow the use of react navigation functions
-                  
-                      Return:
-                      FlatList component
-                      */
-  const [checked, setChecked] = React.useState(null);
+                            TutorialListView displays a FlatList component which contains a list of all the tutorials
+                            It contains an image, a title, description and two buttons that navigate to the
+                            TutorialDescriptionView and TutorialView
+                        
+                            Parameters:
+                            navigation object that is given from react navigation to allow the use of react navigation functions
+                        
+                            Return:
+                            FlatList component
+                            */
+  const [tutorial, setTutorial] = React.useState(null);
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -84,7 +86,7 @@ const TutorialListView = ({ navigation }) => {
           return (
             <View style={styles.itemContainer}>
               <TouchableOpacity
-                onPress={() => {
+                onPress={async () => {
                   navigation.goBack();
                 }}
               >

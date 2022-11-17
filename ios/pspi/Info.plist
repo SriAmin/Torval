@@ -3,9 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>The microphone is needed for certain functions of the application</string>
-	<key>LSApplicationCategoryType</key>
-	<string></string>
+	<string>The microphone is needed for certain features of the applications</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -49,7 +47,7 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>The camera is needed for certain functions of the application</string>
+	<string>The camera is needed for AR functionality</string>
 	<key>UILaunchStoryboardName</key>
 	<string>SplashScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
