@@ -119,18 +119,19 @@ const TutorialListView = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
      flex: 1,
-     backgroundColor: '#fff',
+     backgroundColor: '#002347',
     },
     itemContainer: {
         padding: 15,
         borderTopWidth: 1,
         borderBottomWidth: 1,
+        borderColor: "#a1a1a1",
     },
     progressOverlay: {
         position: 'absolute',
         width: windowWidth - 30,
         height: 150,
-        backgroundColor: 'rgba(123, 66, 245, 0.5)',
+        backgroundColor: 'rgba(255, 142, 0, 0.5))',
         borderRadius: 15,
     },
     itemImg: {
@@ -143,12 +144,12 @@ const styles = StyleSheet.create({
       marginBottom: 15,
       fontSize: 18,
       textAlign: "center",
-      color: "#7b42f5"
+      color: "#FF8E00"
     },
     desc: {
         fontSize: 15,
         padding: 10,
-        color: "darkslategrey"
+        color: "white"
     },
     buttonGroup: {
         flex: 1,
@@ -157,7 +158,7 @@ const styles = StyleSheet.create({
     button: {
         flex: 1,
         flexDirection: 'row',
-        backgroundColor: "#7b42f5",
+        backgroundColor: "#FF8E00",
         margin: 5,
         padding: 12.5,
         borderRadius: 5,

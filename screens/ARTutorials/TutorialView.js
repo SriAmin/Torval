@@ -177,7 +177,13 @@ const TutorialView = ({ navigation, route }) => {
     }
 
     const exitTutorial = async () => {
-        await updateTutorialStep("buildAComputer", tutorialStep);
+        if (tutorialStep !== userDocument.tutorialLastStep.buildAComputer || tutorialStep !== userDocument.tutorialLastStep.cleanAComputer) {
+            if (tutorialIndex == 1) {
+                await updateTutorialStep("cleanAComputer", tutorialStep);
+            } else {
+                await updateTutorialStep("buildAComputer", tutorialStep);
+            }
+        }
         navigation.goBack();
     }
 
@@ -231,22 +237,11 @@ const styles = StyleSheet.create({
         height: '100%',
     },
     opacityCover: {
-        backgroundColor: 'rgba(52, 52, 52, 0.8)',
+        backgroundColor: 'rgba(0, 35, 71, 0.8)',
         position: "absolute",
         width: '100%',
         height: '100%',
         flex: 1,
-    },
-    stepMenu: {
-        marginLeft: 25,
-        backgroundColor: "white",
-        width: '125%',
-        marginRight: -350,
-    },
-    stepText: {
-        color: "#7b42f5",
-        fontSize: 16,
-        padding: 8
     },
     uiView: {
         flex: 1,
@@ -267,7 +262,7 @@ const styles = StyleSheet.create({
     },
     button: {
         flex: 1,
-        backgroundColor: "#7b42f5",
+        backgroundColor: "#FF8E00",
         margin: 10,
         padding: 12.5,
         borderRadius: 5,

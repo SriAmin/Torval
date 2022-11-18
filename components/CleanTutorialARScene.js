@@ -1,9 +1,9 @@
 /*
-TutorialSceneAR.js
+CleanTutorialAR.js
 
 This is the AR scene that the user will see upon loading up
 the tutorial, with a custom 3D model with gesture controls,
-it'll only appear once a plane is scanned and set.
+this tutorial scene is aimed to show the 2nd tutorial
 */
 
 import React, { useState, useRef } from 'react'
@@ -18,9 +18,10 @@ import {
 
 const CleanTutorialARScene = (props) => {
   /*
-  TutorialSceneAR() is the main component that is the AR Scene given
+  CleanTutorialARScene() is the main component that is the AR Scene given
   to the ARSceneNavgiator. It'll show a custom 3D model
-  of the respective tutorial step and allows gesture control
+  of the respective tutorial step and allows gesture control.
+  It'll show the 2nd tutorial and its models.
 
   Parameters:
   props contains a JSON object which contains any properties passed

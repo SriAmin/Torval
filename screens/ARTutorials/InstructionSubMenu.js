@@ -1,3 +1,11 @@
+/*
+InstructionSubMenu.js
+
+This is a component for the AR Tutorials, given a list of steps
+It'll handle the onPress events, and jump the user to the 
+selected step
+
+*/
 import React, { useState, useRef } from 'react'
 import { Text, View, StyleSheet, Animated, FlatList, TouchableOpacity } from 'react-native';
 import { Ionicons, Entypo, Feather } from '@expo/vector-icons';
@@ -54,7 +62,7 @@ const InstructionSubMenu = ({ tutorial, opacityCoverFunction, jumpStepFunction }
                     data={tutorial}
                     renderItem={({ item, index }) => {
                         return (
-                            <TouchableOpacity onPress={() => { jumpStep(index + 1) }}>
+                            <TouchableOpacity onPress={() => { jumpStep(index + 1) }} style={{borderBottomWidth: 1, borderTopWidth: 1, borderColor: "#004a96"}}>
                                 <Text style={styles.stepText}>{item.title}</Text>
                             </TouchableOpacity>
                         )
@@ -74,6 +82,7 @@ const styles = StyleSheet.create({
         padding: 5,
         flexDirection: "row",
         height: '100%',
+        color: "white",
     },
     opacityCover: {
         backgroundColor: 'rgba(52, 52, 52, 0.8)',
@@ -84,14 +93,20 @@ const styles = StyleSheet.create({
     },
     stepMenu: {
         marginLeft: 25,
-        backgroundColor: "white",
+        backgroundColor: "#FF8E00",
         width: '125%',
         marginRight: -350,
+        borderLeftWidth: 3,
+        borderColor: "#004a96",
+        borderRadius: 10,
     },
     stepText: {
-        color: "#7b42f5",
+        color: "white",
         fontSize: 16,
-        padding: 8
+        padding: 8,
+        borderTopWidth: 3,
+        borderBottomWidth: 3,
+        borderColor: "#004a96"
     },
 });
 

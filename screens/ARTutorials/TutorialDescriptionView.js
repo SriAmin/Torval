@@ -40,17 +40,18 @@ const DifficultyElement = ({ difficulty }) => {
 
     return (
         <FlatList
+            style={{marginLeft: 30}}
             data={difficultyList}
             horizontal={true}
             renderItem={({ item }) => {
                 if (item) {
                     return (
-                        <AntDesign name="star" size={24} color="black" />
+                        <AntDesign name="star" size={24} color="white"/>
                     )
                 }
                 else {
                     return (
-                        <AntDesign name="staro" size={24} color="black" />
+                        <AntDesign name="staro" size={24} color="white" />
                     )
                 }
             }}
@@ -117,10 +118,7 @@ const TutorialDescriptionView = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-    },
-    infoContainer: {
-
+        backgroundColor: '#002347',
     },
     itemImg: {
         width: windowWidth,
@@ -132,21 +130,21 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         fontSize: 24,
         textAlign: "center",
-        color: "#7b42f5"
+        color: "#FF8E00"
     },
     desc: {
         fontSize: 16,
         padding: 10,
-        color: "darkslategrey"
+        color: "white"
     },
     difficulty: {
         fontSize: 16,
         padding: 10,
-        color: "darkslategrey"
+        color: "white"
     },
     button: {
         flexDirection: "row",
-        backgroundColor: "#7b42f5",
+        backgroundColor: "#FF8E00",
         marginTop: 50,
         margin: 5,
         padding: 10,
