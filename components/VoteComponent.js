@@ -2,32 +2,53 @@ import * as React from "react";
 import { Checkbox } from "react-native-paper";
 import { View } from "native-base";
 import { Text } from "react-native";
+import { db } from "../config/firebase";
+import { arrayUnion } from "firebase/firestore";
 
-export default function VoteComponent({ props }) {
+export default function VoteComponent({ comment, threadId, commentArray }) {
   const [upvoteChecked, setUpvoteChecked] = React.useState(false);
   const [downvoteChecked, setDownvoteChecked] = React.useState(false);
+  const [array, setArray] = React.useState(commentArray);
   const [karma, setKarma] = React.useState(0);
 
   //initialize variable on startup
-  React.useEffect(() => {
-    setKarma(props.karma);
-    alert(props.karma);
+  React.useEffect(async () => {
+    setKarma(comment.karma);
   }, []);
 
-  const onUpvotePressed = () => {
+  const updateKarmaFirestore = async () => {
+    //for every comment in commentArray
+
+    for (let i = 0; i < commentArray.length; i++) {
+      if (commentArray[i].id == comment.id) {
+        array[i].karma = karma;
+      }
+    }
+
+    await db
+      .collection("Threads")
+      .doc(threadId)
+      .update({
+        comments: array
+      });
+  };
+
+  const onUpvotePressed = async () => {
     if (downvoteChecked) {
       setDownvoteChecked(false);
     }
     setUpvoteChecked(!upvoteChecked);
     setKarma(upvoteChecked ? karma - 1 : karma + 1);
+    await updateKarmaFirestore();
   };
 
-  const onDownvotePressed = () => {
+  const onDownvotePressed = async () => {
     if (upvoteChecked) {
       setUpvoteChecked(false);
     }
     setDownvoteChecked(!downvoteChecked);
     setKarma(downvoteChecked ? karma + 1 : karma - 1);
+    await updateKarmaFirestore();
   };
 
   return (

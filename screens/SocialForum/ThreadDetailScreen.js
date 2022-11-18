@@ -81,7 +81,11 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
             renderItem={({ item }) => {
               return (
                 <View style={styles.itemContainer}>
-                  <VoteComponent props={item} />
+                  <VoteComponent
+                    comment={item}
+                    threadId={route.params.threadId}
+                    commentArray={data}
+                  />
                   <View
                     style={[
                       { flexDirection: "row", justifyContent: "space-between" }
