@@ -17,11 +17,14 @@ export default function VoteComponent({ comment, threadId, commentArray }) {
   }, []);
 
   const updateKarmaFirestore = async () => {
-    //for every comment in commentArray
+    //karma is always a step behind
+    alert(karma);
 
-    for (let i = 0; i < commentArray.length; i++) {
-      if (commentArray[i].id == comment.id) {
+    //for every comment in commentArray
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].id == comment.id) {
         array[i].karma = karma;
+        break;
       }
     }
 
@@ -58,15 +61,17 @@ export default function VoteComponent({ comment, threadId, commentArray }) {
         onPress={() => {
           onUpvotePressed();
         }}
+        uncheckedColor="white"
       />
 
-      <Text>{karma}</Text>
+      <Text style={{ color: "white" }}>{karma}</Text>
 
       <Checkbox
         status={downvoteChecked ? "checked" : "unchecked"}
         onPress={() => {
           onDownvotePressed();
         }}
+        uncheckedColor="white"
       />
     </View>
   );
