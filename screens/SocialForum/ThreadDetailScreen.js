@@ -81,28 +81,38 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
             renderItem={({ item }) => {
               return (
                 <View style={styles.itemContainer}>
-                  <VoteComponent
-                    comment={item}
-                    threadId={route.params.threadId}
-                    commentArray={data}
-                  />
-                  <View
-                    style={[
-                      { flexDirection: "row", justifyContent: "space-between" }
-                    ]}
-                  >
-                    <Text style={styles.itemTitle}>{item.text}</Text>
-                    {!user.isMod ? (
-                      <TouchableOpacity
-                        style={{ left: 1 }}
-                        title="Delete Comment"
-                        onPress={() => handleDelete("comment", item)}
-                      >
-                        <Ionicons name="trash-outline" size={24} color="red" />
-                      </TouchableOpacity>
-                    ) : (
-                      <View />
-                    )}
+                  <View style={[{ flexDirection: "row" }]}>
+                    <VoteComponent
+                      comment={item}
+                      threadId={route.params.threadId}
+                      commentArray={data}
+                    />
+                    <View
+                      style={[
+                        {
+                          justifyContent: "space-between",
+                          flexDirection: "row",
+                          flex: 1
+                        }
+                      ]}
+                    >
+                      <Text style={styles.itemTitle}>{item.text}</Text>
+                      {!user.isMod ? (
+                        <TouchableOpacity
+                          style={{ right: 1 }}
+                          title="Delete Comment"
+                          onPress={() => handleDelete("comment", item)}
+                        >
+                          <Ionicons
+                            name="trash-outline"
+                            size={24}
+                            color="red"
+                          />
+                        </TouchableOpacity>
+                      ) : (
+                        <View />
+                      )}
+                    </View>
                   </View>
                   <Text style={styles.itemAuthor}>{item.author}</Text>
                 </View>
