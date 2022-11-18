@@ -12,6 +12,7 @@ import { auth, db } from "../../config/firebase";
 import { arrayRemove, doc, getDoc } from "firebase/firestore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { FAB, Button } from "react-native-paper";
+import VoteComponent from "../../components/VoteComponent";
 
 const TutorialButton = ({ followedTutorial, navigation }) => {
   const tutorial = {
@@ -80,6 +81,8 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
             renderItem={({ item }) => {
               return (
                 <View style={styles.itemContainer}>
+                  <VoteComponent data={item} />
+
                   <View
                     style={[
                       { flexDirection: "row", justifyContent: "space-between" }
