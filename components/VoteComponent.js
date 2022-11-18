@@ -3,14 +3,15 @@ import { Checkbox } from "react-native-paper";
 import { View } from "native-base";
 import { Text } from "react-native";
 
-const VoteComponent = comment => {
+export default function VoteComponent({ props }) {
   const [upvoteChecked, setUpvoteChecked] = React.useState(false);
   const [downvoteChecked, setDownvoteChecked] = React.useState(false);
   const [karma, setKarma] = React.useState(0);
 
   //initialize variable on startup
   React.useEffect(() => {
-    setKarma(comment.karma);
+    setKarma(props.karma);
+    alert(props.karma);
   }, []);
 
   const onUpvotePressed = () => {
@@ -48,6 +49,4 @@ const VoteComponent = comment => {
       />
     </View>
   );
-};
-
-export default VoteComponent;
+}
