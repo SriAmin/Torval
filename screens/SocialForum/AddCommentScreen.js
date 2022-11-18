@@ -52,7 +52,9 @@ const AddCommentScreen = ({ navigation, route }) => {
             author: user.username,
             createdAt: date,
             karma: 0,
-            text: comment
+            text: comment,
+            upvoters: [],
+            downvoters: []
           })
         })
         .then(() => {
