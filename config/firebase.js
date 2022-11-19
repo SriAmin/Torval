@@ -1,6 +1,7 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-import {getFirestore, setDoc, doc, getDoc} from 'firebase/firestore';
+import { getAuth, signInAnonymously } from "firebase/auth";
+import { getFirestore, setDoc, getDoc, updateDoc, doc } from 'firebase/firestore';
 import 'firebase/compat/firestore';
 import {useEffect, useState} from "react";
 
@@ -29,4 +30,93 @@ const visionKey = 'AIzaSyDzjcsZn0Y7B3pvAdLFCtU7DNejuxuzKU0'
 const auth = firebase.auth();
 const firestore = getFirestore(app);
 
-export { db, auth, firestore, visionKey };
+let userDocument;
+
+const signIn = () => {
+    auth
+        .signInWithEmailAndPassword(txtEmail, txtPassword)
+        .then(result => {
+            if (result) {
+                return 1;
+            }
+        })
+        .catch(({ message }) => {
+            alert(message);
+            return 0;
+        });
+
+    return 0;
+}
+
+const signInAuthAnonymous = async () => {
+    let signInResult = false;
+    await signInAnonymously(auth)
+        .then(() => {
+            userDocument = {
+                email: "JohnDoe@gmail.com",
+                isMod: false,
+                karmaLevel: 0,
+                username: "John Doe",
+                ModForums: [],
+                tutorialLastStep: {
+                    buildAComputer: 1,
+                    cleanAComputer: 1,
+                    gpuInstallation: 1,
+                    waterCooling: 1
+                }
+            }
+            signInResult = true;
+        })
+        .catch((error) => {
+            alert(error);
+        });
+    return signInResult;
+}
+
+const signInAuthAdmin = async () => {
+    let signInResult = false;
+    await auth
+        .signInWithEmailAndPassword("test1234@gmail.com", "test123")
+        .then(async result => {
+            if (result) {
+                signInResult = true;
+                await getUserDocument();
+            }
+        })
+        .catch(({ message }) => {
+            alert(message);;
+        });
+    return signInResult;
+}
+
+const getUserDocument = async () => {
+    const docRef = doc(db, "Users", auth.currentUser.email);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        userDocument = docSnap.data();
+    } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+    }
+}
+
+const updateTutorialStep = async (tutorial, step) => {
+    const docRef = doc(db, "Users", auth.currentUser.email);
+
+    if (tutorial == "cleanAComputer") {
+        await updateDoc(docRef, {
+            "tutorialLastStep.cleanAComputer": step
+        }).then(() => {
+            getUserDocument();
+        });
+    } else {
+        await updateDoc(docRef, {
+            "tutorialLastStep.buildAComputer": step
+        }).then(() => {
+            getUserDocument();
+        });
+    }
+}
+
+export { db, auth, firestore, visionKey, signInAuthAnonymous, signInAuthAdmin, userDocument, updateTutorialStep };

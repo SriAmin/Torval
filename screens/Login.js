@@ -10,56 +10,42 @@ import {
     Text,
 } from "native-base";
 import { getAuth, signInAnonymously } from "firebase/auth";
-
-import { auth } from "../config/firebase";
-import { SafeAreaView } from "react-navigation";
+import { auth, signInAuthAdmin, signInAuthAnonymous} from '../config/firebase';
+import {SafeAreaView} from "react-navigation";
 import SignUp from "./SignUp";
 
 const Login = ({ navigation }) => {
-    const [txtEmail, setEmail] = useState("");
-    const [txtPassword, setPassword] = useState("");
-    const [isLoading, setLoading] = useState(false);
-    const signIn = () => {
-        setLoading(true);
-        auth
-            .signInWithEmailAndPassword(txtEmail, txtPassword)
-            .then((result) => {
-                if (result) {
-                    setLoading(false);
-                    navigation.navigate("Torval");
-                }
-            })
-            .catch(({ message }) => {
-                alert(message);
-                setLoading(false);
-            });
-    };
+  const [txtEmail, setEmail] = useState('');
+  const [txtPassword, setPassword] = useState('');
+  const [isLoading, setLoading] = useState(false);
+  const signIn = () => {
+    setLoading(true);
+    auth
+      .signInWithEmailAndPassword(txtEmail, txtPassword)
+      .then(result => {
+        if (result) {
+          setLoading(false);
+          navigation.navigate('Torval');
+        }
+      })
+      .catch(({ message }) => {
+        alert(message);
+        setLoading(false);
+      });
+  };
 
-    const signInAnonymous = () => {
-        const auth = getAuth();
-        signInAnonymously(auth)
-            .then(() => {
-                navigation.navigate("Torval");
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
+    const signInAnonymous = async () => {
+        if (await signInAuthAnonymous()) {
+          navigation.navigate('Torval');
+        }
+    }
 
-    const signInAdmin = () => {
-        setLoading(true);
-        auth
-            .signInWithEmailAndPassword("test1234@gmail.com", "test123")
-            .then((result) => {
-                if (result) {
-                    setLoading(false);
-                    navigation.navigate("Torval");
-                }
-            })
-            .catch(({ message }) => {
-                alert(message);
-                setLoading(false);
-            });
+    const signInAdmin = async () => {
+      setLoading(true);
+      if (await signInAuthAdmin()) {
+        navigation.navigate('Torval');
+      }
+      setLoading(false);
     };
 
     return (

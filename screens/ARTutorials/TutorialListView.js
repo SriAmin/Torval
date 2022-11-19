@@ -9,14 +9,12 @@ TutorialDescriptionView, and TutorailView to start the AR Tutorial.
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Dimensions, Platform } from 'react-native';
 import { AntDesign, Entypo } from '@expo/vector-icons';
-
-import {
-    ViroBox,
-} from '@viro-community/react-viro';
+import { userDocument } from '../../config/firebase';
 
 //This is used to determine the full width of the tutorial items in the list
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+let itemImageWidth;
 
 //JSON file holds the mock data that the tutorial list will be holding and presenting
 const tutorialList = [
@@ -58,13 +56,29 @@ const TutorialListView = ({navigation}) => {
     Return:
     FlatList component
     */
+   
+    let lastStepArray = [];
+    if (userDocument != undefined) {
+        const lastStep = userDocument.tutorialLastStep;
+        if (lastStep != undefined || lastStep != null) {
+            lastStepArray = [
+                lastStep.buildAComputer,
+                lastStep.cleanAComputer,
+                lastStep.gpuInstallation,
+                lastStep.waterCooling
+            ];
+        }
+        else {
+            lastStepArray = [1,1,1,1];
+        }
+    }
 
     return (
         <View style={styles.container}>
             <FlatList
                 data={tutorialList}
                 keyExtractor={item => item.title}
-                renderItem={({item}) => {
+                renderItem={({item, index}) => {
                     return (
                         <View style={styles.itemContainer}>
                             <View style={[{flex:1}]}>
@@ -72,13 +86,14 @@ const TutorialListView = ({navigation}) => {
                                     source={{
                                         uri: item.image,
                                     }}/>
+                                <View style={styles.progressOverlay}/>
                             </View>
                             <Text style={styles.itemTitle}>{item.title}</Text>
                             <Text style={styles.desc}>{item.description}</Text>
                             <View style={styles.buttonGroup}>
                                 <TouchableOpacity style={styles.button} onPress={() => {
                                     console.log(item)
-                                    navigation.navigate('Description', { tutorial: item })
+                                    navigation.navigate('Description', { tutorial: item, tutorialIndex: index})
                                 }}> 
                                     <Entypo name="dots-three-horizontal" size={24} color="white" />
                                 </TouchableOpacity>
@@ -86,10 +101,11 @@ const TutorialListView = ({navigation}) => {
                                     if (Platform.OS == "web") {
                                         alert("Sorry, currently this function doesn't work properly on this platform.")
                                     } else {
-                                        navigation.navigate('Tutorial')
+                                        navigation.navigate('Tutorial', {tutorialIndex: index})
                                     }
                                 }}>
                                     <AntDesign name="caretright" size={24} color="white" />
+                                    <Text style={{color: "white", paddingLeft: 5}}> Step {lastStepArray[index]}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -103,12 +119,20 @@ const TutorialListView = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
      flex: 1,
-     backgroundColor: '#fff',
+     backgroundColor: '#002347',
     },
     itemContainer: {
         padding: 15,
         borderTopWidth: 1,
         borderBottomWidth: 1,
+        borderColor: "#a1a1a1",
+    },
+    progressOverlay: {
+        position: 'absolute',
+        width: windowWidth - 30,
+        height: 150,
+        backgroundColor: 'rgba(255, 142, 0, 0.5))',
+        borderRadius: 15,
     },
     itemImg: {
         width: windowWidth - 30,
@@ -120,12 +144,12 @@ const styles = StyleSheet.create({
       marginBottom: 15,
       fontSize: 18,
       textAlign: "center",
-      color: "#7b42f5"
+      color: "#FF8E00"
     },
     desc: {
         fontSize: 15,
         padding: 10,
-        color: "darkslategrey"
+        color: "white"
     },
     buttonGroup: {
         flex: 1,
@@ -133,7 +157,8 @@ const styles = StyleSheet.create({
     },
     button: {
         flex: 1,
-        backgroundColor: "#7b42f5",
+        flexDirection: 'row',
+        backgroundColor: "#FF8E00",
         margin: 5,
         padding: 12.5,
         borderRadius: 5,

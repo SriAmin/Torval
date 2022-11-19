@@ -36,21 +36,27 @@ const SignUp = ({ navigation }) => {
       .createUserWithEmailAndPassword(txtEmail, txtPassword)
       .then(result => {
         if (result) {
-          updateProfile(auth.currentUser, {
-            displayName: txtName, photoURL: image.photoURL
-          }).then(async () => {
-            console.log(result.user);
-            // Add a new document in collection "Users"
-            await setDoc(doc(db, "Users", result.user.email.toString()), {
-              email: result.user.email,
-              isMod: false,
-              karmaLevel: 0,
-              username: result.user.displayName,
-              ModForums: [],
-            })
-          }).catch((error) => {
-            alert(error);
-          });
+            updateProfile(auth.currentUser, {
+                displayName: txtName, photoURL: image.photoURL
+            }).then(async () => {
+                console.log(result.user);
+                // Add a new document in collection "Users"
+                await setDoc(doc(db, "Users", result.user.email.toString()), {
+                  email: result.user.email,
+                  isMod: false,
+                  karmaLevel: 0,
+                  username: result.user.displayName,
+                  ModForums: [],
+                  tutorialLastStep: {
+                    buildAComputer: 1,
+                    cleanAComputer: 1,
+                    gpuInstallation: 1,
+                    waterCooling: 1
+                  },
+                })
+            }).catch((error) => {
+                alert(error);
+            });
           alert(
             'Account has been created. You will be automatically logged in.'
           );
