@@ -38,9 +38,11 @@ const TutorialView = ({ navigation, route }) => {
     const tutorialIndex = route.params.tutorialIndex;
     let tempTutorialStep;
     let ARSceneNavgiator;
+    //Refernce values to be called throughout the code
+    const arSceneNav = useRef(null);
 
     if (tutorialIndex == 1) {
-        const lastStep = userDocument.tutorialLastStep.cleanAComputer;
+        const lastStep = (userDocument.tutorialLastStep.cleanAComputer < 1) ? 1 : userDocument.tutorialLastStep.cleanAComputer;
         tempTutorialStep = (lastStep == undefined || lastStep == null) ? 1 : lastStep;
         tutorialInstructions = Tutorials[1];
         ARSceneNavgiator = <ViroARSceneNavigator
@@ -54,7 +56,7 @@ const TutorialView = ({ navigation, route }) => {
             style={styles.f1}
         />
     } else {
-        const lastStep = userDocument.tutorialLastStep.buildAComputer;
+        const lastStep = (userDocument.tutorialLastStep.buildAComputer < 1) ? 1 : userDocument.tutorialLastStep.buildAComputer;
         tempTutorialStep = (lastStep == undefined || lastStep == null) ? 1 : lastStep;
         tutorialInstructions = Tutorials[0];
         ARSceneNavgiator = <ViroARSceneNavigator
@@ -74,8 +76,6 @@ const TutorialView = ({ navigation, route }) => {
     // const [stepMenu, setStepMenu] = useState(false);
     const [opacityCoverActive, setOpacityCover] = useState(false);
 
-    //Refernce values to be called throughout the code
-    const arSceneNav = useRef(null);
     let opacityCover;
 
     let tutorialInstructions;
@@ -84,30 +84,6 @@ const TutorialView = ({ navigation, route }) => {
     if (opacityCoverActive) {
         opacityCover = <View style={styles.opacityCover} />
     }
-
-    // const slideIn = () => {
-    //     /*
-    //     slideIn function is called when the submenu button is pressed on,
-    //     based on the stepMenu boolean, it'll either display or hide
-    //     the submenu
-    //     */
-
-    //     console.log("Step Menu Active: " + stepMenu);
-    //     if (stepMenu) {
-    //         Animated.timing(slideInAnim, {
-    //             toValue: -170.0,
-    //             duration: 250,
-    //             useNativeDriver: false,
-    //         }).start();
-    //     } else {
-    //         Animated.timing(slideInAnim, {
-    //             toValue: 50,
-    //             duration: 250,
-    //             useNativeDriver: false,
-    //         }).start();
-    //     }
-    //     setStepMenu(!stepMenu);
-    // }
 
     const nextStep = async () => {
         /*
@@ -118,10 +94,14 @@ const TutorialView = ({ navigation, route }) => {
         */
 
         //If we are at the last step, go back to TutorialListView
-        if (tutorialStep == 15) {
+        if (tutorialStep == 15 && tutorialIndex !== 1) {
             await updateTutorialStep("buildAComputer", 1);
             navigation.goBack();
-        } else {
+        } else if (tutorialStep == 5 && tutorialIndex === 1) {
+            await updateTutorialStep("cleanAComputer", 1);
+            navigation.goBack();
+        }
+        else {
             setTutorialStep(tutorialStep + 1);
             const tempStep = tutorialStep + 1;
             changeARScene(tempStep);
@@ -155,7 +135,6 @@ const TutorialView = ({ navigation, route }) => {
         push the step to make sure the correct model displays. The tutorialStep will
         be equal to the selected step.
         */
-
         setTutorialStep(stepIndex);
         changeARScene(stepIndex);
         console.log("Jumped to Scene" + tutorialStep);
@@ -164,6 +143,7 @@ const TutorialView = ({ navigation, route }) => {
     const changeARScene = (stepIndex) => {
         arSceneNav.current.arSceneNavigator.pop()
         if (tutorialIndex == 1) {
+            console.log("Hello?")
             arSceneNav.current.arSceneNavigator.push({
                 scene: CleanTutorialARScene,
                 passProps: { modelName: "Step" + stepIndex.toString() }
