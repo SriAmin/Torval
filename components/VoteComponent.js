@@ -4,35 +4,41 @@ import { View } from "native-base";
 import { Text } from "react-native";
 import { db } from "../config/firebase";
 
-export default function VoteComponent({ comment, threadId, commentArray }) {
+export default function VoteComponent({
+  comment,
+  threadId,
+  commentArray,
+  userEmail
+}) {
   const [upvoteChecked, setUpvoteChecked] = React.useState(false);
   const [downvoteChecked, setDownvoteChecked] = React.useState(false);
   const [array] = React.useState(commentArray);
   const [karma, setKarma] = React.useState(0);
 
-  //initialize variable on startup
   React.useEffect(async () => {
     //set karma of post
     setKarma(comment.karma);
 
-    //if user is in the array of upvoters, set the upvoteChecked to true, vice versa for downvoters
-    // if (comment.upvoters.includes(db.auth().currentUser.email)) {
-    //   setUpvoteChecked(true);
-    // } else if (comment.downvoters.includes(db.auth().currentUser.email)) {
-    //   setDownvoteChecked(true);
-    // }
+    if (comment.upvoters.includes(userEmail)) {
+      setUpvoteChecked(true);
+    } else if (comment.downvoters.includes(userEmail)) {
+      setDownvoteChecked(true);
+    }
   }, []);
 
-  //updating the vote in firestore
-  //we update the karma of the post, and add the user to the upvoters/downvoters array
   const updateUpvoteFirestore = async () => {
-    //for every comment in the array
     for (let i = 0; i < array.length; i++) {
-      //if the comment id matches the comment id of the comment that was passed in, update the karma
       if (array[i].id === comment.id) {
         array[i].karma++;
         setKarma(array[i].karma);
-        //replace whole comments array in document with the updated array
+
+        //if user has downvoted, remove downvote
+        if (array[i].downvoters.includes(userEmail)) {
+          array[i].downvoters.splice(array[i].downvoters.indexOf(userEmail), 1);
+        } else {
+          array[i].upvoters.push(userEmail);
+        }
+
         await db
           .collection("Threads")
           .doc(threadId)
@@ -43,17 +49,19 @@ export default function VoteComponent({ comment, threadId, commentArray }) {
     }
   };
 
-  //updating the vote in firestore
-  //we update the karma of the post, and add the user to the upvoters/downvoters array
   const updateDownvoteFirestore = async () => {
-    //for every comment in the array
     for (let i = 0; i < array.length; i++) {
-      //if the comment id matches the comment id of the comment that was passed in, update the karma
       if (array[i].id === comment.id) {
         array[i].karma--;
         setKarma(array[i].karma);
 
-        //replace whole comments array in document with the updated array
+        //if user has upvoted, remove upvote
+        if (array[i].upvoters.includes(userEmail)) {
+          array[i].upvoters.splice(array[i].upvoters.indexOf(userEmail), 1);
+        } else {
+          array[i].downvoters.push(userEmail);
+        }
+
         await db
           .collection("Threads")
           .doc(threadId)

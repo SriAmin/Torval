@@ -86,6 +86,7 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
                       comment={item}
                       threadId={route.params.threadId}
                       commentArray={data}
+                      userEmail={user.email}
                     />
                     <View
                       style={[
