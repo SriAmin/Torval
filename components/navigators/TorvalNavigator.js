@@ -47,6 +47,9 @@ const TorvalNavigator = ({ navigation }) => {
 
   return (
     <Tab.Navigator
+      tabBarOptions={{
+        keyboardHidesTabBar: true
+      }}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;

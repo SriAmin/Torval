@@ -282,27 +282,54 @@ const SocialForumThreadScreen = ({ navigation }) => {
           style={{
             margin: 16,
             marginBottom: 0,
-            backgroundColor: "#002347"
+            backgroundColor: "#003366"
           }}
           label="Thread title"
           theme={{
             colors: {
-              placeholder: "white"
+              placeholder: "white",
+              text: "white",
+              primary: "#FD7702",
+              underlineColor: "transparent",
+              background: "#003489"
             }
           }}
           value={title}
-          activeOutlineColor={"#FF8E00"}
           onChangeText={setTitle}
           maxLength={100}
-          mode={"outlined"}
           outlinecolor={"white"}
           textColor={"white"}
         />
 
+        <View style={styles.threadDescriptionContainer}>
+          <TextInput
+            multiline
+            label="Thread description"
+            theme={{
+              colors: {
+                placeholder: "white",
+                text: "white",
+                primary: "#FD7702",
+                underlineColor: "transparent",
+                background: "#003489"
+              }
+            }}
+            style={{
+              backgroundColor: "#003366",
+              height: 200
+            }}
+            value={description}
+            onChangeText={setDescription}
+            maxLength={10000}
+            outlinecolor={"white"}
+            textColor={"white"}
+          />
+        </View>
+
         <View>
           <Picker
             selectedValue={subforum}
-            style={{ color: "white", margin: 11, marginBottom: 0 }}
+            style={{ color: "white", margin: 8, marginBottom: 0 }}
             onValueChange={itemValue => setSubforum(itemValue)}
           >
             <Picker.Item label="Please select a subforum" value="null" />
@@ -344,34 +371,9 @@ const SocialForumThreadScreen = ({ navigation }) => {
           </View>
         </View>
 
-        <View style={styles.threadDescriptionContainer}>
-          <TextInput
-            multiline
-            label="Thread description"
-            theme={{
-              colors: {
-                placeholder: "white",
-                paddingTop: 0
-              }
-            }}
-            style={{
-              backgroundColor: "#002347",
-              height: 200,
-              textAlignVertical: "top"
-            }}
-            value={description}
-            activeOutlineColor={"#FF8E00"}
-            onChangeText={setDescription}
-            maxLength={10000}
-            mode={"outlined"}
-            outlinecolor={"white"}
-            textColor={"white"}
-          />
-        </View>
-
         <Text style={styles.helperText}>
-          Need help deciding what subforum to post to? Take a picture of it and
-          we'll try to predict what it is!
+          Need help deciding what subforum to post to? Take a picture of the
+          component and we'll try to predict what it is!
         </Text>
 
         {permissions === false ? (
@@ -514,7 +516,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "transparent",
     color: "transparent",
-    margin: 16
+    margin: 16,
+    marginBottom: 0
   },
   itemContainer: {
     padding: 15,

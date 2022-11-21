@@ -71,8 +71,11 @@ const AddCommentScreen = ({ navigation, route }) => {
         label="Comment"
         theme={{
           colors: {
-            placeholder: "gray",
-            paddingTop: 0
+            placeholder: "white",
+            text: "white",
+            primary: "#FD7702",
+            underlineColor: "transparent",
+            background: "#003489"
           }
         }}
         style={{

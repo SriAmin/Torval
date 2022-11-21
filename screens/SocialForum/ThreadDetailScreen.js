@@ -182,22 +182,28 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
           </View>
 
           {thread.followedTutorial[0] ? (
-            <View
-              style={{
-                flexDirection: "row",
-                flexWrap: "wrap",
-                justifyContent: "flex-start"
-              }}
-            >
-              <Chip
-                icon="cube-scan"
-                style={styles.chip}
-                onPress={() =>
-                  goToTutorial(navigation, thread.followedTutorial[1])
-                }
+            <View>
+              <Text style={{ color: "#FF8E00", marginLeft: 16 }}>
+                Followed Tutorial:{" "}
+              </Text>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  justifyContent: "flex-start"
+                }}
               >
-                {thread.followedTutorial[1]}
-              </Chip>
+                <Chip
+                  icon="cube-scan"
+                  style={styles.chip}
+                  onPress={() =>
+                    goToTutorial(navigation, thread.followedTutorial[1])
+                  }
+                >
+                  {thread.followedTutorial[1]}
+                </Chip>
+              </View>
             </View>
           ) : (
             <View />
