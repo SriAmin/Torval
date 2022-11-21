@@ -74,12 +74,7 @@ const SocialForumNavigation = ({ navigation }) => {
               shadowOpacity: 0,
               backgroundColor: "#002347"
             },
-            headerTintColor: "#fff",
-            headerTransparent: true,
-            headerShown: false,
-            headerTitleStyle: {
-              fontWeight: "bold"
-            }
+            headerTintColor: "#fff"
           }}
         />
         <Stack.Screen

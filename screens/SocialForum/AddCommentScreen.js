@@ -67,18 +67,18 @@ const AddCommentScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <TextInput
-        style={{
-          margin: 16,
-          marginBottom: 0,
-          backgroundColor: "#002347",
-          flex: 1,
-          height: 40
-        }}
-        label="Comment details"
+        multiline
+        label="Comment"
         theme={{
           colors: {
-            placeholder: "white"
+            placeholder: "gray",
+            paddingTop: 0
           }
+        }}
+        style={{
+          backgroundColor: "#002347",
+          height: 200,
+          textAlignVertical: "top"
         }}
         value={comment}
         activeOutlineColor={"#FF8E00"}

@@ -6,7 +6,8 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
-  Image
+  Image,
+  ScrollView
 } from "react-native";
 import { auth, db } from "../../config/firebase";
 import { arrayRemove, doc, getDoc } from "firebase/firestore";
@@ -86,24 +87,30 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
                       ]}
                     >
                       <Text style={styles.itemTitle}>{item.text}</Text>
-                      {user.isMod || user.username === item.author ? (
-                        <TouchableOpacity
-                          style={{ right: 1 }}
-                          title="Delete Comment"
-                          onPress={() => handleDelete("comment", item)}
-                        >
-                          <Ionicons
-                            name="trash-outline"
-                            size={24}
-                            color="red"
-                          />
-                        </TouchableOpacity>
-                      ) : (
-                        <View />
-                      )}
                     </View>
                   </View>
-                  <Text style={styles.itemAuthor}>{item.author}</Text>
+                  <View
+                    style={[
+                      {
+                        justifyContent: "space-between",
+                        flexDirection: "row",
+                        flex: 1
+                      }
+                    ]}
+                  >
+                    <Text style={styles.itemAuthor}>{item.author}</Text>
+                    {user.isMod || user.username === item.author ? (
+                      <TouchableOpacity
+                        style={{ right: 1 }}
+                        title="Delete Comment"
+                        onPress={() => handleDelete("comment", item)}
+                      >
+                        <Ionicons name="trash-outline" size={24} color="red" />
+                      </TouchableOpacity>
+                    ) : (
+                      <View />
+                    )}
+                  </View>
                 </View>
               );
             }}
@@ -152,58 +159,52 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
   else {
     return (
       <View style={styles.container}>
-        <View
-          style={[{ flexDirection: "row", justifyContent: "space-between" }]}
-        >
-          <Button
-            labelStyle={{ fontSize: 28 }}
-            icon="arrow-left"
-            color={"white"}
-            onPress={() => navigation.goBack()}
-          />
+        <ScrollView style={styles.container}>
+          <Text style={styles.threadTitle}>{thread.title}</Text>
+          <Text style={styles.threadAuthor}>{thread.author}</Text>
+          <Text style={styles.threadDescription}>{thread.description}</Text>
 
-          {/* If the user is a moderator, show the delete button */}
-          {user.isMod || user.username === thread.author ? (
-            <TouchableOpacity
-              style={{ marginTop: 16, margin: 16 }}
-              title="Delete thread"
-              onPress={() => handleDelete("thread")}
+          <View
+            style={[{ flexDirection: "row", justifyContent: "space-between" }]}
+          >
+            {/* If the user is a moderator, show the delete button */}
+            {user.isMod || user.username === thread.author ? (
+              <TouchableOpacity
+                style={{ marginTop: 16, margin: 16 }}
+                title="Delete thread"
+                onPress={() => handleDelete("thread")}
+              >
+                <Ionicons name="trash-outline" size={24} color="red" />
+              </TouchableOpacity>
+            ) : (
+              <View />
+            )}
+          </View>
+
+          {thread.followedTutorial[0] ? (
+            <View
+              style={{
+                flexDirection: "row",
+                flexWrap: "wrap",
+                justifyContent: "flex-start"
+              }}
             >
-              <Ionicons name="trash-outline" size={24} color="red" />
-            </TouchableOpacity>
+              <Chip
+                icon="cube-scan"
+                style={styles.chip}
+                onPress={() =>
+                  goToTutorial(navigation, thread.followedTutorial[1])
+                }
+              >
+                {thread.followedTutorial[1]}
+              </Chip>
+            </View>
           ) : (
             <View />
           )}
-        </View>
 
-        <Text style={styles.threadTitle}>{thread.title}</Text>
-        <Text style={styles.threadAuthor}>{thread.author}</Text>
-        <Text style={styles.threadDescription}>{thread.description}</Text>
-
-        {thread.followedTutorial[0] ? (
-          <View
-            style={{
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent: "flex-start"
-            }}
-          >
-            <Chip
-              icon="cube-scan"
-              style={styles.chip}
-              onPress={() =>
-                goToTutorial(navigation, thread.followedTutorial[1])
-              }
-            >
-              {thread.followedTutorial[1]}
-            </Chip>
-          </View>
-        ) : (
-          <View />
-        )}
-
-        <CommentList data={thread.comments} />
-
+          <CommentList data={thread.comments} />
+        </ScrollView>
         <FAB
           icon="comment"
           size="large"
@@ -224,7 +225,6 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
 // STYLING
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 40,
     flex: 1,
     backgroundColor: "#002347"
   },
@@ -239,11 +239,12 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     paddingTop: 8,
     color: "white",
-    marginBottom: 32
+    marginBottom: 16
   },
   threadTitle: {
     fontSize: 28,
     paddingLeft: 16,
+    paddingTop: 16,
     paddingRight: 16,
     paddingBottom: 8,
     color: "white"

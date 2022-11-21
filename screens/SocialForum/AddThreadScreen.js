@@ -287,7 +287,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
           label="Thread title"
           theme={{
             colors: {
-              placeholder: "gray"
+              placeholder: "white"
             }
           }}
           value={title}
@@ -350,7 +350,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
             label="Thread description"
             theme={{
               colors: {
-                placeholder: "gray",
+                placeholder: "white",
                 paddingTop: 0
               }
             }}
@@ -368,6 +368,11 @@ const SocialForumThreadScreen = ({ navigation }) => {
             textColor={"white"}
           />
         </View>
+
+        <Text style={styles.helperText}>
+          Need help deciding what subforum to post to? Take a picture of it and
+          we'll try to predict what it is!
+        </Text>
 
         {permissions === false ? (
           <Button
@@ -550,6 +555,13 @@ const styles = StyleSheet.create({
     height: 44,
     textAlign: "center",
     borderWidth: 1
+  },
+  helperText: {
+    margin: 10,
+    fontSize: 14,
+    textAlign: "center",
+    color: "#FD7702",
+    fontStyle: "italic"
   }
 });
 
