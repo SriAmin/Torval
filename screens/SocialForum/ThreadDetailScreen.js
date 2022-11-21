@@ -6,39 +6,29 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
-  Image
+  Image,
+  ScrollView
 } from "react-native";
 import { auth, db } from "../../config/firebase";
 import { arrayRemove, doc, getDoc } from "firebase/firestore";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { FAB, Button } from "react-native-paper";
-
-const TutorialButton = ({ followedTutorial, navigation }) => {
-  const tutorial = {
-    image:
-      "https://thumbs.dreamstime.com/b/amd-ryzen-cpu-technician-fingers-above-motherboard-part-custom-pc-build-los-angeles-ca-usa-december-169345127.jpg",
-    title: "Building a Computer",
-    description:
-      "This tutorial will be an large guide on building your computer and getting it running",
-    difficulty: 3
-  };
-
-  if (followedTutorial)
-    return (
-      <Button
-        onPress={() => {
-          navigation.navigate("Description", { tutorial: tutorial });
-        }}
-        title="Go to Tutorial"
-      />
-    );
-  else return <View />;
-};
+import { FAB, Button, Chip } from "react-native-paper";
+import VoteComponent from "../../components/VoteComponent";
+import { tutorialList } from "./AddThreadScreen";
 
 const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
   const [thread, setThread] = useState(null);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
+
+  const goToTutorial = (navigation, followedTutorialTitle) => {
+    //find followedTutorialDescription in tutorialList
+    const tutorial = tutorialList.find(
+      tutorial => tutorial.title === followedTutorialTitle
+    );
+
+    navigation.navigate("Description", { tutorial: tutorial });
+  };
 
   const getUser = async () => {
     const docRef = doc(db, "Users", auth.currentUser.email);
@@ -80,15 +70,38 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
             renderItem={({ item }) => {
               return (
                 <View style={styles.itemContainer}>
+                  <View style={[{ flexDirection: "row" }]}>
+                    <VoteComponent
+                      comment={item}
+                      threadId={route.params.threadId}
+                      commentArray={data}
+                      userEmail={user.email}
+                    />
+                    <View
+                      style={[
+                        {
+                          justifyContent: "space-between",
+                          flexDirection: "row",
+                          flex: 1
+                        }
+                      ]}
+                    >
+                      <Text style={styles.itemTitle}>{item.text}</Text>
+                    </View>
+                  </View>
                   <View
                     style={[
-                      { flexDirection: "row", justifyContent: "space-between" }
+                      {
+                        justifyContent: "space-between",
+                        flexDirection: "row",
+                        flex: 1
+                      }
                     ]}
                   >
-                    <Text style={styles.itemTitle}>{item.text}</Text>
-                    {!user.isMod ? (
+                    <Text style={styles.itemAuthor}>{item.author}</Text>
+                    {user.isMod || user.username === item.author ? (
                       <TouchableOpacity
-                        style={{ left: 1 }}
+                        style={{ right: 1 }}
                         title="Delete Comment"
                         onPress={() => handleDelete("comment", item)}
                       >
@@ -98,7 +111,6 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
                       <View />
                     )}
                   </View>
-                  <Text style={styles.itemAuthor}>{item.author}</Text>
                 </View>
               );
             }}
@@ -147,40 +159,58 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
   else {
     return (
       <View style={styles.container}>
-        <View
-          style={[{ flexDirection: "row", justifyContent: "space-between" }]}
-        >
-          <Button
-            labelStyle={{ fontSize: 28 }}
-            icon="arrow-left"
-            color={"white"}
-            onPress={() => navigation.goBack()}
-          />
+        <ScrollView style={styles.container}>
+          <Text style={styles.threadTitle}>{thread.title}</Text>
+          <Text style={styles.threadAuthor}>{thread.author}</Text>
+          <Text style={styles.threadDescription}>{thread.description}</Text>
 
-          {/* If the user is a moderator, show the delete button */}
-          {!user.isMod ? (
-            <TouchableOpacity
-              style={{ marginTop: 16, margin: 16 }}
-              title="Delete thread"
-              onPress={() => handleDelete("thread")}
-            >
-              <Ionicons name="trash-outline" size={24} color="red" />
-            </TouchableOpacity>
+          <View
+            style={[{ flexDirection: "row", justifyContent: "space-between" }]}
+          >
+            {/* If the user is a moderator, show the delete button */}
+            {user.isMod || user.username === thread.author ? (
+              <TouchableOpacity
+                style={{ marginTop: 16, margin: 16 }}
+                title="Delete thread"
+                onPress={() => handleDelete("thread")}
+              >
+                <Ionicons name="trash-outline" size={24} color="red" />
+              </TouchableOpacity>
+            ) : (
+              <View />
+            )}
+          </View>
+
+          {thread.followedTutorial[0] ? (
+            <View>
+              <Text style={{ color: "#FF8E00", marginLeft: 16 }}>
+                Followed Tutorial:{" "}
+              </Text>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  justifyContent: "flex-start"
+                }}
+              >
+                <Chip
+                  icon="cube-scan"
+                  style={styles.chip}
+                  onPress={() =>
+                    goToTutorial(navigation, thread.followedTutorial[1])
+                  }
+                >
+                  {thread.followedTutorial[1]}
+                </Chip>
+              </View>
+            </View>
           ) : (
             <View />
           )}
-        </View>
 
-        <Text style={styles.threadTitle}>{thread.title}</Text>
-        <Text style={styles.threadAuthor}>{thread.author}</Text>
-        <Text style={styles.threadDescription}>{thread.description}</Text>
-        <TutorialButton
-          followedTutorial={thread.followedTutorial}
-          navigation={navigation}
-        />
-
-        <CommentList data={thread.comments} />
-
+          <CommentList data={thread.comments} />
+        </ScrollView>
         <FAB
           icon="comment"
           size="large"
@@ -201,7 +231,6 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
 // STYLING
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 40,
     flex: 1,
     backgroundColor: "#002347"
   },
@@ -215,11 +244,13 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     paddingTop: 8,
-    color: "white"
+    color: "white",
+    marginBottom: 16
   },
   threadTitle: {
     fontSize: 28,
     paddingLeft: 16,
+    paddingTop: 16,
     paddingRight: 16,
     paddingBottom: 8,
     color: "white"
@@ -252,6 +283,12 @@ const styles = StyleSheet.create({
     bottom: 0,
     backgroundColor: "#FF8E00",
     color: "#000"
+  },
+  chip: {
+    margin: 10,
+    borderRadius: 25,
+    backgroundColor: "#FF8E00",
+    flexDirection: "row"
   }
 });
 

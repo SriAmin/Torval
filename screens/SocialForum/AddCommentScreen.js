@@ -52,7 +52,9 @@ const AddCommentScreen = ({ navigation, route }) => {
             author: user.username,
             createdAt: date,
             karma: 0,
-            text: comment
+            text: comment,
+            upvoters: [],
+            downvoters: []
           })
         })
         .then(() => {
@@ -65,18 +67,21 @@ const AddCommentScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <TextInput
-        style={{
-          margin: 16,
-          marginBottom: 0,
-          backgroundColor: "#002347",
-          flex: 1,
-          height: 40
-        }}
-        label="Comment details"
+        multiline
+        label="Comment"
         theme={{
           colors: {
-            placeholder: "white"
+            placeholder: "white",
+            text: "white",
+            primary: "#FD7702",
+            underlineColor: "transparent",
+            background: "#003489"
           }
+        }}
+        style={{
+          backgroundColor: "#002347",
+          height: 200,
+          textAlignVertical: "top"
         }}
         value={comment}
         activeOutlineColor={"#FF8E00"}
