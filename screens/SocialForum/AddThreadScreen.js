@@ -439,7 +439,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
             </View>
 
             <Button
-              icon="camera"
+              icon="pencil-box"
               style={[
                 {
                   margin: 16,
