@@ -40,6 +40,12 @@ export default function ThreadsScreen({ navigation }) {
       text: "CPU",
       icon: "memory",
       subtitle: "The brain of the computer."
+    },
+    {
+      id: "maintenance",
+      text: "Maintenance",
+      icon: "monitor-shimmer",
+      subtitle: "After the building stage."
     }
   ];
 

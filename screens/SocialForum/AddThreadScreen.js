@@ -7,7 +7,8 @@ import {
   Modal,
   FlatList,
   TouchableOpacity,
-  Dimensions
+  Dimensions,
+  ActivityIndicator
 } from "react-native";
 import {
   TextInput,
@@ -76,6 +77,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
   const [followedTutorial, setFollowedTutorial] = React.useState([false, null]);
   const [modalActive, setModalActive] = useState(false);
   const [visible, setVisible] = React.useState(false);
+  const [isPredicting, setIsPredicting] = useState(false);
   const onToggleSnackBar = () => setVisible(!visible);
   const onDismissSnackBar = () => setVisible(false);
 
@@ -86,6 +88,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
   const MODEL_VERSION_ID = "9e7a9f72c9474afc90098de79147c899";
 
   async function predictImage(image) {
+    setIsPredicting(true);
     let IMAGE_BYTES_STRING = image.base64.toString();
 
     const raw = JSON.stringify({
@@ -141,9 +144,15 @@ const SocialForumThreadScreen = ({ navigation }) => {
         concept => concept.value === maxVotes
       );
 
-      showPrediction(obj.name);
+      if (maxVotes > 0.05) {
+        showPrediction(obj.name);
+      } else {
+        alert("No component found");
+        setIsPredicting(false);
+      }
     } else {
       alert("Error Occurred");
+      setIsPredicting(false);
     }
   }
 
@@ -175,6 +184,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
     }
 
     setPredictedComponent(predictedComputerComponent);
+    setIsPredicting(false);
     onToggleSnackBar();
   }
 
@@ -338,6 +348,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
             <Picker.Item label="Watercooling" value="watercooling" />
             <Picker.Item label="Motherboard" value="mobo" />
             <Picker.Item label="Power Supply" value="psu" />
+            <Picker.Item label="Maintenance" value="maintenance" />
           </Picker>
         </View>
 
@@ -419,6 +430,14 @@ const SocialForumThreadScreen = ({ navigation }) => {
                 )}
               </Button>
 
+              {isPredicting && (
+                <ActivityIndicator
+                  visible={isPredicting}
+                  size="large"
+                  color="#ADD8E6"
+                />
+              )}
+
               <Button
                 icon="camera"
                 style={[
@@ -468,6 +487,8 @@ const SocialForumThreadScreen = ({ navigation }) => {
         <Snackbar
           visible={visible}
           onDismiss={onDismissSnackBar}
+          style={{ backgroundColor: "#003366" }}
+          theme={{ colors: { accent: "#FF8E00" } }}
           duration={6000}
           action={{
             label: "Yes",
@@ -565,6 +586,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#FD7702",
     fontStyle: "italic"
+  },
+  lottie: {
+    width: 100,
+    height: 100
   }
 });
 
