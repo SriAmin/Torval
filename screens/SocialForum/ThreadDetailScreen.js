@@ -98,7 +98,7 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
                       ]}
                     >
                       <Text style={styles.itemTitle}>{item.text}</Text>
-                      {!user.isMod ? (
+                      {user.isMod || user.username === item.author ? (
                         <TouchableOpacity
                           style={{ right: 1 }}
                           title="Delete Comment"
@@ -175,7 +175,7 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
           />
 
           {/* If the user is a moderator, show the delete button */}
-          {!user.isMod ? (
+          {user.isMod || user.username === thread.author ? (
             <TouchableOpacity
               style={{ marginTop: 16, margin: 16 }}
               title="Delete thread"
@@ -232,7 +232,8 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     paddingTop: 8,
-    color: "white"
+    color: "white",
+    marginBottom: 32
   },
   threadTitle: {
     fontSize: 28,
