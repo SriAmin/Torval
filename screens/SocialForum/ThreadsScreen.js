@@ -10,7 +10,8 @@ import {
   ActivityIndicator
 } from "react-native";
 import { db, firestore } from "../../config/firebase";
-import { FAB } from "react-native-paper";
+import { Chip, FAB } from "react-native-paper";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 //Handles the description for the thread to either display the shortened version or the full version
 const ShortDescription = props => {
@@ -87,6 +88,13 @@ const ThreadsScreen = ({ navigation, route }) => {
                   <View style={[{ flexShrink: 1 }]}>
                     <Text style={styles.itemTitle}>{item.title}</Text>
                     <ShortDescription string={item.description} />
+                    {item.followedTutorial[0] ? (
+                      <Chip icon="cube-scan" style={styles.chip}>
+                        AR Tutorial Followed
+                      </Chip>
+                    ) : (
+                      <View />
+                    )}
                     <Text style={styles.authorText}>{item.author}</Text>
                     <FlatList
                       style={styles.tagList}
@@ -152,7 +160,7 @@ const styles = StyleSheet.create({
     color: "white"
   },
   authorText: {
-    paddingTop: 10,
+    paddingTop: 5,
     paddingLeft: 11,
     fontSize: 10,
     color: "#FF8E00"
@@ -175,6 +183,12 @@ const styles = StyleSheet.create({
     margin: 16,
     right: 0,
     bottom: 0,
+    backgroundColor: "#FF8E00"
+  },
+  chip: {
+    margin: 10,
+    width: 35,
+    borderRadius: 25,
     backgroundColor: "#FF8E00"
   }
 });

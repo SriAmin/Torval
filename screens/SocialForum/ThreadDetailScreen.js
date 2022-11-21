@@ -11,35 +11,23 @@ import {
 import { auth, db } from "../../config/firebase";
 import { arrayRemove, doc, getDoc } from "firebase/firestore";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { FAB, Button } from "react-native-paper";
+import { FAB, Button, Chip } from "react-native-paper";
 import VoteComponent from "../../components/VoteComponent";
-
-const TutorialButton = ({ followedTutorial, navigation }) => {
-  const tutorial = {
-    image:
-      "https://thumbs.dreamstime.com/b/amd-ryzen-cpu-technician-fingers-above-motherboard-part-custom-pc-build-los-angeles-ca-usa-december-169345127.jpg",
-    title: "Building a Computer",
-    description:
-      "This tutorial will be an large guide on building your computer and getting it running",
-    difficulty: 3
-  };
-
-  if (followedTutorial)
-    return (
-      <Button
-        onPress={() => {
-          navigation.navigate("Description", { tutorial: tutorial });
-        }}
-        title="Go to Tutorial"
-      />
-    );
-  else return <View />;
-};
+import { tutorialList } from "./AddThreadScreen";
 
 const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
   const [thread, setThread] = useState(null);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
+
+  const goToTutorial = (navigation, followedTutorialTitle) => {
+    //find followedTutorialDescription in tutorialList
+    const tutorial = tutorialList.find(
+      tutorial => tutorial.title === followedTutorialTitle
+    );
+
+    navigation.navigate("Description", { tutorial: tutorial });
+  };
 
   const getUser = async () => {
     const docRef = doc(db, "Users", auth.currentUser.email);
@@ -191,10 +179,28 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
         <Text style={styles.threadTitle}>{thread.title}</Text>
         <Text style={styles.threadAuthor}>{thread.author}</Text>
         <Text style={styles.threadDescription}>{thread.description}</Text>
-        <TutorialButton
-          followedTutorial={thread.followedTutorial}
-          navigation={navigation}
-        />
+
+        {thread.followedTutorial[0] ? (
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "flex-start"
+            }}
+          >
+            <Chip
+              icon="cube-scan"
+              style={styles.chip}
+              onPress={() =>
+                goToTutorial(navigation, thread.followedTutorial[1])
+              }
+            >
+              {thread.followedTutorial[1]}
+            </Chip>
+          </View>
+        ) : (
+          <View />
+        )}
 
         <CommentList data={thread.comments} />
 
@@ -270,6 +276,12 @@ const styles = StyleSheet.create({
     bottom: 0,
     backgroundColor: "#FF8E00",
     color: "#000"
+  },
+  chip: {
+    margin: 10,
+    borderRadius: 25,
+    backgroundColor: "#FF8E00",
+    flexDirection: "row"
   }
 });
 

@@ -25,7 +25,7 @@ import { doc, getDoc } from "firebase/firestore";
 const windowWidth = Dimensions.get("window").width;
 
 //JSON file holds the mock data that the tutorial list will be holding and presenting
-const tutorialList = [
+export const tutorialList = [
   {
     image:
       "https://thumbs.dreamstime.com/b/amd-ryzen-cpu-technician-fingers-above-motherboard-part-custom-pc-build-los-angeles-ca-usa-december-169345127.jpg",
@@ -67,12 +67,13 @@ const SocialForumThreadScreen = ({ navigation }) => {
   const [title, setTitle] = useState(null);
   const [description, setDescription] = useState(null);
   const [subforum, setSubforum] = useState(null);
+  const [tutorialFollowed, setTutorialFollowed] = useState(null);
   const [user, setUser] = useState({});
   const [isLoading] = useState(false);
   const [checked, setChecked] = React.useState(false);
   const [snackbarVisible, setSnackbarVisible] = React.useState(false);
   const [predictedComponent, setPredictedComponent] = React.useState(false);
-  const [followedTutorial] = React.useState(false);
+  const [followedTutorial, setFollowedTutorial] = React.useState([false, null]);
   const [modalActive, setModalActive] = useState(false);
   const [visible, setVisible] = React.useState(false);
   const onToggleSnackBar = () => setVisible(!visible);
@@ -254,8 +255,9 @@ const SocialForumThreadScreen = ({ navigation }) => {
                 <View style={styles.itemContainer}>
                   <TouchableOpacity
                     onPress={async () => {
-                      alert("Selected Tutorial Index: " + index);
                       setModalActive(false);
+                      setTutorialFollowed(tutorialList[index].title);
+                      setFollowedTutorial([true, tutorialList[index].title]);
                     }}
                   >
                     <View style={[{ flex: 1 }]}>
@@ -324,14 +326,22 @@ const SocialForumThreadScreen = ({ navigation }) => {
             status={checked ? "checked" : "unchecked"}
             color={"#FD7702"}
             uncheckedColor={"#FD7702"}
-            checked={followedTutorial}
+            checked={followedTutorial[0]}
             onPress={async () => {
-              setChecked(!checked);
-              setModalActive(true);
-              setChecked(followedTutorial);
+              if (checked) {
+                setChecked(false);
+                setFollowedTutorial[0] = false;
+                setTutorialFollowed(null);
+              } else {
+                setChecked(true);
+                setModalActive(true);
+              }
             }}
           />
-          <Text style={{ color: "white" }}>Followed AR Tutorial</Text>
+          <View flexDirection="column" justify-content="space-between">
+            <Text style={{ color: "white" }}>Followed AR Tutorial</Text>
+            <Text style={{ color: "#FD7702" }}>{tutorialFollowed}</Text>
+          </View>
         </View>
 
         <View style={styles.threadDescriptionContainer}>
