@@ -220,8 +220,8 @@ const SocialForumThreadScreen = ({ navigation }) => {
           resolved: false,
           subforum: subforum,
           upvotes: 0,
-          downvotes: 0
-          //TODO: Add followedTutorial
+          downvotes: 0,
+          followedTutorial: followedTutorial
         })
         .then(() => {
           alert("Thread added!");
