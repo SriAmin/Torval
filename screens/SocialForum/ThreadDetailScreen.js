@@ -15,6 +15,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { FAB, Button, Chip } from "react-native-paper";
 import VoteComponent from "../../components/VoteComponent";
 import { tutorialList } from "./AddThreadScreen";
+import CommentAuthorComponent from "../../components/CommentAuthor";
 
 const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
   const [thread, setThread] = useState(null);
@@ -98,7 +99,8 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
                       }
                     ]}
                   >
-                    <Text style={styles.itemAuthor}>{item.author}</Text>
+                    <CommentAuthorComponent author={item.author} />
+
                     {user.isMod || user.username === item.author ? (
                       <TouchableOpacity
                         style={{ right: 1 }}

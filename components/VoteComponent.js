@@ -39,6 +39,20 @@ export default function VoteComponent({
           array[i].upvoters.push(userEmail);
         }
 
+        //get all users in db
+        let usersRef = await db.collection("Users").get();
+        let users = usersRef.docs.map(doc => doc.data());
+        //find user who posted comment
+        const user = users.find(user => user.username === comment.author);
+
+        //update karma of user who posted comment in db
+        await db
+          .collection("Users")
+          .doc(user.email)
+          .update({
+            karmaLevel: user.karmaLevel + 1
+          });
+
         await db
           .collection("Threads")
           .doc(threadId)
@@ -61,6 +75,20 @@ export default function VoteComponent({
         } else {
           array[i].downvoters.push(userEmail);
         }
+
+        //get all users in db
+        let usersRef = await db.collection("Users").get();
+        let users = usersRef.docs.map(doc => doc.data());
+        //find user who posted comment
+        let user = users.find(user => user.username === comment.author);
+
+        //update karma of user who posted comment in db
+        await db
+          .collection("Users")
+          .doc(user.email)
+          .update({
+            karmaLevel: user.karmaLevel - 1
+          });
 
         await db
           .collection("Threads")
