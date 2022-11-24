@@ -32,7 +32,7 @@ const SocialForumNavigation = ({ navigation }) => {
           name="Subforums"
           component={SubforumsScreen}
           options={{
-            title: "Subforums",
+            title: "Social Forums",
             headerStyle: {
               elevation: 0,
               shadowOpacity: 0,
