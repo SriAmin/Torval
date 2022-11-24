@@ -1,8 +1,9 @@
 import * as React from "react";
-import { Checkbox } from "react-native-paper";
+import { CheckBox } from "react-native-elements";
 import { View } from "native-base";
 import { Text } from "react-native";
 import { db } from "../config/firebase";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function VoteComponent({
   comment,
@@ -101,6 +102,8 @@ export default function VoteComponent({
   };
 
   const onUpvotePressed = async () => {
+    await setUpvoteChecked(!upvoteChecked);
+
     if (downvoteChecked) {
       await updateUpvoteFirestore();
       setDownvoteChecked(false);
@@ -110,14 +113,14 @@ export default function VoteComponent({
       await updateDownvoteFirestore();
     }
 
-    await setUpvoteChecked(!upvoteChecked);
-
     if (!upvoteChecked) {
       await updateUpvoteFirestore();
     }
   };
 
   const onDownvotePressed = async () => {
+    await setDownvoteChecked(!downvoteChecked);
+
     if (upvoteChecked) {
       await updateDownvoteFirestore();
       setUpvoteChecked(false);
@@ -127,8 +130,6 @@ export default function VoteComponent({
       await updateUpvoteFirestore();
     }
 
-    await setDownvoteChecked(!downvoteChecked);
-
     if (!downvoteChecked) {
       await updateDownvoteFirestore();
     }
@@ -136,8 +137,11 @@ export default function VoteComponent({
 
   return (
     <View>
-      <Checkbox
-        status={upvoteChecked ? "checked" : "unchecked"}
+      <CheckBox
+        checkedIcon="arrow-up"
+        uncheckedIcon="arrow-up"
+        checkedColor={"#FD7702"}
+        checked={upvoteChecked}
         onPress={async () => {
           await onUpvotePressed();
         }}
@@ -146,8 +150,11 @@ export default function VoteComponent({
 
       <Text style={{ color: "white", textAlign: "center" }}>{karma}</Text>
 
-      <Checkbox
-        status={downvoteChecked ? "checked" : "unchecked"}
+      <CheckBox
+        checkedIcon="arrow-down"
+        uncheckedIcon="arrow-down"
+        checkedColor={"#FD7702"}
+        checked={downvoteChecked}
         onPress={async () => {
           await onDownvotePressed();
         }}
