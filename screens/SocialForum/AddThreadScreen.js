@@ -21,6 +21,7 @@ import { auth, db } from "../../config/firebase";
 import * as ImagePicker from "expo-image-picker";
 import { Picker, Spinner } from "native-base";
 import { doc, getDoc } from "firebase/firestore";
+import CameraComponent from "../../components/CameraComponent";
 
 //This is used to determine the full width of the tutorial items in the list
 const windowWidth = Dimensions.get("window").width;
@@ -253,6 +254,10 @@ const SocialForumThreadScreen = ({ navigation }) => {
     }
   }
 
+  function takePicture() {
+    return <CameraComponent />;
+  }
+
   return (
     <View style={styles.container}>
       <Modal visible={modalActive} animationType="slide">
@@ -451,7 +456,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
                 mode="contained"
                 color={"#FD7702"}
                 disabled={isLoading}
-                onPress={() => chooseImage()}
+                onPress={() => takePicture()}
               >
                 {!isLoading ? <Text>Camera</Text> : <Spinner color="#eeeeee" />}
               </Button>
