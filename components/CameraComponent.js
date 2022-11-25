@@ -49,15 +49,13 @@ export default class CameraComponent extends React.Component {
 
   takePicture = async () => {
     if (this.camera) {
-      await this.camera.takePictureAsync();
+      await this.camera.takePictureAsync({
+        onPictureSaved: this.onPictureSaved
+      });
     }
   };
 
-  pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images
-    });
-  };
+  onPictureSaved = photo => {};
 
   render() {
     const { navigation } = this.props;
