@@ -8,6 +8,9 @@ import {
   MaterialCommunityIcons
 } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import { MEDIA_LIBRARY } from "expo-permissions";
+import { saveToLibraryAsync } from "expo-media-library";
+import * as MediaLibrary from "expo-media-library";
 
 export default class CameraComponent extends React.Component {
   constructor(props) {
@@ -55,7 +58,12 @@ export default class CameraComponent extends React.Component {
     }
   };
 
-  onPictureSaved = photo => {};
+  onPictureSaved = async photo => {
+    alert("he");
+    const { navigation } = this.props;
+    await MediaLibrary.saveToLibraryAsync(photo.uri);
+    navigation.pop();
+  };
 
   render() {
     const { navigation } = this.props;
