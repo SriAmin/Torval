@@ -255,7 +255,14 @@ const SocialForumThreadScreen = ({ navigation }) => {
 
   function takePicture() {
     //navigation push to CameraComponent
-    navigation.push("CameraComponent", { navigation: navigation });
+    const onTakePhoto = photo => {
+      alert(photo);
+    };
+
+    navigation.push("CameraComponent", {
+      navigation: navigation,
+      PhotoTaken: onTakePhoto
+    });
   }
 
   return (
