@@ -12,7 +12,7 @@ import {
 import { auth, db } from "../../config/firebase";
 import { arrayRemove, doc, getDoc } from "firebase/firestore";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { FAB, Button, Chip } from "react-native-paper";
+import { FAB, Button, Chip, Checkbox } from "react-native-paper";
 import VoteComponent from "../../components/VoteComponent";
 import { tutorialList } from "./AddThreadScreen";
 import CommentAuthorComponent from "../../components/CommentAuthor";
@@ -21,6 +21,7 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
   const [thread, setThread] = useState(null);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
+  const [resolved, setResolved] = React.useState(false);
 
   const goToTutorial = (navigation, followedTutorialTitle) => {
     //find followedTutorialDescription in tutorialList
@@ -156,6 +157,24 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
     })();
   }, [isFocused]);
 
+  useEffect(() => {
+    (async () => {
+      //set resolved state // THIS ONLY RUNS WHEN I REFRESH
+      if (thread.resolved === true) {
+        setResolved(true);
+      } else {
+        setResolved(false);
+      }
+    })();
+  }, [thread]);
+
+  function handleResolve() {
+    setResolved(!resolved);
+    db.collection("Threads")
+      .doc(route.params.threadId)
+      .update({ resolved: !resolved });
+  }
+
   // Show ActivityIndicator if loading
   if (loading) return <ActivityIndicator />;
   else {
@@ -178,6 +197,17 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
               >
                 <Ionicons name="trash-outline" size={24} color="red" />
               </TouchableOpacity>
+            ) : (
+              <View />
+            )}
+
+            {user.isMod || user.username === thread.author ? (
+              <Checkbox
+                status={resolved ? "checked" : "unchecked"}
+                onPress={() => {
+                  handleResolve();
+                }}
+              />
             ) : (
               <View />
             )}

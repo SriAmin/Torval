@@ -9,14 +9,26 @@ export default function CommentAuthorComponent({ author }) {
   const [karmaText, setKarmaText] = React.useState("");
   const [karmaColour, setKarmaColour] = React.useState("");
   const [isMod, setIsMod] = React.useState(false);
+  const [users, setUsers] = React.useState([]);
 
-  async function getUserKarma() {
+  React.useEffect(async () => {
     let usersRef = await db.collection("Users").get();
-    let users = usersRef.docs.map(doc => doc.data());
-    setCommentAuthor(await users.find(user => user.username === author));
-    setKarma(commentAuthor.karmaLevel);
-    setIsMod(commentAuthor.isMod);
+    setUsers(usersRef.docs.map(doc => doc.data()));
+  }, []);
 
+  React.useEffect(async () => {
+    setCommentAuthor(await users.find(user => user.username === author));
+  }, [users]);
+
+  React.useEffect(async () => {
+    await setIsMod(commentAuthor.isMod);
+  }, [commentAuthor]);
+
+  React.useEffect(async () => {
+    await setKarma(commentAuthor.karmaLevel);
+  }, [commentAuthor]);
+
+  React.useEffect(async () => {
     if (karma < 0) {
       setKarmaText(" -" + karma.toString());
       setKarmaColour("red");
@@ -27,11 +39,7 @@ export default function CommentAuthorComponent({ author }) {
       setKarmaText(" +" + karma.toString());
       setKarmaColour("green");
     }
-  }
-
-  React.useEffect(async () => {
-    await getUserKarma();
-  }, []);
+  }, [karma]);
 
   return (
     <View style={styles.container}>
