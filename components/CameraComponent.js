@@ -59,10 +59,9 @@ export default class CameraComponent extends React.Component {
   };
 
   onPictureSaved = async photo => {
-    const { navigation } = this.props;
-    await MediaLibrary.saveToLibraryAsync(photo.uri);
-    alert("Photo saved to camera roll!");
-    navigation.pop();
+    //Need the photo sent back to AddThreadScreen
+
+    this.props.navigation.pop();
   };
 
   render() {
