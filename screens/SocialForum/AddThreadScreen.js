@@ -21,6 +21,13 @@ import { auth, db } from "../../config/firebase";
 import * as ImagePicker from "expo-image-picker";
 import { Picker, Spinner } from "native-base";
 import { doc, getDoc } from "firebase/firestore";
+import { Camera } from "expo-camera";
+import {
+  FontAwesome,
+  Ionicons,
+  MaterialCommunityIcons
+} from "@expo/vector-icons";
+import * as Permissions from "expo-permissions";
 
 //This is used to determine the full width of the tutorial items in the list
 const windowWidth = Dimensions.get("window").width;
@@ -72,14 +79,37 @@ const SocialForumThreadScreen = ({ navigation }) => {
   const [user, setUser] = useState({});
   const [isLoading] = useState(false);
   const [checked, setChecked] = React.useState(false);
-  const [snackbarVisible, setSnackbarVisible] = React.useState(false);
   const [predictedComponent, setPredictedComponent] = React.useState(false);
   const [followedTutorial, setFollowedTutorial] = React.useState([false, null]);
   const [modalActive, setModalActive] = useState(false);
+  const [cameraModalActive, setCameraModalActive] = useState(false);
   const [visible, setVisible] = React.useState(false);
   const [isPredicting, setIsPredicting] = useState(false);
   const onToggleSnackBar = () => setVisible(!visible);
   const onDismissSnackBar = () => setVisible(false);
+  const [type] = React.useState(Camera.Constants.Type.back);
+  const [camera, setCamera] = React.useState(null);
+
+  useEffect(async () => {
+    await getPermissionAsync();
+  }, []);
+
+  const getPermissionAsync = async () => {
+    // Camera Permission
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    this.setState({ hasPermission: status === "granted" });
+  };
+
+  const handleCameraType = () => {
+    const { cameraType } = this.state;
+
+    this.setState({
+      cameraType:
+        cameraType === Camera.Constants.Type.back
+          ? Camera.Constants.Type.front
+          : Camera.Constants.Type.back
+    });
+  };
 
   const USER_ID = "justingg";
   const PAT = "03e4d15f3e074dd09eb2d7e5dade2814";
@@ -253,17 +283,13 @@ const SocialForumThreadScreen = ({ navigation }) => {
     }
   }
 
-  function takePicture() {
-    //navigation push to CameraComponent
-    const onTakePhoto = photo => {
-      alert(photo);
-    };
-
-    navigation.push("CameraComponent", {
-      navigation: navigation,
-      PhotoTaken: onTakePhoto
-    });
-  }
+  const takePicture = async () => {
+    if (camera) {
+      const photo = await camera.takePictureAsync({ base64: true });
+      setCameraModalActive(false);
+      await predictImage(photo);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -299,6 +325,70 @@ const SocialForumThreadScreen = ({ navigation }) => {
           />
         </View>
       </Modal>
+      {/*/////////////////////////////////////CAMERA MODAL/////////////////////////////////////*/}
+      <Modal visible={cameraModalActive} animationType="slide">
+        <View style={{ flex: 1 }}>
+          <Camera
+            style={{ flex: 1 }}
+            type={type}
+            ref={ref => {
+              setCamera(ref);
+            }}
+          >
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                margin: 30
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  alignSelf: "flex-end",
+                  alignItems: "center",
+                  backgroundColor: "transparent"
+                }}
+                onPress={() => setCameraModalActive(false)}
+              >
+                <Ionicons
+                  name="arrow-back-outline"
+                  style={{ color: "#fff", fontSize: 40 }}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  alignSelf: "flex-end",
+                  alignItems: "center",
+                  backgroundColor: "transparent"
+                }}
+                onPress={async () => {
+                  await takePicture();
+                }}
+              >
+                <FontAwesome
+                  name="camera"
+                  style={{ color: "#fff", fontSize: 40 }}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  alignSelf: "flex-end",
+                  alignItems: "center",
+                  backgroundColor: "transparent"
+                }}
+                onPress={() => handleCameraType()}
+              >
+                <MaterialCommunityIcons
+                  name="camera-switch"
+                  style={{ color: "#fff", fontSize: 40 }}
+                />
+              </TouchableOpacity>
+            </View>
+          </Camera>
+        </View>
+      </Modal>
+      {/*/////////////////////////////////////CAMERA MODAL/////////////////////////////////////*/}
       <ScrollView>
         <TextInput
           style={{
@@ -463,7 +553,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
                 mode="contained"
                 color={"#FD7702"}
                 disabled={isLoading}
-                onPress={() => takePicture()}
+                onPress={() => setCameraModalActive(true)}
               >
                 {!isLoading ? <Text>Camera</Text> : <Spinner color="#eeeeee" />}
               </Button>
