@@ -59,7 +59,6 @@ const AddCommentScreen = ({ navigation, route }) => {
         })
         .then(() => {
           console.log("Comment Created!");
-          alert(comment);
         });
     }
   };

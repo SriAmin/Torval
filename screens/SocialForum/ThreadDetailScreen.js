@@ -181,37 +181,30 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container}>
-          <Text style={styles.threadTitle}>{thread.title}</Text>
-          <Text style={styles.threadAuthor}>{thread.author}</Text>
-          <Text style={styles.threadDescription}>{thread.description}</Text>
-
-          <View
-            style={[{ flexDirection: "row", justifyContent: "space-between" }]}
-          >
-            {/* If the user is a moderator, show the delete button */}
-            {user.isMod || user.username === thread.author ? (
-              <TouchableOpacity
-                style={{ marginTop: 16, margin: 16 }}
-                title="Delete thread"
-                onPress={() => handleDelete("thread")}
-              >
-                <Ionicons name="trash-outline" size={24} color="red" />
-              </TouchableOpacity>
-            ) : (
-              <View />
-            )}
-
-            {user.isMod || user.username === thread.author ? (
+          {user.isMod || user.username === thread.author ? (
+            <View
+              style={{
+                marginLeft: 11,
+                flexDirection: "row"
+              }}
+            >
               <Checkbox
+                color="green"
                 status={resolved ? "checked" : "unchecked"}
                 onPress={() => {
                   handleResolve();
                 }}
               />
-            ) : (
-              <View />
-            )}
-          </View>
+              <View style={{ justifyContent: "center" }}>
+                <Text style={{ color: "white" }}>Mark as resolved</Text>
+              </View>
+            </View>
+          ) : (
+            <View />
+          )}
+          <Text style={styles.threadTitle}>{thread.title}</Text>
+          <Text style={styles.threadAuthor}>{thread.author}</Text>
+          <Text style={styles.threadDescription}>{thread.description}</Text>
 
           {thread.followedTutorial[0] ? (
             <View>
@@ -222,8 +215,7 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
               <View
                 style={{
                   flexDirection: "row",
-                  flexWrap: "wrap",
-                  justifyContent: "flex-start"
+                  justifyContent: "space-between"
                 }}
               >
                 <Chip
@@ -235,6 +227,20 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
                 >
                   {thread.followedTutorial[1]}
                 </Chip>
+                {/* If the user is a moderator, show the delete button */}
+                {user.isMod || user.username === thread.author ? (
+                  <View style={{ justifyContent: "center" }}>
+                    <TouchableOpacity
+                      style={{ marginRight: 11 }}
+                      title="Delete thread"
+                      onPress={() => handleDelete("thread")}
+                    >
+                      <Ionicons name="trash-outline" size={24} color="red" />
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <View />
+                )}
               </View>
             </View>
           ) : (
