@@ -253,6 +253,11 @@ const SocialForumThreadScreen = ({ navigation }) => {
     }
   }
 
+  function takePicture() {
+    //navigation push to CameraComponent
+    navigation.push("CameraComponent");
+  }
+
   return (
     <View style={styles.container}>
       <Modal visible={modalActive} animationType="slide">
@@ -451,7 +456,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
                 mode="contained"
                 color={"#FD7702"}
                 disabled={isLoading}
-                onPress={() => chooseImage()}
+                onPress={() => takePicture()}
               >
                 {!isLoading ? <Text>Camera</Text> : <Spinner color="#eeeeee" />}
               </Button>
