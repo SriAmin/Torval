@@ -160,17 +160,8 @@ const SocialForumNavigation = ({ navigation }) => {
           component={CameraComponent}
           options={{
             title: "CameraComponent",
-            headerStyle: {
-              elevation: 0,
-              shadowOpacity: 0,
-              backgroundColor: "#002347"
-            },
-            headerTintColor: "#fff",
-
-            headerTitleStyle: {
-              fontWeight: "bold",
-              fontSize: 32
-            }
+            headerShown: false,
+            tabBarStyle: { display: "none" }
           }}
         />
       </Stack.Navigator>

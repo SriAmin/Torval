@@ -10,6 +10,10 @@ import {
 import * as ImagePicker from "expo-image-picker";
 
 export default class CameraComponent extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   state = {
     hasPermission: null,
     cameraType: Camera.Constants.Type.back
@@ -56,6 +60,7 @@ export default class CameraComponent extends React.Component {
   };
 
   render() {
+    const { navigation } = this.props;
     const { hasPermission } = this.state;
     if (hasPermission === null) {
       return <View />;
@@ -85,7 +90,7 @@ export default class CameraComponent extends React.Component {
                   alignItems: "center",
                   backgroundColor: "transparent"
                 }}
-                onPress={() => this.pickImage()}
+                onPress={() => navigation.pop()}
               >
                 <Ionicons
                   name="ios-photos"
