@@ -14,6 +14,7 @@ import {
   ViroAmbientLight,
   ViroConstants,
   ViroARPlane,
+  ViroARPlaneSelector
 } from '@viro-community/react-viro';
 
 const CleanTutorialARScene = (props) => {
@@ -41,28 +42,6 @@ const CleanTutorialARScene = (props) => {
   let viroObject;
 
   console.log("Model Uri = " + modelUri);
-  
-  //Based on the modelUri, set the Viro3DObject to show the correct model
-  switch (modelUri) {
-    case "Step1":
-      viroObject = <Viro3DObject source={require('../models/CleanComputer/Step1.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
-      break;
-    case "Step2":
-      viroObject = <Viro3DObject source={require('../models/CleanComputer/Step2.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
-      break;
-    case "Step3":
-      viroObject = <Viro3DObject source={require('../models/CleanComputer/Step3.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
-      break;
-    case "Step4":
-      viroObject = <Viro3DObject source={require('../models/CleanComputer/Step4.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
-      break;
-    case "Step5":
-      viroObject = <Viro3DObject source={require('../models/CleanComputer/Step5.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
-      break;
-    default:
-      viroObject = <Viro3DObject source={require('../models/CleanComputer/Step1.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
-      break;
-  }
 
   //Reference variable to be able to use the functions of ViroNode
   const arNodeRef = useRef(null);
@@ -123,9 +102,31 @@ const CleanTutorialARScene = (props) => {
     arNodeRef.current.setNativeProps({ rotation: [currentAngle[0], currentAngle[1] + rotationFactor, currentAngle[2]] });
   }
 
+  //Based on the modelUri, set the Viro3DObject to show the correct model
+  switch (modelUri) {
+    case "Step1":
+      viroObject = <Viro3DObject source={require('../models/CleanComputer/Step1.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step2":
+      viroObject = <Viro3DObject source={require('../models/CleanComputer/Step2.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step3":
+      viroObject = <Viro3DObject source={require('../models/CleanComputer/Step3.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step4":
+      viroObject = <Viro3DObject source={require('../models/CleanComputer/Step4.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    case "Step5":
+      viroObject = <Viro3DObject source={require('../models/CleanComputer/Step5.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+    default:
+      viroObject = <Viro3DObject source={require('../models/CleanComputer/Step1.vrx')} onPinch={_onPinch} onRotate={_onRotate} type="VRX" animation={{name:'Scene', run:true, loop: true, delay: 1000}}/>
+      break;
+  }
+
   return (
     <ViroARScene onTrackingUpdated={onInitialized}>
-      <ViroARPlane minHeight={.5} minWidth={.5} alignment={"Horizontal"}>
+      <ViroARPlaneSelector minHeight={.5} minWidth={.5} alignment={"Horizontal"}>
         <ViroNode
           ref={arNodeRef}
           scale={[scale, scale, scale]}
@@ -135,7 +136,7 @@ const CleanTutorialARScene = (props) => {
           {viroObject}
         </ViroNode>
         <ViroAmbientLight color="#FFFFFF" />
-      </ViroARPlane>
+      </ViroARPlaneSelector>
     </ViroARScene>
   );
 };

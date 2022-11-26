@@ -30,9 +30,9 @@ const SignUp = ({ navigation }) => {
     }
   }
 
-  const createAccount = () => {
+  const createAccount = async () => {
     setLoading(true);
-    auth
+    await auth
       .createUserWithEmailAndPassword(txtEmail, txtPassword)
       .then(result => {
         if (result) {
@@ -53,6 +53,7 @@ const SignUp = ({ navigation }) => {
                     gpuInstallation: 1,
                     waterCooling: 1
                   },
+                  uid: result.user.uid
                 })
             }).catch((error) => {
                 alert(error);

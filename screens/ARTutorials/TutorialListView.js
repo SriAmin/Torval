@@ -22,25 +22,29 @@ const tutorialList = [
         "image" : "https://thumbs.dreamstime.com/b/amd-ryzen-cpu-technician-fingers-above-motherboard-part-custom-pc-build-los-angeles-ca-usa-december-169345127.jpg",
         "title" : "Building a Computer",
         "description" : "This tutorial will be an large guide on building your computer and getting it running",
-        "difficulty" : 3
+        "difficulty" : 3,
+        "lastStep" : 1
     },
     {
         "image" : "https://media.istockphoto.com/photos/woman-hand-cleaning-laptop-screen-picture-id838903752?k=20&m=838903752&s=612x612&w=0&h=159rYlbMkonNYu3Wt2SnvGSEB67d9cLn4auusaPKAkE=",
         "title" : "Cleaning your computer",
         "description" : "We can understand, the computer tends to get dirty, this guide will show a proper way to clean it",
-        "difficulty" : 1
+        "difficulty" : 1,
+        "lastStep" : 1
     },
     {
         "image" : "https://thumbs.dreamstime.com/b/gpu-video-card-hand-isolated-white-167007044.jpg",
         "title" : "Replacing the Graphics Card",
         "description" : "Will demonstrate how to remove and add a new graphcis card to the computer",
-        "difficulty" : 2
+        "difficulty" : 2,
+        "lastStep" : 1
     },
     {
         "image" : "https://image.shutterstock.com/image-photo/led-light-fancomputer-water-cooling-260nw-664824976.jpg",
         "title" : "Watercooling",
         "description" : "Watercooling is a difficult process, let us guide your through it",
-        "difficulty" : 5
+        "difficulty" : 5,
+        "lastStep" : 1
     },
 ]
 
@@ -57,19 +61,13 @@ const TutorialListView = ({navigation}) => {
     FlatList component
     */
    
-    let lastStepArray = [];
     if (userDocument != undefined) {
         const lastStep = userDocument.tutorialLastStep;
         if (lastStep != undefined || lastStep != null) {
-            lastStepArray = [
-                lastStep.buildAComputer,
-                lastStep.cleanAComputer,
-                lastStep.gpuInstallation,
-                lastStep.waterCooling
-            ];
-        }
-        else {
-            lastStepArray = [1,1,1,1];
+            tutorialList[0].lastStep = lastStep.buildAComputer
+            tutorialList[1].lastStep = lastStep.cleanAComputer
+            tutorialList[2].lastStep = lastStep.gpuInstallation
+            tutorialList[3].lastStep = lastStep.waterCooling
         }
     }
 
@@ -105,7 +103,7 @@ const TutorialListView = ({navigation}) => {
                                     }
                                 }}>
                                     <AntDesign name="caretright" size={24} color="white" />
-                                    <Text style={{color: "white", paddingLeft: 5}}> Step {lastStepArray[index]}</Text>
+                                    <Text style={{color: "white", paddingLeft: 5}}> Step {item.lastStep}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
