@@ -38,6 +38,8 @@ const TutorialView = ({ navigation, route }) => {
     const tutorialIndex = route.params.tutorialIndex;
     let tempTutorialStep;
     let ARSceneNavgiator;
+    let tutorialInstructions;
+
     //Refernce values to be called throughout the code
     const arSceneNav = useRef(null);
 
@@ -77,9 +79,6 @@ const TutorialView = ({ navigation, route }) => {
     const [opacityCoverActive, setOpacityCover] = useState(false);
 
     let opacityCover;
-
-    let tutorialInstructions;
-
     //Based on the stepMenu variable, show the Step Sub Menu
     if (opacityCoverActive) {
         opacityCover = <View style={styles.opacityCover} />
