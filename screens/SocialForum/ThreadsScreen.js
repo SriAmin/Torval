@@ -6,12 +6,10 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
-  Button,
   ActivityIndicator
 } from "react-native";
-import { db, firestore } from "../../config/firebase";
+import { db } from "../../config/firebase";
 import { Chip, FAB } from "react-native-paper";
-import Ionicons from "@expo/vector-icons/Ionicons";
 
 //Handles the description for the thread to either display the shortened version or the full version
 const ShortDescription = props => {
@@ -85,7 +83,7 @@ const ThreadsScreen = ({ navigation, route }) => {
               >
                 <View style={[{ flex: 1, flexDirection: "row" }]}>
                   <Resolved resolve={item.resolved} />
-                  <View style={[{ flexShrink: 1 }]}>
+                  <View style={[{ flex: 1 }]}>
                     <Text style={styles.itemTitle}>{item.title}</Text>
                     <ShortDescription string={item.description} />
                     {item.followedTutorial[0] ? (
@@ -152,7 +150,8 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 18,
     height: 44,
-    color: "white"
+    color: "white",
+    flex: 1
   },
   desc: {
     fontSize: 12,

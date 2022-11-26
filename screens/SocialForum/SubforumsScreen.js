@@ -28,7 +28,7 @@ export default function ThreadsScreen({ navigation }) {
     {
       id: "watercooling",
       text: "Watercooling",
-      icon: "water-circle",
+      icon: "water",
       subtitle: "Method of cooling the computer."
     },
     {
@@ -46,7 +46,7 @@ export default function ThreadsScreen({ navigation }) {
     {
       id: "maintenance",
       text: "Maintenance",
-      icon: "monitor-shimmer",
+      icon: "monitor",
       subtitle: "After the building stage."
     }
   ];

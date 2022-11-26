@@ -2289,7 +2289,7 @@
 
 "@koale/useworker@^4.0.2":
   version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@koale/useworker/-/useworker-4.0.2.tgz#cb540a2581cd6025307c3ca6685bc60748773e58"
+  resolved "https://registry.npmjs.org/@koale/useworker/-/useworker-4.0.2.tgz"
   integrity sha512-xPIPADtom8/3/4FLNj7MvNcBM/Z2FleH85Fdx2O869eoKW8+PoEgtSVvoxWjCWMA46Sm9A5/R1TyzNGc+yM0wg==
   dependencies:
     dequal "^1.0.0"
@@ -2834,7 +2834,7 @@
 
 "@types/prop-types@*":
   version "15.7.5"
-  resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.5.tgz#5f19d2b85a98e9558036f6a3cacc8819420f05cf"
+  resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.5.tgz"
   integrity sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==
 
 "@types/q@^1.5.1":
@@ -2844,7 +2844,7 @@
 
 "@types/react-native-vector-icons@^6.4.6":
   version "6.4.12"
-  resolved "https://registry.yarnpkg.com/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.12.tgz#4b9c63bf85eb42fca7c5b0a55ec317900e4fb427"
+  resolved "https://registry.npmjs.org/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.12.tgz"
   integrity sha512-gSXtv3NMOsRwSXJ/gvGebm7CNjHbkeFKCse9h/Pvi+x2yjCLOkJR1FBfec06DhaFJpsK7Y8WRQpwOS0eLqx5Rg==
   dependencies:
     "@types/react" "*"
@@ -2852,14 +2852,14 @@
 
 "@types/react-native@*":
   version "0.70.7"
-  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.70.7.tgz#1708e5f746bbce2ea4e0bd5a2627560667804d46"
+  resolved "https://registry.npmjs.org/@types/react-native/-/react-native-0.70.7.tgz"
   integrity sha512-hBzeUWwk8sfj3vDfwEXb4hbjWjl0jb5CvWlu2gLrOUJyFHVzJ+x6Y9ilO2eVtJW7l5QmmNLILE1PkVfKRkqYuQ==
   dependencies:
     "@types/react" "*"
 
 "@types/react@*":
   version "18.0.25"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.25.tgz#8b1dcd7e56fe7315535a4af25435e0bb55c8ae44"
+  resolved "https://registry.npmjs.org/@types/react/-/react-18.0.25.tgz"
   integrity sha512-xD6c0KDT4m7n9uD4ZHi02lzskaiqcBxf4zi+tXZY98a04wvc0hi/TcCPC2FOESZi51Nd7tlUeOJY8RofL799/g==
   dependencies:
     "@types/prop-types" "*"
@@ -2880,7 +2880,7 @@
 
 "@types/scheduler@*":
   version "0.16.2"
-  resolved "https://registry.yarnpkg.com/@types/scheduler/-/scheduler-0.16.2.tgz#1a62f89525723dde24ba1b01b092bf5df8ad4d39"
+  resolved "https://registry.npmjs.org/@types/scheduler/-/scheduler-0.16.2.tgz"
   integrity sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==
 
 "@types/source-list-map@*":
@@ -5341,7 +5341,7 @@ csstype@^2.6.8:
 
 csstype@^3.0.2:
   version "3.1.1"
-  resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.1.tgz#841b532c45c758ee546a11d5bd7b7b473c8c30b9"
+  resolved "https://registry.npmjs.org/csstype/-/csstype-3.1.1.tgz"
   integrity sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==
 
 cyclist@^1.0.1:
@@ -5575,7 +5575,7 @@ deprecated-decorator@^0.1.6:
 
 dequal@^1.0.0:
   version "1.0.1"
-  resolved "https://registry.yarnpkg.com/dequal/-/dequal-1.0.1.tgz#dbbf9795ec626e9da8bd68782f4add1d23700d8b"
+  resolved "https://registry.npmjs.org/dequal/-/dequal-1.0.1.tgz"
   integrity sha512-Fx8jxibzkJX2aJgyfSdLhr9tlRoTnHKrRJuu2XHlAgKioN2j19/Bcbe0d4mFXYZ3+wpE2KVobUVTfDutcD17xQ==
 
 des.js@^1.0.0:
@@ -6294,7 +6294,7 @@ expo-asset@~8.4.6:
 
 expo-camera@~12.1.2:
   version "12.1.2"
-  resolved "https://registry.yarnpkg.com/expo-camera/-/expo-camera-12.1.2.tgz#b549a8054ce5778fbf37a45b5d41003f36f5bb3c"
+  resolved "https://registry.npmjs.org/expo-camera/-/expo-camera-12.1.2.tgz"
   integrity sha512-Rr0Evj1V3LGiZE5/YBuuVimuU9uSTwVoqtSBsZ8QoK11+g9vnu2NgBjFMb938yjWD5tqJiXRH8lVTM2mvzSmIQ==
   dependencies:
     "@expo/config-plugins" "^4.0.2"
@@ -6419,7 +6419,7 @@ expo-manifests@~0.2.2:
 
 expo-media-library@~14.0.0:
   version "14.0.1"
-  resolved "https://registry.yarnpkg.com/expo-media-library/-/expo-media-library-14.0.1.tgz#b1a2ce3699edf6b5f561d32812e608ba064ba43f"
+  resolved "https://registry.npmjs.org/expo-media-library/-/expo-media-library-14.0.1.tgz"
   integrity sha512-a7NGFxZvns81y0fRZJsBROXFWKtyEMaodw+x32IPNhKLUAn+X1ggfBS8FbNpUs3bA4ZvhjFQBn59dxPfcHHxEg==
   dependencies:
     "@expo/config-plugins" "^4.0.2"
@@ -6445,7 +6445,7 @@ expo-modules-core@0.6.5:
 
 expo-permissions@~13.1.0:
   version "13.1.1"
-  resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-13.1.1.tgz#67414ea027d0e7db61f1bfa83a98ef6af512b59e"
+  resolved "https://registry.npmjs.org/expo-permissions/-/expo-permissions-13.1.1.tgz"
   integrity sha512-vo2sDlxDJE+THLhUO7G8kMHYnNJoMvYjurFNRvHjEvZAUvFmRgulejr8HlzCpb820brXNg+QWalZCtyA5oQkqg==
 
 expo-pwa@0.0.114:
@@ -11969,7 +11969,7 @@ react-native-easy-grid@0.2.2:
 
 react-native-elements@^3.4.2:
   version "3.4.2"
-  resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-3.4.2.tgz#66602be9c5e0e0a2a831913adec80ff6518d1ee2"
+  resolved "https://registry.npmjs.org/react-native-elements/-/react-native-elements-3.4.2.tgz"
   integrity sha512-m0eAWOn7JuR1wNTNY0WHuaqst4LI/gFE4N5Bbyfsc4DiryWsMST7aAg5w/Gos4IexWIzhLKCIkPxthND1m/8Xg==
   dependencies:
     "@types/react-native-vector-icons" "^6.4.6"
@@ -12007,7 +12007,7 @@ react-native-keyboard-aware-scroll-view@0.9.1:
 
 react-native-paper@^4.12.5:
   version "4.12.5"
-  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-4.12.5.tgz#5ea4bbe02d416d17802a199de748700358c11d3a"
+  resolved "https://registry.npmjs.org/react-native-paper/-/react-native-paper-4.12.5.tgz"
   integrity sha512-gdUtJJf0bw/0xoCE1jR6qCQiQCQZ9ivZh0lbPghFFaGxX88WtTQpusnGON8WhLPeH5odEQ4dTBu99lnIQvSFow==
   dependencies:
     "@callstack/react-theme-provider" "^3.0.7"
@@ -12016,7 +12016,7 @@ react-native-paper@^4.12.5:
 
 react-native-ratings@8.0.4:
   version "8.0.4"
-  resolved "https://registry.yarnpkg.com/react-native-ratings/-/react-native-ratings-8.0.4.tgz#efd5ebad8acc08bf98d34d39b18fb7a6813ef991"
+  resolved "https://registry.npmjs.org/react-native-ratings/-/react-native-ratings-8.0.4.tgz"
   integrity sha512-Xczu5lskIIRD6BEdz9A0jDRpEck/SFxRqiglkXi0u67yAtI1/pcJC76P4MukCbT8K4BPVl+42w83YqXBoBRl7A==
   dependencies:
     lodash "^4.17.15"
@@ -12056,7 +12056,7 @@ react-native-screens@^3.4.0, react-native-screens@~3.10.1:
 
 react-native-size-matters@^0.3.1:
   version "0.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-size-matters/-/react-native-size-matters-0.3.1.tgz#24d0cfc335a2c730f6d58bd7b43ea5a41be4b49f"
+  resolved "https://registry.npmjs.org/react-native-size-matters/-/react-native-size-matters-0.3.1.tgz"
   integrity sha512-mKOfBLIBFBcs9br1rlZDvxD5+mAl8Gfr5CounwJtxI6Z82rGrMO+Kgl9EIg3RMVf3G855a85YVqHJL2f5EDRlw==
 
 react-native-toast-message@^2.1.5:
@@ -12817,9 +12817,9 @@ semver@^6.0.0, semver@^6.1.1, semver@^6.1.2, semver@^6.3.0:
   integrity sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==
 
 semver@^7.3.5:
-  version "7.3.7"
-  resolved "https://registry.npmjs.org/semver/-/semver-7.3.7.tgz"
-  integrity sha512-QlYTucUYOews+WeEujDoEGziz4K6c47V/Bd+LjSSYcA94p+DmINdf7ncaUinThfvZyu13lN9OY1XDxt8C0Tw0g==
+  version "7.3.8"
+  resolved "https://registry.npmjs.org/semver/-/semver-7.3.8.tgz"
+  integrity sha512-NB1ctGL5rlHrPJtFDVIVzTyQylMLu9N9VICA6HSFJo8MCGVTMW6gfpicwKmmK/dAjTOrqu5l63JJOpDSrAis3A==
   dependencies:
     lru-cache "^6.0.0"
 
