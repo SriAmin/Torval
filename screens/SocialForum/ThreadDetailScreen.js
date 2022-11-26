@@ -22,6 +22,7 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
   const [resolved, setResolved] = React.useState(false);
+  const [userCanDelete, setUserCanDelete] = useState(false);
 
   const goToTutorial = (navigation, followedTutorialTitle) => {
     //find followedTutorialDescription in tutorialList
@@ -168,6 +169,17 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
     })();
   }, [thread]);
 
+  useEffect(() => {
+    (async () => {
+      //set userCanDelete state
+      if (user.isMod || user.username === thread.author) {
+        setUserCanDelete(true);
+      } else {
+        setUserCanDelete(false);
+      }
+    })();
+  }, [thread, user]);
+
   function handleResolve() {
     setResolved(!resolved);
     db.collection("Threads")
@@ -227,24 +239,38 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
                 >
                   {thread.followedTutorial[1]}
                 </Chip>
-                {/* If the user is a moderator, show the delete button */}
-                {user.isMod || user.username === thread.author ? (
-                  <View style={{ justifyContent: "center" }}>
-                    <TouchableOpacity
-                      style={{ marginRight: 11 }}
-                      title="Delete thread"
-                      onPress={() => handleDelete("thread")}
-                    >
-                      <Ionicons name="trash-outline" size={24} color="red" />
-                    </TouchableOpacity>
-                  </View>
-                ) : (
-                  <View />
-                )}
               </View>
+              {/* If the user is a moderator, show the delete button */}
+              {userCanDelete ? (
+                <View style={{ justifyContent: "center" }}>
+                  <TouchableOpacity
+                    style={{ marginRight: 11 }}
+                    title="Delete thread"
+                    onPress={() => handleDelete("thread")}
+                  >
+                    <Ionicons name="trash-outline" size={24} color="red" />
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <View />
+              )}
             </View>
           ) : (
-            <View />
+            <View>
+              {userCanDelete ? (
+                <View style={{ justifyContent: "center" }}>
+                  <TouchableOpacity
+                    style={{ marginLeft: 11 }}
+                    title="Delete thread"
+                    onPress={() => handleDelete("thread")}
+                  >
+                    <Ionicons name="trash-outline" size={24} color="red" />
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <View />
+              )}
+            </View>
           )}
 
           <CommentList data={thread.comments} />
