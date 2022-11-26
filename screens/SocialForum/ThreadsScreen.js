@@ -86,14 +86,21 @@ const ThreadsScreen = ({ navigation, route }) => {
                   <View style={[{ flex: 1 }]}>
                     <Text style={styles.itemTitle}>{item.title}</Text>
                     <ShortDescription string={item.description} />
-                    {item.followedTutorial[0] ? (
-                      <Chip icon="cube-scan" style={styles.chip}>
-                        AR Tutorial Followed
-                      </Chip>
-                    ) : (
-                      <View />
-                    )}
-                    <Text style={styles.authorText}>{item.author}</Text>
+                    <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                      <Text style={styles.authorText}>{item.author}</Text>
+                      {item.followedTutorial[0] ? (
+                          <Chip icon="cube-scan" style={{
+                            margin: 10,
+                            width: 35,
+                            borderRadius: 25,
+                            backgroundColor: "#FF8E00"
+                          }}>
+                            AR Tutorial Followed
+                          </Chip>
+                      ) : (
+                          <View />
+                      )}
+                    </View>
                     <FlatList
                       style={styles.tagList}
                       data={item.tag}
@@ -143,13 +150,14 @@ const styles = StyleSheet.create({
     elevation: 3 // Android
   },
   itemImg: {
+    marginTop: 10,
     height: 40,
     width: 40
   },
   itemTitle: {
     padding: 10,
     fontSize: 18,
-    height: 44,
+    flexGrow:1,
     color: "white",
     flex: 1
   },
@@ -159,10 +167,11 @@ const styles = StyleSheet.create({
     color: "white"
   },
   authorText: {
-    paddingTop: 5,
+    marginTop: 10,
     paddingLeft: 11,
     fontSize: 10,
-    color: "#FF8E00"
+    color: "#FF8E00",
+    justifyContent: "flex-start"
   },
   tagList: {
     flexDirection: "row"
@@ -182,12 +191,6 @@ const styles = StyleSheet.create({
     margin: 16,
     right: 0,
     bottom: 0,
-    backgroundColor: "#FF8E00"
-  },
-  chip: {
-    margin: 10,
-    width: 35,
-    borderRadius: 25,
     backgroundColor: "#FF8E00"
   }
 });

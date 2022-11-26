@@ -470,7 +470,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
             onPress={async () => {
               if (checked) {
                 setChecked(false);
-                setFollowedTutorial[0] = false;
+                setFollowedTutorial([false, ""]);
                 setTutorialFollowed(null);
               } else {
                 setChecked(true);

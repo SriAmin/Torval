@@ -17,6 +17,7 @@ import VoteComponent from "../../components/VoteComponent";
 import { tutorialList } from "./AddThreadScreen";
 import CommentAuthorComponent from "../../components/CommentAuthor";
 
+//This screen shows the contents of the thread such as title, full description, comments, mark as resolve, and the AR tutorial
 const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
   const [thread, setThread] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -24,6 +25,7 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
   const [resolved, setResolved] = React.useState(false);
   const [userCanDelete, setUserCanDelete] = useState(false);
 
+  //Goes to the tutorial
   const goToTutorial = (navigation, followedTutorialTitle) => {
     //find followedTutorialDescription in tutorialList
     const tutorial = tutorialList.find(
@@ -202,6 +204,7 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
             >
               <Checkbox
                 color="green"
+                uncheckedColor="white"
                 status={resolved ? "checked" : "unchecked"}
                 onPress={() => {
                   handleResolve();
@@ -239,28 +242,28 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
                 >
                   {thread.followedTutorial[1]}
                 </Chip>
+                {/* If the user is a moderator, show the delete button */}
+                {userCanDelete ? (
+                    <View style={{ justifyContent: "center" }}>
+                      <TouchableOpacity
+                          style={{ marginRight: 11 }}
+                          title="Delete thread"
+                          onPress={() => handleDelete("thread")}
+                      >
+                        <Ionicons name="trash-outline" size={24} color="red" />
+                      </TouchableOpacity>
+                    </View>
+                ) : (
+                    <View />
+                )}
               </View>
-              {/* If the user is a moderator, show the delete button */}
-              {userCanDelete ? (
-                <View style={{ justifyContent: "center" }}>
-                  <TouchableOpacity
-                    style={{ marginRight: 11 }}
-                    title="Delete thread"
-                    onPress={() => handleDelete("thread")}
-                  >
-                    <Ionicons name="trash-outline" size={24} color="red" />
-                  </TouchableOpacity>
-                </View>
-              ) : (
-                <View />
-              )}
             </View>
           ) : (
             <View>
               {userCanDelete ? (
-                <View style={{ justifyContent: "center" }}>
+                <View style={{ justifyContent: "center", alignSelf: 'flex-end' }}>
                   <TouchableOpacity
-                    style={{ marginLeft: 11 }}
+                    style={{ marginRight: 11 }}
                     title="Delete thread"
                     onPress={() => handleDelete("thread")}
                   >

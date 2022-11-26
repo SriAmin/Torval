@@ -22,7 +22,7 @@ export default function ThreadsScreen({ navigation }) {
     {
       id: "mobo",
       text: "Motherboard",
-      icon: "integrated-circuit-chip",
+      icon: "microchip",
       subtitle: "Where all of the components are connected."
     },
     {
