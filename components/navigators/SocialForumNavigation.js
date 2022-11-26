@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  Image,
-  TouchableOpacity
-} from "react-native";
+import { StyleSheet } from "react-native";
 
 import ThreadsScreen from "../../screens/SocialForum/ThreadsScreen";
 import ThreadDetailScreen from "../../screens/SocialForum/ThreadDetailScreen";
@@ -18,7 +11,6 @@ import TutorialView from "../../screens/ARTutorials/TutorialView";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import TutorialListViewSelect from "../../screens/ARTutorials/TutorialListViewSelect";
 import CameraComponent from "../CameraComponent";
 
 //This will create a Stack navigator within the Forum thread to handle navigation between the screen and its comments
@@ -136,24 +128,6 @@ const SocialForumNavigation = ({ navigation }) => {
           options={{ headerShown: false }}
           name="Tutorial"
           component={TutorialView}
-        />
-        <Stack.Screen
-          name="TutorialListViewSelect"
-          component={TutorialListViewSelect}
-          options={{
-            title: "Tutorials",
-            headerStyle: {
-              elevation: 0,
-              shadowOpacity: 0,
-              backgroundColor: "#002347"
-            },
-            headerTintColor: "#fff",
-
-            headerTitleStyle: {
-              fontWeight: "bold",
-              fontSize: 32
-            }
-          }}
         />
         <Stack.Screen
           name="CameraComponent"
