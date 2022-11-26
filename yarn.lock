@@ -6443,10 +6443,10 @@ expo-modules-core@0.6.5:
     compare-versions "^3.4.0"
     invariant "^2.2.4"
 
-expo-permissions@^14.0.0:
-  version "14.0.0"
-  resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-14.0.0.tgz#7644e84e5a59a1c612a39a2602df927478e80c3c"
-  integrity sha512-z/1u4Kt5AhzFEB/4LjJxNE+pDX8YijjhGaokNchPNwjjn3W1f+o4JQVdZBPS2TwRpFEXbrBSTUSalxijlJKGmw==
+expo-permissions@~13.1.0:
+  version "13.1.1"
+  resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-13.1.1.tgz#67414ea027d0e7db61f1bfa83a98ef6af512b59e"
+  integrity sha512-vo2sDlxDJE+THLhUO7G8kMHYnNJoMvYjurFNRvHjEvZAUvFmRgulejr8HlzCpb820brXNg+QWalZCtyA5oQkqg==
 
 expo-pwa@0.0.114:
   version "0.0.114"

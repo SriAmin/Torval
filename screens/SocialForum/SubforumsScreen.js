@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { FAB, Avatar, Card } from "react-native-paper";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "../../config/firebase";
 
 export default function ThreadsScreen({ navigation }) {
   const initialElements = [
@@ -50,6 +52,39 @@ export default function ThreadsScreen({ navigation }) {
   ];
 
   const [exampleState] = useState(initialElements);
+  const [user, setUser] = useState({});
+
+  const getUser = async () => {
+    const docRef = doc(db, "Users", auth.currentUser.email);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const userData = docSnap.data();
+      setUser(docSnap.data());
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such document!");
+    }
+  };
+
+  useEffect(async () => {
+    await getUser();
+  }, []);
+
+  useEffect(async () => {
+    //if user is moderator then alert user
+    if (user.karmaLevel >= 250 && !user.isMod) {
+      let docRef = db.collection("Users").doc(auth.currentUser.email);
+
+      docRef
+        .update({
+          isMod: true
+        })
+        .then(() => {
+          alert("You are now a moderator!");
+        });
+    }
+  }, [user]);
 
   return (
     <View style={styles.container}>
