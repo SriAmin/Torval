@@ -11,7 +11,6 @@ const AddCommentScreen = ({ navigation, route }) => {
   const [, setDate] = useState(null);
 
   const [comment, setComment] = useState(null);
-  const [author, setAuthor] = useState(null);
 
   //get user data before rendering
   useEffect(() => {
