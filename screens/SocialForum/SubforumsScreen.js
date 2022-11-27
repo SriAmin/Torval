@@ -85,6 +85,16 @@ export default function ThreadsScreen({ navigation }) {
         .then(() => {
           alert("You are now a moderator!");
         });
+    } else if (user.karmaLevel < 250 && user.isMod) {
+      let docRef = db.collection("Users").doc(auth.currentUser.email);
+
+      docRef
+        .update({
+          isMod: false
+        })
+        .then(() => {
+          alert("You are no longer a moderator!");
+        });
     }
   }, [user]);
 
