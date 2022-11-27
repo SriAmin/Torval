@@ -68,6 +68,7 @@ export const tutorialList = [
   }
 ];
 
+//This screen is used to display the inputs required to create a new thread
 const SocialForumThreadScreen = ({ navigation }) => {
   const [image] = React.useState(null);
   const [status] = React.useState(null);
@@ -90,16 +91,19 @@ const SocialForumThreadScreen = ({ navigation }) => {
   const [type] = React.useState(Camera.Constants.Type.back);
   const [camera, setCamera] = React.useState(null);
 
+  //On load, the system will ask for permission to access the camera and photo library
   useEffect(async () => {
     await getPermissionAsync();
   }, []);
 
+  //function to get permission to access the camera and photo library
   const getPermissionAsync = async () => {
     // Camera Permission
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasPermission: status === "granted" });
   };
 
+  //gets the camera type, front or back
   const handleCameraType = () => {
     const { cameraType } = this.state;
 
@@ -117,10 +121,12 @@ const SocialForumThreadScreen = ({ navigation }) => {
   const MODEL_ID = "torval";
   const MODEL_VERSION_ID = "9e7a9f72c9474afc90098de79147c899";
 
+  //This function is used to take a picture and send it to the API to be processed
   async function predictImage(image) {
     setIsPredicting(true);
     let IMAGE_BYTES_STRING = image.base64.toString();
 
+    // Create a new FormData object
     const raw = JSON.stringify({
       user_app_id: {
         user_id: USER_ID,
@@ -137,6 +143,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
       ]
     });
 
+    //request to the Clarifai API
     const requestOptions = {
       method: "POST",
       headers: {
@@ -174,6 +181,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
         concept => concept.value === maxVotes
       );
 
+      // if the prediction value is greater than 0.05, then we can say that the image is of that component
       if (maxVotes > 0.05) {
         showPrediction(obj.name);
       } else {
@@ -186,6 +194,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
     }
   }
 
+  //This function is used to show the prediction to the user
   function showPrediction(prediction) {
     let predictedComputerComponent;
 
@@ -213,6 +222,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
         break;
     }
 
+    //toggle the snackbar to show the prediction
     setPredictedComponent(predictedComputerComponent);
     setIsPredicting(false);
     onToggleSnackBar();
@@ -225,6 +235,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
     })();
   }, []);
 
+  //function to get the user from the database
   const getUser = async () => {
     const docRef = doc(db, "Users", auth.currentUser.email);
     const docSnap = await getDoc(docRef);
@@ -238,6 +249,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
     }
   };
 
+  //ask for permission to access the photo library
   const askPermissionCameraRollAsync = async () => {
     let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
@@ -248,6 +260,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
     }
   };
 
+  //function to submit the thread to the database
   const addThreadDoc = () => {
     if (description == null || title == null || subforum == null) {
       alert("Please fill out the required forms");
@@ -270,6 +283,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
     }
   };
 
+  //function to show the image picker and immediately predict afterwards
   async function chooseImage() {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -283,6 +297,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
     }
   }
 
+  //function to show the camera and immediately predict afterwards
   const takePicture = async () => {
     if (camera) {
       const photo = await camera.takePictureAsync({ base64: true });

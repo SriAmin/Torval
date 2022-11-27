@@ -4,6 +4,7 @@ import { auth, db } from "../../config/firebase";
 import { arrayUnion, doc, getDoc } from "firebase/firestore";
 import { TextInput, Button } from "react-native-paper";
 
+//This screen is where the user does all the necessary steps to create a new comment on a thread
 const AddCommentScreen = ({ navigation, route }) => {
   const threadId = route.params.threadId;
   const [user, setUser] = useState({});
@@ -12,12 +13,14 @@ const AddCommentScreen = ({ navigation, route }) => {
   const [comment, setComment] = useState(null);
   const [author, setAuthor] = useState(null);
 
+  //get user data before rendering
   useEffect(() => {
     (async () => {
       await getUser();
     })();
   });
 
+  //get user data from firestore
   const getUser = async () => {
     const docRef = doc(db, "Users", auth.currentUser.email);
     const docSnap = await getDoc(docRef);
@@ -31,6 +34,7 @@ const AddCommentScreen = ({ navigation, route }) => {
     }
   };
 
+  //add comment to thread
   const addComment = () => {
     if (comment == null) {
       alert("Please fill out the required forms");

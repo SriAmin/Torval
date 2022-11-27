@@ -54,6 +54,7 @@ export default function ThreadsScreen({ navigation }) {
   const [exampleState] = useState(initialElements);
   const [user, setUser] = useState({});
 
+  //get user data before rendering
   const getUser = async () => {
     const docRef = doc(db, "Users", auth.currentUser.email);
     const docSnap = await getDoc(docRef);
@@ -71,6 +72,7 @@ export default function ThreadsScreen({ navigation }) {
     await getUser();
   }, []);
 
+  //if the user is a moderator, then alert them that they are once they enter the social forums screen
   useEffect(async () => {
     //if user is moderator then alert user
     if (user.karmaLevel >= 250 && !user.isMod) {
