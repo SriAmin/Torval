@@ -13,8 +13,6 @@ import { userDocument } from '../../config/firebase';
 
 //This is used to determine the full width of the tutorial items in the list
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-let itemImageWidth;
 
 //JSON file holds the mock data that the tutorial list will be holding and presenting
 const tutorialList = [

@@ -8,7 +8,7 @@ selected step
 */
 import React, { useState, useRef } from 'react'
 import { Text, View, StyleSheet, Animated, FlatList, TouchableOpacity } from 'react-native';
-import { Ionicons, Entypo, Feather } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 
 const InstructionSubMenu = ({ tutorial, opacityCoverFunction, jumpStepFunction }) => {
     console.log(jumpStepFunction);

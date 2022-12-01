@@ -11,13 +11,13 @@ import React, { useState, useRef } from 'react';
 import {
     ViroARSceneNavigator,
 } from '@viro-community/react-viro';
-import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Animated } from 'react-native';
-import { Ionicons, Entypo, Feather } from '@expo/vector-icons';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Ionicons, Entypo } from '@expo/vector-icons';
 import { userDocument, updateTutorialStep} from '../../config/firebase';
 
 import TutorialSceneAR from '../../components/TutorialSceneAR';
 import CleanTutorialARScene from '../../components/CleanTutorialARScene';
-import InstructionSubMenu, { stepMenu } from './InstructionSubMenu';
+import InstructionSubMenu from './InstructionSubMenu';
 
 import { Tutorials } from '../../components/TutorialInstructions';
 
@@ -169,23 +169,17 @@ const TutorialView = ({ navigation, route }) => {
     return (
         <View style={styles.arView}>
             {ARSceneNavgiator}
-            <TouchableOpacity style={styles.backButton} onPress={() => {
-                exitTutorial();
-            }}>
+            <TouchableOpacity style={styles.backButton} onPress={exitTutorial}>
                 <Ionicons name="arrow-back-circle-outline" size={40} color="white" />
             </TouchableOpacity>
             <View style={styles.uiView}>
                 <Text style={styles.instruction}>{tutorialInstructions[tutorialStep - 1].title}</Text>
                 <Text style={styles.instruction}>{tutorialInstructions[tutorialStep - 1].step}</Text>
                 <View style={styles.buttonGroup}>
-                    <TouchableOpacity style={styles.button} onPress={() => {
-                        previousStep()
-                    }}>
+                    <TouchableOpacity style={styles.button} onPress={previousStep}>
                         <Entypo name="arrow-bold-left" size={24} color="white" />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => {
-                        nextStep()
-                    }}>
+                    <TouchableOpacity style={styles.button} onPress={nextStep}>
                         <Entypo name="arrow-bold-right" size={24} color="white" />
                     </TouchableOpacity>
                 </View>

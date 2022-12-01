@@ -6,7 +6,7 @@ the React Navigation.
 */
 
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import TutorialListView from '../../screens/ARTutorials/TutorialListView';
 import TutorialView from '../../screens/ARTutorials/TutorialView';
@@ -29,8 +29,42 @@ const TutorialNavgiator = () => {
     return (
         <NavigationContainer independent={true}>
           <Stack.Navigator>
-            <Stack.Screen name="Tutorial Lists" component={TutorialListView}/>
-            <Stack.Screen name="Description" component={TutorialDescriptionView}/>
+            <Stack.Screen 
+              name="Tutorial Lists" 
+              component={TutorialListView}
+              options={{
+                title: "Tutorials",
+                headerStyle: {
+                  elevation: 0,
+                  shadowOpacity: 0,
+                  backgroundColor: "#002347"
+                },
+                headerTintColor: "#fff",
+    
+                headerTitleStyle: {
+                  fontWeight: "bold",
+                  fontSize: 32
+                }
+              }}
+              />
+            <Stack.Screen 
+              name="Description" 
+              component={TutorialDescriptionView}
+              options={{
+                title: "Description",
+                headerStyle: {
+                  elevation: 0,
+                  shadowOpacity: 0,
+                  backgroundColor: "#002347"
+                },
+                headerTintColor: "#fff",
+    
+                headerTitleStyle: {
+                  fontWeight: "bold",
+                  fontSize: 32
+                }
+              }}  
+            />
             <Stack.Screen options={{headerShown: false}} name="Tutorial" component={TutorialView} />
           </Stack.Navigator>
         </NavigationContainer>
