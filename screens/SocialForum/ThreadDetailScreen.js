@@ -22,7 +22,7 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
   const [resolved, setResolved] = React.useState(false);
-  const [userCanDelete, setUserCanDelete] = useState(false);
+  const [userCanModifyOrDelete, setUserCanModifyOrDelete] = useState(false);
 
   //Goes to the tutorial
   const goToTutorial = (navigation, followedTutorialTitle) => {
@@ -179,9 +179,9 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
     (async () => {
       //set userCanDelete state
       if (user.isMod || user.username === thread.author) {
-        setUserCanDelete(true);
+        setUserCanModifyOrDelete(true);
       } else {
-        setUserCanDelete(false);
+        setUserCanModifyOrDelete(false);
       }
     })();
   }, [thread, user]);
@@ -200,7 +200,7 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container}>
-          {user.isMod || user.username === thread.author ? (
+          {userCanModifyOrDelete ? (
             <View
               style={{
                 marginLeft: 11,
@@ -248,7 +248,7 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
                   {thread.followedTutorial[1]}
                 </Chip>
                 {/* If the user is a moderator, show the delete button */}
-                {userCanDelete ? (
+                {userCanModifyOrDelete ? (
                   <View style={{ justifyContent: "center" }}>
                     <TouchableOpacity
                       style={{ marginRight: 11 }}
@@ -265,7 +265,7 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
             </View>
           ) : (
             <View>
-              {userCanDelete ? (
+              {userCanModifyOrDelete ? (
                 <View
                   style={{ justifyContent: "center", alignSelf: "flex-end" }}
                 >
