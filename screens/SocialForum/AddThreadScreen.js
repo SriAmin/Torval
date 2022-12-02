@@ -28,45 +28,17 @@ import {
   MaterialCommunityIcons
 } from "@expo/vector-icons";
 import * as Permissions from "expo-permissions";
+import { tutorialList } from "../ARTutorials/TutorialListView";
+import {
+  USER_ID,
+  PAT,
+  APP_ID,
+  MODEL_ID,
+  MODEL_VERSION_ID
+} from "../../config/clarifai";
 
 //This is used to determine the full width of the tutorial items in the list
 const windowWidth = Dimensions.get("window").width;
-
-//JSON file holds the mock data that the tutorial list will be holding and presenting
-export const tutorialList = [
-  {
-    image:
-      "https://thumbs.dreamstime.com/b/amd-ryzen-cpu-technician-fingers-above-motherboard-part-custom-pc-build-los-angeles-ca-usa-december-169345127.jpg",
-    title: "Building a Computer",
-    description:
-      "This tutorial will be an large guide on building your computer and getting it running",
-    difficulty: 3
-  },
-  {
-    image:
-      "https://media.istockphoto.com/photos/woman-hand-cleaning-laptop-screen-picture-id838903752?k=20&m=838903752&s=612x612&w=0&h=159rYlbMkonNYu3Wt2SnvGSEB67d9cLn4auusaPKAkE=",
-    title: "Cleaning your computer",
-    description:
-      "We can understand, the computer tends to get dirty, this guide will show a proper way to clean it",
-    difficulty: 1
-  },
-  {
-    image:
-      "https://thumbs.dreamstime.com/b/gpu-video-card-hand-isolated-white-167007044.jpg",
-    title: "Replacing the Graphics Card",
-    description:
-      "Will demonstrate how to remove and add a new graphics card to the computer",
-    difficulty: 2
-  },
-  {
-    image:
-      "https://image.shutterstock.com/image-photo/led-light-fancomputer-water-cooling-260nw-664824976.jpg",
-    title: "Watercooling",
-    description:
-      "Watercooling is a difficult process, let us guide your through it",
-    difficulty: 5
-  }
-];
 
 //This screen is used to display the inputs required to create a new thread
 const SocialForumThreadScreen = ({ navigation }) => {
@@ -114,12 +86,6 @@ const SocialForumThreadScreen = ({ navigation }) => {
           : Camera.Constants.Type.back
     });
   };
-
-  const USER_ID = "justingg";
-  const PAT = "03e4d15f3e074dd09eb2d7e5dade2814";
-  const APP_ID = "torval-app";
-  const MODEL_ID = "torval";
-  const MODEL_VERSION_ID = "9e7a9f72c9474afc90098de79147c899";
 
   //This function is used to take a picture and send it to the API to be processed
   async function predictImage(image) {
@@ -501,7 +467,7 @@ const SocialForumThreadScreen = ({ navigation }) => {
 
         <Text style={styles.helperText}>
           Need help deciding what subforum to post to? Take a picture of the
-          component and we'll try to predict what it is!
+          component and we'll try to predict what it is.
         </Text>
 
         {permissions === false ? (
@@ -701,7 +667,7 @@ const styles = StyleSheet.create({
     margin: 10,
     fontSize: 14,
     textAlign: "center",
-    color: "#FD7702",
+    color: "gray",
     fontStyle: "italic"
   },
   lottie: {

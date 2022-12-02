@@ -12,6 +12,7 @@ import TutorialView from "../../screens/ARTutorials/TutorialView";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CameraComponent from "../CameraComponent";
+import { Button } from "native-base";
 
 //This will create a Stack navigator within the Forum thread to handle navigation between the screen and its comments
 const Stack = createNativeStackNavigator();

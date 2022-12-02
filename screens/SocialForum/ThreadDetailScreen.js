@@ -6,15 +6,14 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
-  Image,
   ScrollView
 } from "react-native";
 import { auth, db } from "../../config/firebase";
 import { arrayRemove, doc, getDoc } from "firebase/firestore";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { FAB, Button, Chip, Checkbox } from "react-native-paper";
+import { FAB, Chip, Checkbox } from "react-native-paper";
 import VoteComponent from "../../components/VoteComponent";
-import { tutorialList } from "./AddThreadScreen";
+import { tutorialList } from "../ARTutorials/TutorialListView";
 import CommentAuthorComponent from "../../components/CommentAuthor";
 
 //This screen shows the contents of the thread such as title, full description, comments, mark as resolve, and the AR tutorial

@@ -60,7 +60,6 @@ export default function ThreadsScreen({ navigation }) {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      const userData = docSnap.data();
       setUser(docSnap.data());
     } else {
       // doc.data() will be undefined in this case
