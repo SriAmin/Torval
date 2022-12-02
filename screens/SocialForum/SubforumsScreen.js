@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { FAB, Avatar, Card } from "react-native-paper";
-import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from "../../config/firebase";
+import { auth, db, supportEmail, userDocument } from "../../config/firebase";
 
 export default function ThreadsScreen({ navigation }) {
   const initialElements = [
@@ -52,47 +51,38 @@ export default function ThreadsScreen({ navigation }) {
   ];
 
   const [exampleState] = useState(initialElements);
-  const [user, setUser] = useState({});
-
-  //get user data before rendering
-  const getUser = async () => {
-    const docRef = doc(db, "Users", auth.currentUser.email);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      setUser(docSnap.data());
-    } else {
-      // doc.data() will be undefined in this case
-      console.log("No such document!");
-    }
-  };
-
-  useEffect(async () => {
-    await getUser();
-  }, []);
+  const [user] = useState(userDocument);
 
   //if the user is a moderator, then alert them that they are once they enter the social forums screen
   useEffect(async () => {
     //if user is moderator then alert user
-    if (user.karmaLevel >= 250 && !user.isMod) {
+    if (
+      user.karmaLevel >= 2000 &&
+      !user.isMod &&
+      !user.hasBeenNotifiedOfModRequest
+    ) {
       let docRef = db.collection("Users").doc(auth.currentUser.email);
 
       docRef
         .update({
-          isMod: true
+          hasBeenNotifiedOfModRequest: true
         })
         .then(() => {
-          alert("You are now a moderator!");
+          alert(
+            "You have been a major part of the community in helping others. We have put a request in for become a moderator. You will be notified when the request has been accepted."
+          );
         });
-    } else if (user.karmaLevel < 250 && user.isMod) {
+    } else if (user.isMod && user.hasBeenNotifiedOfModStatus) {
       let docRef = db.collection("Users").doc(auth.currentUser.email);
 
       docRef
         .update({
-          isMod: false
+          hasBeenNotifiedOfModStatus: true
         })
         .then(() => {
-          alert("You are no longer a moderator!");
+          alert(
+            "You have been a major part of the community in helping others. We have put a request in for become a moderator. You will be notified when the request has been accepted."
+          );
         });
     }
   }, [user]);

@@ -67,32 +67,22 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
             later.
           </Text>
         );
-      else
-        return (
-          <FlatList
-            data={data}
-            renderItem={({ item }) => {
-              return (
-                <View style={styles.itemContainer}>
-                  <View style={[{ flexDirection: "row" }]}>
-                    <VoteComponent
-                      comment={item}
-                      threadId={route.params.threadId}
-                      commentArray={data}
-                      userEmail={user.email}
-                    />
-                    <View
-                      style={[
-                        {
-                          justifyContent: "space-between",
-                          flexDirection: "row",
-                          flex: 1
-                        }
-                      ]}
-                    >
-                      <Text style={styles.itemTitle}>{item.text}</Text>
-                    </View>
-                  </View>
+      else {
+        data.sort((a, b) => b.karma - a.karma);
+      }
+      return (
+        <FlatList
+          data={data}
+          renderItem={({ item }) => {
+            return (
+              <View style={styles.itemContainer}>
+                <View style={[{ flexDirection: "row" }]}>
+                  <VoteComponent
+                    comment={item}
+                    threadId={route.params.threadId}
+                    commentArray={data}
+                    userEmail={user.email}
+                  />
                   <View
                     style={[
                       {
@@ -102,25 +92,37 @@ const ThreadDetailScreen = ({ navigation, route, isFocused }) => {
                       }
                     ]}
                   >
-                    <CommentAuthorComponent author={item.author} />
-
-                    {user.isMod || user.username === item.author ? (
-                      <TouchableOpacity
-                        style={{ right: 1 }}
-                        title="Delete Comment"
-                        onPress={() => handleDelete("comment", item)}
-                      >
-                        <Ionicons name="trash-outline" size={24} color="red" />
-                      </TouchableOpacity>
-                    ) : (
-                      <View />
-                    )}
+                    <Text style={styles.itemTitle}>{item.text}</Text>
                   </View>
                 </View>
-              );
-            }}
-          />
-        );
+                <View
+                  style={[
+                    {
+                      justifyContent: "space-between",
+                      flexDirection: "row",
+                      flex: 1
+                    }
+                  ]}
+                >
+                  <CommentAuthorComponent author={item.author} />
+
+                  {user.isMod || user.username === item.author ? (
+                    <TouchableOpacity
+                      style={{ right: 1 }}
+                      title="Delete Comment"
+                      onPress={() => handleDelete("comment", item)}
+                    >
+                      <Ionicons name="trash-outline" size={24} color="red" />
+                    </TouchableOpacity>
+                  ) : (
+                    <View />
+                  )}
+                </View>
+              </View>
+            );
+          }}
+        />
+      );
     }
   };
 
