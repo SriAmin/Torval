@@ -44,9 +44,9 @@ const Resolved = props => {
 
 const ThreadsScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(true);
-  const [tutorialList, setTutorialList] = useState([]);
+  const [threadsList, setThreadsList] = useState([]);
 
-  useEffect(() => {
+  async function getAllThreads() {
     const subscriber = db
       .collection("Threads")
       .where("subforum", "in", [route.params.subforumThreadId])
@@ -60,11 +60,15 @@ const ThreadsScreen = ({ navigation, route }) => {
           });
         });
 
-        setTutorialList(threads);
+        setThreadsList(threads);
         setLoading(false);
       });
 
     return () => subscriber;
+  }
+
+  useEffect(async () => {
+    await getAllThreads();
   }, []);
 
   if (loading) return <ActivityIndicator />;
@@ -72,7 +76,7 @@ const ThreadsScreen = ({ navigation, route }) => {
     return (
       <View style={styles.container}>
         <FlatList
-          data={tutorialList}
+          data={threadsList}
           renderItem={({ item }) => {
             return (
               <TouchableOpacity
@@ -86,19 +90,27 @@ const ThreadsScreen = ({ navigation, route }) => {
                   <View style={[{ flex: 1 }]}>
                     <Text style={styles.itemTitle}>{item.title}</Text>
                     <ShortDescription string={item.description} />
-                    <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between"
+                      }}
+                    >
                       <Text style={styles.authorText}>{item.author}</Text>
                       {item.followedTutorial[0] ? (
-                          <Chip icon="cube-scan" style={{
+                        <Chip
+                          icon="cube-scan"
+                          style={{
                             margin: 10,
                             width: 35,
                             borderRadius: 25,
                             backgroundColor: "#FF8E00"
-                          }}>
-                            AR Tutorial Followed
-                          </Chip>
+                          }}
+                        >
+                          AR Tutorial Followed
+                        </Chip>
                       ) : (
-                          <View />
+                        <View />
                       )}
                     </View>
                     <FlatList
@@ -157,7 +169,7 @@ const styles = StyleSheet.create({
   itemTitle: {
     padding: 10,
     fontSize: 18,
-    flexGrow:1,
+    flexGrow: 1,
     color: "white",
     flex: 1
   },

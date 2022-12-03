@@ -4,7 +4,7 @@ import { FlatList } from "react-native-gesture-handler";
 import { FAB, Avatar, Card } from "react-native-paper";
 import { auth, db, supportEmail, userDocument } from "../../config/firebase";
 
-export default function ThreadsScreen({ navigation }) {
+export default function SubforumsScreen({ navigation }) {
   const initialElements = [
     {
       id: "gpu",

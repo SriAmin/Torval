@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 
 import ThreadsScreen from "../../screens/SocialForum/ThreadsScreen";
 import ThreadDetailScreen from "../../screens/SocialForum/ThreadDetailScreen";
-import SocialForumThread from "../../screens/SocialForum/AddThreadScreen";
+import AddThreadScreen from "../../screens/SocialForum/AddThreadScreen";
 import AddCommentScreen from "../../screens/SocialForum/AddCommentScreen";
 import SubforumsScreen from "../../screens/SocialForum/SubforumsScreen";
 import TutorialDescriptionView from "../../screens/ARTutorials/TutorialDescriptionView";
@@ -73,7 +73,7 @@ const SocialForumNavigation = ({ navigation }) => {
         />
         <Stack.Screen
           name="Create A Thread"
-          component={SocialForumThread}
+          component={AddThreadScreen}
           options={{
             title: "Create a thread",
             headerStyle: {
