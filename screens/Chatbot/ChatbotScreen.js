@@ -1,12 +1,12 @@
 import React, { Component, useState} from 'react';
 import { WebView } from 'react-native-webview';
-import { StyleSheet, Text, TextInput, View, TouchableHighlight, Platform } from 'react-native';
+import { StyleSheet, Text, TextInput, View, TouchableHighlight, Platform , Image} from 'react-native';
 import { WebChatContainer} from '@ibm-watson/assistant-web-chat-react';
 import DOMParser from 'react-native-html-parser';
 
 const styles = StyleSheet.create({
   socialForumButton: {
-      backgroundColor: 'purple',
+      backgroundColor: '#FF8E00',
       height: 50,
       width: 50,
       borderRadius: 50,
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
 
   arButton: {
-    backgroundColor: 'purple',
+    backgroundColor: '#FF8E00',
     height: 50,
     width: 50,
     borderRadius: 50,
@@ -41,6 +41,12 @@ const styles = StyleSheet.create({
         height: 1,
         width: 0
     }
+},
+  botImg: {
+    marginTop: 0,
+    height: 300,
+    width: 400,
+    marginLeft: -10
 }
 });
 
@@ -70,15 +76,17 @@ const ChatbotScreen = ({navigation}) => {
     var parsed = parser.parseFromString(htmlString, 'text/html');
     
     //console.log(parsed.getElementsByAttribute('id', 'WAC__messages--ns593616348'))
-    console.log(parsed.querySelect('innerText'))
+    //console.log(parsed.querySelect('innerText'))
 
     //Finding Social Forum words
     var findForum = htmlString.includes('Forums')
     if(findForum == false){
-      console.log('Nothing found')
+      //Do nothing
+      //console.log('Nothing found')
     }
     else{
-      console.log('Found')
+      //Found Forum
+      //console.log('Found')
       setForumCheck(true);
     }
 
@@ -86,11 +94,13 @@ const ChatbotScreen = ({navigation}) => {
     var findAR = htmlString.includes('AR Tutorials')
     if(findAR == true)
     {
-      console.log("Found AR")
+      //Found AR
+      //console.log("Found AR")
       setARCheck(true)
     }
     else{
-      console.log('Not Found')
+      //Do nothing
+      //console.log('Not Found')
     }
 
     //if (forumWordLocation == -1) {
@@ -141,9 +151,9 @@ const ChatbotScreen = ({navigation}) => {
             javaScriptEnabled={true}
             javaScriptEnabledAndroid={true}
             injectedJavaScript={jsCode}
-            source={{ uri: "https://web-chat.global.assistant.watson.appdomain.cloud/preview.html?backgroundImageURL=https%3A%2F%2Fus-south.assistant.watson.cloud.ibm.com%2Fpublic%2Fimages%2Fupx-da71d7eb-736a-4aa4-8b60-2299027eaed3%3A%3Ac37e07b8-b3de-4b13-9f59-08551ffff63a&integrationID=cce610f1-06db-4bdc-87e9-41be3159c722&region=us-south&serviceInstanceID=da71d7eb-736a-4aa4-8b60-2299027eaed3" }}
-            style={{marginTop: 22, flex: 1}}
-            onMessage={event => console.log ("recieved: ", onMessage(event.nativeEvent.data))}
+            source={{ uri: "https://web-chat.global.assistant.watson.appdomain.cloud/preview.html?backgroundImageURL=https%3A%2F%2Fus-south.assistant.watson.cloud.ibm.com%2Fpublic%2Fimages%2Fupx-da71d7eb-736a-4aa4-8b60-2299027eaed3%3A%3A459b1c4e-7775-41ba-9e45-d59442b8b42b&integrationID=cce610f1-06db-4bdc-87e9-41be3159c722&region=us-south&serviceInstanceID=da71d7eb-736a-4aa4-8b60-2299027eaed3" }}
+            style={{marginTop: 20, flex: 1}}
+            onMessage={event => onMessage(event.nativeEvent.data)}
           />
 
         {/* Social Forum button */}
