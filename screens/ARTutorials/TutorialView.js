@@ -11,7 +11,7 @@ import React, { useState, useRef } from 'react';
 import {
     ViroARSceneNavigator,
 } from '@viro-community/react-viro';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator} from 'react-native';
 import { Ionicons, Entypo } from '@expo/vector-icons';
 import { userDocument, updateTutorialStep} from '../../config/firebase';
 
@@ -77,6 +77,8 @@ const TutorialView = ({ navigation, route }) => {
     const [tutorialStep, setTutorialStep] = useState(tempTutorialStep);
     // const [stepMenu, setStepMenu] = useState(false);
     const [opacityCoverActive, setOpacityCover] = useState(false);
+
+    const [isLoading, setIsLoading] = useState(false);
 
     let opacityCover;
     //Based on the stepMenu variable, show the Step Sub Menu
@@ -156,6 +158,7 @@ const TutorialView = ({ navigation, route }) => {
     }
 
     const exitTutorial = async () => {
+        setIsLoading(true);
         if (tutorialStep !== userDocument.tutorialLastStep.buildAComputer || tutorialStep !== userDocument.tutorialLastStep.cleanAComputer) {
             if (tutorialIndex == 1) {
                 await updateTutorialStep("cleanAComputer", tutorialStep);
@@ -163,12 +166,19 @@ const TutorialView = ({ navigation, route }) => {
                 await updateTutorialStep("buildAComputer", tutorialStep);
             }
         }
+        setIsLoading(false);
         navigation.goBack();
     }
 
     return (
         <View style={styles.arView}>
             {ARSceneNavgiator}
+            {isLoading ? (
+                <View style={styles.loadingIndicator}>
+                <ActivityIndicator size="large" color="#ffffff"/>
+                <Text style={{color: "white"}}>Loading</Text>
+            </View>
+            ) : (<View></View>)}
             <TouchableOpacity style={styles.backButton} onPress={exitTutorial}>
                 <Ionicons name="arrow-back-circle-outline" size={40} color="white" />
             </TouchableOpacity>
@@ -193,6 +203,14 @@ const TutorialView = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     arView: {
         flex: 1,
+    },
+    loadingIndicator: {
+        backgroundColor: "#292929dd",
+        position: "absolute",
+        borderRadius: 15,
+        padding: 50,
+        top: 300,
+        left: 150
     },
     backButton: {
         flex: 1,

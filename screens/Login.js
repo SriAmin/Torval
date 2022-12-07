@@ -7,8 +7,9 @@ import {
   Item,
   Label,
   Spinner,
-  Text
+  Text,
 } from "native-base";
+import {View, ActivityIndicator} from "react-native";
 import { getAuth, signInAnonymously } from "firebase/auth";
 import { auth, signInAuthAdmin, signInAuthAnonymous } from "../config/firebase";
 import { SafeAreaView } from "react-navigation";
