@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Container, Text } from 'native-base';
+import { Button, Form, Input, Item, Text } from 'native-base';
 import { auth as auth, db } from '../config/firebase';
 import { SafeAreaView } from "react-navigation";
 import { Image, TextInput, Modal, StyleSheet, View} from "react-native";
-import { deleteUser, updateProfile} from "firebase/auth";
+import { deleteUser, updateProfile, updatePassword} from "firebase/auth";
 import { doc, getDoc, updateDoc} from "firebase/firestore";
 import * as ImagePicker from 'expo-image-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -14,8 +14,9 @@ const ProfileScreen = ({ navigation }) => {
     const [user, setUser] = useState({});
     const [modalOpen, setModelOpen] = useState(false);
     const [displayName, setDisplayName] = useState(authUser.displayName);
+    const [password, setPassword] = useState("");
 
-    const [image, setImage] = useState("https://upload.wikimedia.org/wikipedia/en/2/21/Web_of_Spider-Man_Vol_1_129-1.png");
+    const [image, setImage] = useState(auth.currentUser.photoURL);
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -35,6 +36,7 @@ const ProfileScreen = ({ navigation }) => {
     const logout = () => {
         auth.signOut().then(() => navigation.navigate('Login'));
     };
+    console.log("PhotoURL: " + auth.currentUser.photoURL);
 
     const deleteAcct = () => {
         const user = auth.currentUser;
@@ -76,10 +78,22 @@ const ProfileScreen = ({ navigation }) => {
             await updateDoc(userRef, {
                 displayName: displayName
             });
+            await updatePasswordAuth()
           }).catch((error) => {
             alert(error);
           });
         alert("User Profile has Updated");
+    }
+
+    const updatePasswordAuth = async () => {
+        if (password != "") {
+            await updatePassword(auth.currentUser, password).then(() => {
+                // Update successful.
+                alert("Password Update successful")
+            }).catch((error) => {
+                alert("Error Occur: " + error);
+            });
+        }
     }
 
     useEffect(() => {
@@ -87,11 +101,10 @@ const ProfileScreen = ({ navigation }) => {
     }, [])
 
     return (
-        <Container>
-
+        <View style={styles.container}>
             <Modal visible={modalOpen} animationType="slide">
                 <View style={styles.modalStyle}>
-                    <TouchableOpacity onPress={pickImage}>
+                    <TouchableOpacity style={styles.imageSelector} onPress={pickImage}>
                         <Image
                             style={styles.profileIcon}
                             source={{
@@ -99,18 +112,32 @@ const ProfileScreen = ({ navigation }) => {
                             }}
                         />
                     </TouchableOpacity>
-                    <TextInput 
-                        style={styles.displayNameInput}
-                        onChangeText={(text) => {setDisplayName(text)}}
-                        value={displayName}
-                    />
-                    <Button style={{ marginTop: 20, paddingHorizontal: 50 }} onPress={() => {
+                    <Form>
+                        <Item>
+                            <Input 
+                                value={displayName} 
+                                onChangeText={setDisplayName} 
+                                placeholder="Name"
+                                style={{color: "white"}}
+                            />
+                        </Item>
+                        <Item style={{marginVertical: 15}}>
+                            <Input 
+                                value={password} 
+                                onChangeText={setPassword} 
+                                placeholder="New Password"
+                                secureTextEntry
+                                style={{color: "white"}}
+                            />
+                        </Item>
+                    </Form>
+                    <Button style={styles.buttons} onPress={() => {
                         updateUser();
                         setModelOpen(false);
                     }}>
                         <Text>Update</Text>
                     </Button>
-                    <Button style={{ marginTop: 20, paddingHorizontal: 50 }} onPress={() => {
+                    <Button style={styles.buttons} onPress={() => {
                         setModelOpen(false);
                     }}>
                         <Text>Cancel</Text>
@@ -118,66 +145,94 @@ const ProfileScreen = ({ navigation }) => {
                 </View>
             </Modal>
 
-            <SafeAreaView style={{ padding: 20 }}>
-                <Text>Welcome {auth.currentUser.displayName}!</Text>
-                <Text>FIRESTORE VALUES</Text>
-                <Text>isMod?: {user.isMod ? "Yes" : "No"}</Text>
+            <View style={styles.formContainer}>
+                <View style={{alignItems: "center"}}>
+                    <Text style={styles.userTitle}>Welcome {auth.currentUser.displayName}!</Text>
+                        <Image style={styles.profilePicture} source={{ uri: auth.currentUser.photoURL.toString() }} />
+                        {user.isMod ? 
+                            <Image
+                                style={styles.moderatorImg}
+                                source={{
+                                    uri: "https://www.iconsdb.com/icons/preview/orange/shield-2-xxl.png"
+                                }}
+                            /> 
+                        : <View />}
+                    <Text style={styles.profileText}> Email: {user.email}</Text>
+                    <Text style={styles.profileText}> Karma Level: {user.karmaLevel}</Text>
+                </View>
 
-                <TextInput>
-                    UID: {auth.currentUser.uid}
-                </TextInput>
-
-                <TextInput>
-                    Username: {user.username}
-                </TextInput>
-
-                <Image width={100} height={100} source={{ uri: auth.currentUser.photoURL }}></Image>
-
-                <TextInput>
-                    New Password:
-                </TextInput>
-
-
-                <Button style={{ marginTop: 20 }} onPress={logout}>
+                <Button style={styles.buttons} onPress={logout}>
                     <Text>Logout</Text>
                 </Button>
 
-                <Button style={{ marginTop: 20 }} onPress={deleteAcct}>
+                <Button style={styles.buttons} onPress={deleteAcct}>
                     <Text>Delete Account</Text>
                 </Button>
 
-                <Button style={{ marginTop: 20 }}
+                <Button style={styles.buttons}
                     onPress={() => setModelOpen(true)}>
                     <Text>Update Profile</Text>
                 </Button>
-
-                <Button style={{ marginTop: 20 }}
-                    onPress={() => navigation.navigate('GlobalStylesheet')}>
-                    <Text>Stylesheet (Devs only)</Text>
-                </Button>
-            </SafeAreaView>
-        </Container>
+            </View>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingTop: 50,
+        backgroundColor: "#002347",
+        alignContent: "center"
+    },
+    formContainer: {
+        flex: 1,
+        padding: 15,
+    },
+    userTitle: {
+        fontSize: 24,
+        color: "#FF8E00"
+    },
+    profilePicture: {
+        marginVertical: 15,
+        borderWidth: 3,
+        borderRadius: 100,
+        borderColor: "#FF8E00",
+        height: 125,
+        width: 125
+    },
+    moderatorImg: {
+        marginVertical: 5,
+        height: 30,
+        width: 30
+    },
+    profileText: {
+        color: "white",
+        fontSize: 16,
+    },
     modalStyle: {
         flex: 1,
-        marginTop: 150,
+        paddingTop: 150,
+        padding: 15,
+        backgroundColor: "#002347",
+    },
+    imageSelector: {
         alignItems: "center",
     },
     profileIcon: {
         height: 200,
         width: 200,
-        borderRadius: 200 / 2
+        borderWidth: 3,
+        borderRadius: 100,
+        borderColor: "#FF8E00",
     },
-    displayNameInput: {
-        marginVertical: 15,
-        borderWidth: 2,
-        width: 200,
-        paddingVertical: 10,
-        paddingLeft: 5
-    }
+  buttons: {
+    backgroundColor: "#FF8E00",
+    marginTop: 25,
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "center"
+  }
 });
 
 export default ProfileScreen;

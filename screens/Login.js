@@ -9,7 +9,7 @@ import {
   Spinner,
   Text,
 } from "native-base";
-import {View, ActivityIndicator} from "react-native";
+import { View, ActivityIndicator, StyleSheet, Image } from "react-native";
 import { getAuth, signInAnonymously } from "firebase/auth";
 import { auth, signInAuthAdmin, signInAuthAnonymous } from "../config/firebase";
 import { SafeAreaView } from "react-navigation";
@@ -50,30 +50,38 @@ const Login = ({ navigation }) => {
   };
 
   return (
-    <Container>
-      <SafeAreaView style={{ padding: 20 }}>
+    <View style={styles.container}>
+      <View style={styles.formContainer}>
+        <View style={{ alignItems: "center" }}>
+          <Image
+            style={styles.appImg}
+            source={require('../assets/icon.png')}
+          />
+          <Text style={styles.appTitle}>Torval</Text>
+        </View>
         <Form>
           <Item floatingLabel>
-            <Label>Email</Label>
-            <Input value={txtEmail} onChangeText={setEmail} />
+            <Input
+              style={{color: "white"}}
+              value={txtEmail}
+              onChangeText={setEmail}
+              placeholder="Email"
+            />
           </Item>
 
           <Item floatingLabel>
-            <Label>Password</Label>
             <Input
+              style={{color: "white"}}
               secureTextEntry
               value={txtPassword}
               onChangeText={setPassword}
+              placeholder="Password"
             />
           </Item>
         </Form>
 
         <Button
-          style={{
-            marginTop: 20,
-            alignItems: "center",
-            justifyContent: "center"
-          }}
+          style={styles.buttons}
           onPress={signIn}
           disabled={isLoading}
         >
@@ -81,36 +89,45 @@ const Login = ({ navigation }) => {
         </Button>
 
         <Button
-          style={{
-            marginTop: 20,
-            alignItems: "center",
-            justifyContent: "center"
-          }}
-          onPress={signInAdmin}
-          disabled={isLoading}
-        >
-          {!isLoading ? (
-            <Text>Login as Admin</Text>
-          ) : (
-            <Spinner color="#eeeeee" />
-          )}
-        </Button>
-
-        <Button
           transparent
-          style={{
-            marginTop: 20,
-            alignItems: "center",
-            justifyContent: "center"
-          }}
+          style={styles.buttons}
           onPress={() => navigation.navigate("SignUp")}
           disabled={isLoading}
         >
-          <Text>Signup</Text>
+          <Text>Sign Up</Text>
         </Button>
-      </SafeAreaView>
-    </Container>
+      </View>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: "#002347"
+  },
+  formContainer: {
+    paddingTop: 100,
+  },
+  appImg: {
+    alignItems: "center",
+    width: 175,
+    height: 175,
+  },
+  appTitle: {
+    marginTop: 15,
+    fontSize: 36,
+    fontFamily: "Optima",
+    color: "#FF8E00"
+  },
+  buttons: {
+    backgroundColor: "#FF8E00",
+    marginTop: 25,
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "center"
+  }
+})
 
 export default Login;

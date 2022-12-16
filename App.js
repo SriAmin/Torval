@@ -44,7 +44,24 @@ export default function App() {
           options={{ headerShown: false }}
           component={TorvalNavigator}
         />
-        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen 
+          name="SignUp" 
+          component={SignUp} 
+          options={{
+            title: "Sign Up",
+            headerStyle: {
+              elevation: 0,
+              shadowOpacity: 0,
+              backgroundColor: "#002347"
+            },
+            headerTintColor: "#fff",
+
+            headerTitleStyle: {
+              fontWeight: "bold",
+              fontSize: 32
+            }
+          }} 
+        />
         <Stack.Screen name="GlobalStylesheet" component={GlobalStyleSheet} />
       </Stack.Navigator>
     </NavigationContainer>
